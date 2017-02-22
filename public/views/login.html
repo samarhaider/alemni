@@ -1,0 +1,24 @@
+<!-- public/views/login.html -->
+
+<div class="container w-xxl w-auto-xs">
+  <div class="m-b-lg">
+    <div class="well">
+        <div class="wrapper text-center">
+            <strong>Please Sign in with the details provided</strong>
+        </div>
+        <div class="alert alert-danger" ng-show="auth.error">{{auth.message}}</div>
+        <form>
+            <div class="list-group list-group-sm">
+                <div class="list-group-item">
+                    <input type="email" class="form-control" placeholder="Email" ng-model="auth.email">
+                </div>
+                <div class="list-group-item">
+                    <input type="password" class="form-control" placeholder="Password" ng-model="auth.password">
+                </div>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" ng-click="auth.login()">Login</button>
+        </form>
+        <button ng-click="auth.authenticate('google')">Sign in with Google</button>
+    </div>
+</div>
+</div>

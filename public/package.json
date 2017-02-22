@@ -1,0 +1,23 @@
+{
+  "name": "public",
+  "version": "1.0.0",
+  "description": "ticket pay app",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "1.5.9",
+    "angular-resource": "^1.5.8",
+    "angular-ui-bootstrap": "^2.3.2",
+    "angular-ui-router": "1.0.0-beta.3",
+    "bootstrap": "^3.3.7",
+    "components-font-awesome": "^4.7.0",
+    "lodash": "^4.17.2",
+    "ngstorage": "^0.3.11",
+    "satellizer": "^0.15.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Samar Haider",
+  "license": "ISC"
+}
