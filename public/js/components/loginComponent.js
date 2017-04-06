@@ -51,6 +51,7 @@
        
         vm.authenticate = function(provider) {
           $auth.authenticate(provider).then(function(response) {
+              console.log(response.data.token);
                 // Signed in with provider.
               })
               .catch(function(response) {

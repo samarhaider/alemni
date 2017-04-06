@@ -160,6 +160,9 @@ return [
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class, # Added on 16-Feb-2017
 //        Artdarek\OAuth\OAuthServiceProvider::class, # Added on 17-Feb-2017
         SimpleSoftwareIO\SMS\SMSServiceProvider::class, # Added on 17-Feb-2017
+        Laravel\Socialite\SocialiteServiceProvider::class, # Added on 29-Mar-2017
+        Qylinfly\ActionLog\ActionLogServiceProvider::class, # Added on 30-Mar-2017
+        Laracademy\Generators\GeneratorsServiceProvider::class, # Added on 05-Apr-2017
     ],
     /*
       |--------------------------------------------------------------------------
@@ -215,6 +218,8 @@ return [
         'DotenvEditor' => Brotzka\DotenvEditor\DotenvEditorFacade::class, # AdAdded on 16-Feb-2017
 //        'OAuth'     => Artdarek\OAuth\Facade\OAuth::class, # AdAdded on 17-Feb-2017
         'SMS' => SimpleSoftwareIO\SMS\Facades\SMS::class, # AdAdded on 17-Feb-2017
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, # Added on 29-Mar-2017
+        'ActionLog' => Qylinfly\ActionLog\Facades\ActionLogFacade::class, # Added on 30-Mar-2017
     ],
     
     'token_secret' => 'some random string',

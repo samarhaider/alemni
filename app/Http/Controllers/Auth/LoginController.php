@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use GuzzleHttp;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Config;
-use Firebase\JWT\JWT;
+use JWTAuth;
+use Socialite;
 use App\Models\User;
+use App\Models\Profile;
 
+/**
+ * @Resource("Login", uri="/login" )
+ */
 class LoginController extends Controller
 {
+
     /**
      * Generate JSON Web Token.
      */
@@ -25,7 +28,6 @@ class LoginController extends Controller
         ];
         return JWT::encode($payload, Config::get('app.token_secret'));
     }
-    
     /*
       |--------------------------------------------------------------------------
       | Login Controller
@@ -37,86 +39,98 @@ class LoginController extends Controller
       |
      */
 
-use AuthenticatesUsers;
-
     /**
-     * Where to redirect users after login.
+     * Tutor Login with Google
      *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
+     * Login user with a google code.
+     * Token is returned which will be required in every request
      *
-     * @return void
+     * @Post("/google/tutor")
+     * 
+     * @Transaction({
+     *      @Request({"code":"4/7zE1BAw89p1hyBuVS1NCMjMVIVfHD81VIPo0PdFhpTU"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
+     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
+     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
+     * })
      */
-    public function __construct()
+    public function google(Request $request, $user_type)
     {
-        $this->middleware('guest', ['except' => 'logout', 'loginWithGoogle']);
+        $provider_user = Socialite::driver('google')->stateless()->user();
+        $user = User::where('google', '=', $provider_user->getId())->first();
+
+        if (!$user) {
+            $user = new User;
+            $user->email = $provider_user->getEmail();
+            if ($user_type == 'tutor') {
+                $user->user_type = User::TYPE_TUTOR;
+            } else {
+                $user->user_type = User::TYPE_STUDENT;
+            }
+            $user->google = $provider_user->getId();
+            if ($user->isInvalid()) {
+                throw new \Dingo\Api\Exception\ResourceException('Could not login user.', $user->getErrors());
+            }
+            $user->save();
+
+            $profile = new Profile;
+            $profile->user_id = $user->id;
+            $profile->name = $provider_user->getName();
+            $profile->avatar = $provider_user->getAvatar();
+            $profile->save();
+        }
+//        if (($user_type == 'tutor' && $user->isTutor()) ||
+//            ($user_type == 'student' && !$user->isStudent())) {
+//            return response()->json(['error' => 'invalid_credentials',
+//                    'message' => 'Invalid credentials', 'status_code' => 401], 401);
+//        }
+        if ($user->isBlocked()) {
+            return response()->json(['error' => 'user_blocked',
+                    'message' => 'Your Account has been blocked.', 'status_code' => 401], 401);
+        }
+
+        $token = JWTAuth::fromUser($user);
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 
-    public function google(Request $request)
+    /**
+     * Student Login with Google
+     *
+     * Login user with a google code.
+     * Token is returned which will be required in every request
+     *
+     * @Post("/google/student")
+     * 
+     * @Transaction({
+     *      @Request({"code":"4/7zE1BAw89p1hyBuVS1NCMjMVIVfHD81VIPo0PdFhpTU"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
+     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
+     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
+     * })
+     */
+    public function googleStudent()
     {
         
-        $client = new GuzzleHttp\Client();
+    }
 
-        $params = [
-            'code' => $request->input('code'),
-            'client_id' => Config::get('app.google_client_id'),
-            'client_secret' => Config::get('app.google_secret'),
-            'redirect_uri' => \URL::to('/'),
-            'grant_type' => 'authorization_code',
-        ];
+    public function simple(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-        // Step 1. Exchange authorization code for access token.
-        $accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/token', [
-            'form_params' => $params
-        ]);
-        $accessToken = json_decode($accessTokenResponse->getBody(), true);
-
-        // Step 2. Retrieve profile information about the current user.
-        $profileResponse = $client->request('GET', 'https://www.googleapis.com/plus/v1/people/me/openIdConnect', [
-            'headers' => array('Authorization' => 'Bearer ' . $accessToken['access_token'])
-        ]);
-        $profile = json_decode($profileResponse->getBody(), true);
-//        return $profile;
-        // Step 3a. If user is already signed in then link accounts.
-        if ($request->header('Authorization'))
-        {
-            $user = User::where('google', '=', $profile['sub']);
-
-            if ($user->first())
-            {
-                return response()->json(['message' => 'There is already a Google account that belongs to you'], 409);
+        try {
+            // verify the credentials and create a token for the user
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials',
+                        'message' => 'Invalid credentials', 'status_code' => 401], 401);
             }
-
-            $token = explode(' ', $request->header('Authorization'))[1];
-            $payload = (array) JWT::decode($token, Config::get('app.token_secret'), array('HS256'));
-
-            $user = User::find($payload['sub']);
-            $user->google = $profile['sub'];
-            $user->displayName = $user->displayName ?: $profile['name'];
-            $user->save();
-
-            return response()->json(['token' => $this->createToken($user)]);
+        } catch (JWTException $e) {
+            // something went wrong
+            return response()->json(['error' => 'could_not_create_token',
+                    'message' => 'Internal Server Error', 'status_code' => 500], 500);
         }
-        // Step 3b. Create a new user account or return an existing one.
-        else
-        {
-            $user = User::where('google', '=', $profile['sub']);
-
-            if ($user->first())
-            {
-                return response()->json(['token' => $this->createToken($user->first())]);
-            }
-
-            $user = new User;
-            $user->google = $profile['sub'];
-            $user->displayName = $profile['name'];
-            $user->save();
-
-            return response()->json(['token' => $this->createToken($user)]);
-        }
+        $user = JWTAuth::toUser($token);
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 }

@@ -30,9 +30,13 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\User::class,
+        'model' => App\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID', '426586124483-l4gnl9dmatfr8p88nikj6rv0p2l7ku4v.apps.googleusercontent.com'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET', '2dxQ-fyO4xGVNdxHnvpYDTRZ'),
+        'redirect' => env('GOOGLE_REDIRECT', 'http://localhost:8000'),
+    ],
 ];

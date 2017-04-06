@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -9,10 +12,11 @@
         "barryvdh/laravel-cors": "^0.8.2",
         "brotzka/laravel-dotenv-editor": "^2.0",
         "dingo/api": "1.0.x@dev",
-        "guzzlehttp/guzzle": "^6.2",
-        "guzzlehttp/oauth-subscriber": "^0.3.0",
+        "laracademy/generators": "^1.3",
         "laravel/framework": "5.4.*",
+        "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
+        "qylinfly/action-log": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.7.1",
         "simplesoftwareio/simple-sms": "^3.0",
         "tymon/jwt-auth": "^0.5.9",

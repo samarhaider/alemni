@@ -13,16 +13,27 @@ class CreateUserDetails extends Migration
      */
     public function up()
     {
-        Schema::create('user_details', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
-            $table->string('photo');
-            $table->string('latitude');
-            $table->string('longitude');
-            $table->string('phone_number');
-            $table->string('bio');
-            $table->string('hourly_rate');
+            $table->unsignedInteger('user_id');
+            $table->enum('gender', ['M', 'F'])->nullable()->default(null);
+            $table->string('name')->nullable()->default(null);
+            $table->string('avatar')->nullable()->default(null);
+            /**
+             * Latitude and Longitude
+             *  http://stackoverflow.com/questions/12504208/what-mysql-data-type-should-be-used-for-latitude-longitude-with-8-decimal-places
+             */
+            $table->decimal('latitude', 10, 8)->nullable()->default(null);
+            $table->decimal('longitude', 11, 8)->nullable()->default(null);
+            $table->string('address')->nullable()->default(null);
+            $table->string('phone_number')->nullable()->default(null);
+//            $table->string('education')->nullable()->default(null);
+            $table->text('bio')->nullable()->default(null);
+            $table->float('hourly_rate')->nullable()->default(null);
+            $table->unsignedMediumInteger('radius')->nullable()->default(null);
+            $table->softDeletes();
             $table->timestamps();
+            $table->index('user_id');
         });
     }
 
@@ -33,6 +44,6 @@ class CreateUserDetails extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_details');
+        Schema::dropIfExists('profiles');
     }
 }
