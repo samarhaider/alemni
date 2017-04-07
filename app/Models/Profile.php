@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use App\Models\AppModel;
+use \Conner\Tagging\Taggable;
 
 class Profile extends AppModel
 {
+
+    use Taggable;
+
+    public $qualifications;
 
     /**
      * The attributes for validation rules.
@@ -38,7 +43,16 @@ class Profile extends AppModel
      * @var array
      */
     protected $hidden = [
-        'id', 'user_id', 'deleted_at', 'updated_at', 'created_at',
+        'id', 'user_id', 'deleted_at', 'updated_at', 'created_at', 'tagged'
+    ];
+
+    /**
+     * Attributes that get appended on serialization
+     *
+     * @var array
+     */
+    protected $appends = [
+        'qualifications',
     ];
 
     public function user()
@@ -55,5 +69,14 @@ class Profile extends AppModel
     {
         $condition = "distance({$lat}, {$long}, latitude, longitude, 'ME') <= {$distance}";
         return $query->whereRaw($condition);
+    }
+
+    public function getQualificationsAttribute()
+    {
+        return $this->tagNames();
+//        if ($this->tags) {
+//            return ;
+//        }
+//        return [];
     }
 }

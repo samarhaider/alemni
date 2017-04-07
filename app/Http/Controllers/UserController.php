@@ -49,7 +49,7 @@ class UserController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"user":{"id":10,"email":"tanner.damore@example.com","created_at":"2017-04-05 18:40:47","profile":{"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test"}}})
+     *      @Response(200, body={"user":{"id":10,"email":"tanner.damore@example.com","created_at":"2017-04-05 18:40:47","profile":{"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}}})
      * })
      */
     public function show($id)
@@ -58,7 +58,7 @@ class UserController extends Controller
             $id = Auth::user()->id;
         }
         $user = User::with('profile')->find($id);
-
+//        $user->profile->getQualification();
         return $user;
     }
 
@@ -76,12 +76,13 @@ class UserController extends Controller
      *      @Parameter("hourly_rate", type="decimal"),
      *      @Parameter("radius", type="integer", description="Radius in meters"),
      *      @Parameter("address"),
+     *      @Parameter("qualifications", type="array", description="string array of qualification"),
      *      @Parameter("bio")
      * })
      * 
      * @Transaction({
-     *      @Request({"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test"}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test"}),
+     *      @Request({"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}),
      *      @Response(422, body={"message":"Could not update user profile information.","errors":{"message":"Could not update user profile information.","errors":{"latitude":{"The latitude format is invalid."},"longitude":{"The longitude format is invalid."}},"status_code":422}})
      * })
      */
@@ -94,6 +95,8 @@ class UserController extends Controller
         $profile = $user->profile;
         $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius');
         $profile->fill($profile_data);
+        $qualifications = $request->get('qualifications', []);
+        $profile->retag($qualifications);
         if (!$profile->save()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user profile information.', $profile->getErrors());
         }

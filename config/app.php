@@ -163,6 +163,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class, # Added on 29-Mar-2017
         Qylinfly\ActionLog\ActionLogServiceProvider::class, # Added on 30-Mar-2017
         Laracademy\Generators\GeneratorsServiceProvider::class, # Added on 05-Apr-2017
+        \Conner\Tagging\Providers\TaggingServiceProvider::class, # Added on 07-Apr-2017
     ],
     /*
       |--------------------------------------------------------------------------
