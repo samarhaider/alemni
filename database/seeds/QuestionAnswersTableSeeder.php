@@ -11,7 +11,7 @@ class QuestionAnswersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Question::class, 10)->create()->each(function ($a) {
+        factory(App\Models\Question::class, 15)->create()->each(function ($a) {
             $a->choices()->save(factory(App\Models\Choice::class)->make());
             $a->choices()->save(factory(App\Models\Choice::class)->make());
             $a->choices()->save(factory(App\Models\Choice::class)->make());

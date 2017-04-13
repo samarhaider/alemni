@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\AppModel;
+use App\Models\User;
 use \Conner\Tagging\Taggable;
 
 class Profile extends AppModel
@@ -43,7 +44,9 @@ class Profile extends AppModel
      * @var array
      */
     protected $hidden = [
-        'id', 'user_id', 'deleted_at', 'updated_at', 'created_at', 'tagged'
+        'user_id', 'deleted_at', 'updated_at', 'created_at', 'tagged',
+        # uses table
+        'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at', 'deleted_at'
     ];
 
     /**
@@ -55,6 +58,14 @@ class Profile extends AppModel
         'qualifications',
     ];
 
+    /**
+     * Get all of the answers's of profile.
+     */
+    public function answers()
+    {
+        return $this->morphMany('App\Models\Answer', 'questionable');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
@@ -65,10 +76,75 @@ class Profile extends AppModel
      * 
      * @return user_type array of User Object
      */
-    public function scopeNearByMe($query, $lat, $long, $distance)
+    public function scopeNearBy($query, $lat, $long, $distance)
     {
         $condition = "distance({$lat}, {$long}, latitude, longitude, 'ME') <= {$distance}";
         return $query->whereRaw($condition);
+    }
+
+    /**
+     * Block 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeBlock($query)
+    {
+        return $query->where('block', '=', User::BLOCK);
+    }
+
+    /**
+     * Unblock 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeUnblock($query)
+    {
+        return $query->where('block', '=', User::UNBLOCK);
+    }
+
+    /**
+     * Active 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', '=', User::ACTIVE);
+    }
+
+    /**
+     * Inactive 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeInactive($query)
+    {
+        return $query->where('active', '=', User::INACTIVE);
+    }
+
+    /**
+     * Students 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeStudents($query)
+    {
+        return $query->where('user_type', '=', User::TYPE_STUDENT);
+    }
+
+    /**
+     * Tutors 
+     * 
+     * @return user_type array of User Object
+     */
+    public function scopeTutors($query)
+    {
+        return $query->where('user_type', '=', User::TYPE_TUTOR);
+    }
+
+    public function scopeGender($query, $gender)
+    {
+        return $query->where('gender', '=', $gender);
     }
 
     public function getQualificationsAttribute()

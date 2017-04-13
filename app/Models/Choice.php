@@ -26,7 +26,9 @@ class Choice extends AppModel
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'created_at', 'updated_at', 'deleted_at'
+    ];
 
     /**
      * The attributes that should be casted to native types.

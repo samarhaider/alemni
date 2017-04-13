@@ -14,7 +14,9 @@ class CreateLmcResponseItemsTable extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index();
+//            $table->integer('user_id')->index();
+            $table->integer('questionable_id')->unsigned();   # id of reply or challenge table
+            $table->string('questionable_type');   # model 
             $table->integer('question_id')->index();
             $table->integer('choice_id')->index();
             $table->timestamps();

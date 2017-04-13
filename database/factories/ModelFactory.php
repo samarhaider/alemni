@@ -46,8 +46,8 @@ $factory->define(App\Models\Profile::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Question::class, function (Faker\Generator $faker) {
 
     return [
-        'text' => $faker->text,
-        'user_type' => $faker->numberBetween(2, 3),
+        'text' => $faker->realText(50),
+        'type' => $faker->numberBetween(1, 3),
     ];
 });
 
@@ -55,7 +55,7 @@ $factory->define(App\Models\Question::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Choice::class, function (Faker\Generator $faker) {
 
     return [
-        'text' => $faker->text,
+        'text' => $faker->realText(20),
 //        'question_id' => function () {
 //            return factory(App\Models\Question::class)->create()->id;
 //        }

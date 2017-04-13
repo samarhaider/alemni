@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Models\AppModel;
-use App\Models\User;
 
 class Question extends AppModel
 {
+
+    const FOR_TUTION = 1;
+    const FOR_STUDENT = 2;
+    const FOR_TUTOR = 3;
 
     /**
      * The database table used by the model.
@@ -27,7 +30,9 @@ class Question extends AppModel
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'created_at', 'updated_at', 'deleted_at', 'type',
+    ];
 
     /**
      * The attributes that should be casted to native types.
@@ -48,7 +53,7 @@ class Question extends AppModel
      */
     public function scopeStudent($query)
     {
-        return $query->where('user_type', '=', User::TYPE_STUDENT);
+        return $query->where('type', '=', self::FOR_STUDENT);
     }
 
     /**
@@ -56,7 +61,23 @@ class Question extends AppModel
      */
     public function scopeTutor($query)
     {
-        return $query->where('user_type', '=', User::TYPE_TUTOR);
+        return $query->where('type', '=', self::FOR_TUTOR);
+    }
+
+    /**
+     * Tutor 
+     */
+    public function scopeTution($query)
+    {
+        return $query->where('type', '=', self::FOR_TUTION);
+    }
+
+    /**
+     * Tutor 
+     */
+    public function scopeFor($query, $type)
+    {
+        return $query->where('type', '=', $type);
     }
 
     /**

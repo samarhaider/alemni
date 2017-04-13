@@ -46,7 +46,7 @@ class User extends AppModel implements AuthenticatableContract
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at',
+        'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at', 'deleted_at'
     ];
 
     public function profile()
@@ -56,7 +56,7 @@ class User extends AppModel implements AuthenticatableContract
 
     public function isAdmin()
     {
-        if ($this->user_type == self::TYEPE_ADMIN) {
+        if ($this->user_type == self::TYPE_ADMIN) {
             return true;
         }
         return false;
@@ -103,7 +103,7 @@ class User extends AppModel implements AuthenticatableContract
      */
     public function scopeUnblock($query)
     {
-        return $query->where('active', '=', self::UNBLOCK);
+        return $query->where('block', '=', self::UNBLOCK);
     }
 
     /**
@@ -153,7 +153,7 @@ class User extends AppModel implements AuthenticatableContract
      */
     public function scopeAdmins($query)
     {
-        return $query->where('user_type', '=', self::TYEPE_ADMIN);
+        return $query->where('user_type', '=', self::TYPE_ADMIN);
     }
 
     /**

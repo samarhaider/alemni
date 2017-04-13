@@ -32,4 +32,7 @@ $api->version('v1', function ($api) {
 $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->post('users/{id}', 'App\Http\Controllers\UserController@update');
     $api->resource('users', 'App\Http\Controllers\UserController');
+    $api->resource('questions', 'App\Http\Controllers\QuestionController');
+    $api->resource('answers', 'App\Http\Controllers\AnswerController');
+    $api->resource('tutions', 'App\Http\Controllers\TutionController');
 });

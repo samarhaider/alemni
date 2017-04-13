@@ -14,7 +14,7 @@ class CreateLmcQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedTinyInteger('user_type')->index();
+            $table->unsignedTinyInteger('type')->index();
             $table->text('text');
             $table->timestamps();
             $table->softDeletes();

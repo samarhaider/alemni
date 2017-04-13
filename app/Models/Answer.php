@@ -8,6 +8,16 @@ class Answer extends AppModel
 {
 
     /**
+     * The attributes for validation rules.
+     *
+     * @var array
+     */
+    protected $rules = [
+        'question_id' => 'required',
+        'choice_id' => 'required',
+    ];
+
+    /**
      * The database table used by the model.
      *
      * @var string
@@ -19,14 +29,14 @@ class Answer extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'question_id', 'choice_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['questionable_id', 'questionable_type', 'question_id', 'choice_id', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be casted to native types.
@@ -43,11 +53,29 @@ class Answer extends AppModel
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     /**
+     * Get all of the owning questionable models.
+     */
+    public function questionable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Get Profile
+     * 
+     * @return type Object of Profile 
+     */
+    public function profile()
+    {
+        return $this->belongsTo('App\Models\Profile', 'user_id', 'user_id');
+    }
+
+    /**
      * Get User
      * 
      * @return type Object of User 
      */
-    public function User()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
@@ -59,7 +87,7 @@ class Answer extends AppModel
      */
     public function Choice()
     {
-        return $this->hasOne('App\Models\Choice');
+        return $this->belongsTo('App\Models\Choice');
     }
 
     /**

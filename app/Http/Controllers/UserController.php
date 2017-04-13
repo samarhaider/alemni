@@ -13,34 +13,58 @@ use Auth;
 class UserController extends Controller
 {
 
+    /**
+     * List of tutors
+     *
+     * @Get("/")
+     * 
+     * @Parameters({
+     *      @Parameter("latitude", type="decimal"),
+     *      @Parameter("longitude", type="decimal"),
+     *      @Parameter("radius", type="integer", description="Radius in meters"),
+     *      @Parameter("qualifications", type="array", description="string array of qualification")
+     * })
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"total":8,"per_page":1,"current_page":1,"last_page":8,"next_page_url":"http:\/\/localhost:8000\/api\/users?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":1,"gender":"M","name":"Maye Klocko","avatar":null,"latitude":"40.53965400","longitude":"36.50458600","phone_number":"383-672-5171 x714","bio":"Occaecati incidunt doloremque id rerum incidunt tempora. Dolore tempore recusandae sequi commodi. Repellendus dolorem ea iusto quidem. Quis assumenda et eveniet.","hourly_rate":"10.00","radius":"4580","email":"doyle.freddie@example.org","qualifications":{}}}})
+     * })
+     */
     public function index(Request $request)
     {
-        $user_model = User::
-            with('user_detail')->unblock()
+
+//        $fields = ["id", "gender", "name", "avatar", "latitude", "longitude", "phone_number", "bio", "hourly_rate", "radius", "email", "qualifications"];
+        $profile_model = Profile::
+            join('users', function($join) {
+                $join->on('users.id', '=', 'profiles.user_id');
+            })
+            ->unblock()
             ->active();
         if (Auth::user()->isStudent()) {
-            $user_model->tutors();
+            $profile_model->tutors();
         }
         if (Auth::user()->isTutor()) {
-            $user_model->students();
-        }
-        if (!Auth::user()->isAdmin()) {
-            $radius = Auth::user()->user_profile->radius;
-            $latitude = Auth::user()->user_profile->latitude;
-            $longitude = Auth::user()->user_profile->longitude;
-            $user_model->nearBy($latitude, $longitude, $radius);
-//            $condition = "distance(:lat, :long, o.latitude, o.longitude, 'ME') <= :distance";
-//            $user_model->whereRaw('orders.user_id = users.id');
+            $profile_model->students();
         }
         if ($request->get('user_type')) {
-            $user_model->where('user_type', '=', $request->get('user_type'));
+            $profile_model->where('user_type', '=', $request->get('user_type'));
         }
-        $field = $request->get('field', 'created_at');
-        $order = $request->get('order', 'desc');
-        $user_model->orderBy($field, $order);
-        return $user_model->paginate(20);
+        if ($request->get('gender')) {
+            $profile_model->gender($request->get('gender'));
+        }
+        $latitude = $request->get('latitude', false);
+        $longitude = $request->get('longitude', false);
+        $distance = $request->get('radius', 5000);
+        if ($latitude && $longitude) {
+            $profile_model->nearBy($latitude, $longitude, $distance);
+        }
+        $qualifications = $request->get('qualifications', []);
+        if (count($qualifications)) {
+            $profile_model->withAnyTag($qualifications);
+        }
+//        $profile_model->latest();
+        return $profile_model->paginate(1);
     }
-
 
     /**
      * Show My Account info
@@ -102,6 +126,7 @@ class UserController extends Controller
         }
         return $profile;
     }
+
     /**
      * Remove the specified resource from storage.
      *
