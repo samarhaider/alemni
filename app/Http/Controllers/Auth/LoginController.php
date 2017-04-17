@@ -77,7 +77,7 @@ class LoginController extends Controller
             $profile = new Profile;
             $profile->user_id = $user->id;
             $profile->name = $provider_user->getName();
-            $profile->avatar = $provider_user->getAvatar();
+//            $profile->avatar = $provider_user->getAvatar();
             $profile->save();
         }
 //        if (($user_type == 'tutor' && $user->isTutor()) ||

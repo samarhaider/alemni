@@ -164,6 +164,8 @@ return [
         Qylinfly\ActionLog\ActionLogServiceProvider::class, # Added on 30-Mar-2017
         Laracademy\Generators\GeneratorsServiceProvider::class, # Added on 05-Apr-2017
         \Conner\Tagging\Providers\TaggingServiceProvider::class, # Added on 07-Apr-2017
+        Matriphe\Imageupload\ImageuploadServiceProvider::class, # Added on 15-Apr-2017
+        Gerardojbaez\Messenger\MessengerServiceProvider::class, # Added on 15-Apr-2017
     ],
     /*
       |--------------------------------------------------------------------------
@@ -221,19 +223,21 @@ return [
         'SMS' => SimpleSoftwareIO\SMS\Facades\SMS::class, # AdAdded on 17-Feb-2017
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, # Added on 29-Mar-2017
         'ActionLog' => Qylinfly\ActionLog\Facades\ActionLogFacade::class, # Added on 30-Mar-2017
+        'Imageupload' => Matriphe\Imageupload\ImageuploadFacade::class, # Added on 15-Apr-2017
+        'Messenger' => Gerardojbaez\Messenger\Facades\Messenger::class, # Added on 15-Apr-2017
     ],
     
-    'token_secret' => 'some random string',
-	'facebook_secret' => 'fed5207016307f1a7aaaed79811503f3',
-	'foursquare_secret' => '',
-	'google_secret' => '2dxQ-fyO4xGVNdxHnvpYDTRZ',
-	'google_client_id' => '426586124483-l4gnl9dmatfr8p88nikj6rv0p2l7ku4v.apps.googleusercontent.com',
-	'github_secret' => '',
-	'instagram_secret' => '',
-	'linkedin_secret' => '',
-	'live_secret' => '',
-	'yahoo_secret' => '',
-	'twitter_key' => 'dHWO2u5ZyiYP9KEqYvuSLg',
-	'twitter_secret' => 'aP9SGd9rNko4zfjPo972KEnFSfQuwyOu8yCr9FYRCM',
+//    'token_secret' => 'some random string',
+//	'facebook_secret' => 'fed5207016307f1a7aaaed79811503f3',
+//	'foursquare_secret' => '',
+//	'google_secret' => '2dxQ-fyO4xGVNdxHnvpYDTRZ',
+//	'google_client_id' => '426586124483-l4gnl9dmatfr8p88nikj6rv0p2l7ku4v.apps.googleusercontent.com',
+//	'github_secret' => '',
+//	'instagram_secret' => '',
+//	'linkedin_secret' => '',
+//	'live_secret' => '',
+//	'yahoo_secret' => '',
+//	'twitter_key' => 'dHWO2u5ZyiYP9KEqYvuSLg',
+//	'twitter_secret' => 'aP9SGd9rNko4zfjPo972KEnFSfQuwyOu8yCr9FYRCM',
     
 ];

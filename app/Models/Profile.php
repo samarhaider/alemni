@@ -56,6 +56,7 @@ class Profile extends AppModel
      */
     protected $appends = [
         'qualifications',
+        'avatar_url',
     ];
 
     /**
@@ -154,5 +155,10 @@ class Profile extends AppModel
 //            return ;
 //        }
 //        return [];
+    }
+    
+    public function getAvatarUrlAttribute()
+    {
+        return env('APP_URL').'/'.$this->avatar;
     }
 }

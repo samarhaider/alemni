@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
+use Gerardojbaez\Messenger\Contracts\MessageableInterface;
+use Gerardojbaez\Messenger\Traits\Messageable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use App\Models\AppModel;
 
-class User extends AppModel implements AuthenticatableContract
+class User extends AppModel implements AuthenticatableContract, MessageableInterface
 {
 
     use Notifiable,
+        Messageable,
         Authenticatable;
 
     const TYPE_ADMIN = 1;

@@ -268,6 +268,47 @@ Token is returned which will be required in every request
                 }
             }
 
+## Upload User Avatar [POST /users/avatar]
+
+
++ Parameters
+    + avatar: (string, required) - This request is not Json based. So, please be careful before using it
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "profile": {
+                    "id": 13,
+                    "gender": "M",
+                    "name": "Sam",
+                    "avatar": "uploads/avatars/P2ehhNLyHx53dpY1ve6wYT6Tl5exCzYPYfCtnKA4.jpeg",
+                    "latitude": "-69.92557000",
+                    "longitude": "-144.58138800",
+                    "phone_number": "+1-548-519-6469",
+                    "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                    "hourly_rate": "12.00",
+                    "radius": "5000",
+                    "qualifications": [
+                        "Mba",
+                        "Bs"
+                    ]
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not update user avatar.",
+                "errors": {
+                    "errors": {
+                        "avatar": "The avatar field is required."
+                    }
+                },
+                "status_code": 422
+            }
+
 # Question [/questions]
 
 ## List of Questionnaires with options [GET /questions]
@@ -863,3 +904,225 @@ for student/tutor profile and tutions
     + Body
 
             []
+
+# Messages [/messages]
+
+## List of my messages [GET /messages]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 2,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 2,
+                "data": [
+                    {
+                        "id": 2,
+                        "unread_messages_count": 3,
+                        "last_message": {
+                            "id": 7,
+                            "thread_id": "2",
+                            "sender_id": "10",
+                            "body": "Fine",
+                            "created_at": "2017-04-16 13:59:09"
+                        },
+                        "participants": [
+                            {
+                                "id": 3,
+                                "thread_id": "2",
+                                "user_id": "11",
+                                "last_read": null,
+                                "deleted_at": null
+                            },
+                            {
+                                "id": 4,
+                                "thread_id": "2",
+                                "user_id": "10",
+                                "last_read": null,
+                                "deleted_at": null
+                            }
+                        ],
+                        "pivot": {
+                            "user_id": "10",
+                            "thread_id": "2",
+                            "last_read": null
+                        },
+                        "messages": [
+                            {
+                                "id": 3,
+                                "thread_id": "2",
+                                "sender_id": "11",
+                                "body": "Salam",
+                                "created_at": "2017-04-16 13:53:37"
+                            },
+                            {
+                                "id": 4,
+                                "thread_id": "2",
+                                "sender_id": "11",
+                                "body": "How are you?",
+                                "created_at": "2017-04-16 13:53:44"
+                            },
+                            {
+                                "id": 5,
+                                "thread_id": "2",
+                                "sender_id": "11",
+                                "body": "Wait!",
+                                "created_at": "2017-04-16 13:53:52"
+                            },
+                            {
+                                "id": 6,
+                                "thread_id": "2",
+                                "sender_id": "10",
+                                "body": "WS",
+                                "created_at": "2017-04-16 13:59:01"
+                            },
+                            {
+                                "id": 7,
+                                "thread_id": "2",
+                                "sender_id": "10",
+                                "body": "Fine",
+                                "created_at": "2017-04-16 13:59:09"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "unread_messages_count": 4,
+                        "last_message": {
+                            "id": 11,
+                            "thread_id": "3",
+                            "sender_id": "5",
+                            "body": "I will be in meeting room",
+                            "created_at": "2017-04-17 06:57:15"
+                        },
+                        "participants": [
+                            {
+                                "id": 5,
+                                "thread_id": "3",
+                                "user_id": "5",
+                                "last_read": null,
+                                "deleted_at": null
+                            },
+                            {
+                                "id": 6,
+                                "thread_id": "3",
+                                "user_id": "10",
+                                "last_read": null,
+                                "deleted_at": null
+                            }
+                        ],
+                        "pivot": {
+                            "user_id": "10",
+                            "thread_id": "3",
+                            "last_read": null
+                        },
+                        "messages": [
+                            {
+                                "id": 8,
+                                "thread_id": "3",
+                                "sender_id": "5",
+                                "body": "Hello,",
+                                "created_at": "2017-04-17 06:55:11"
+                            },
+                            {
+                                "id": 9,
+                                "thread_id": "3",
+                                "sender_id": "5",
+                                "body": "Lets discuss on new project",
+                                "created_at": "2017-04-17 06:55:25"
+                            },
+                            {
+                                "id": 10,
+                                "thread_id": "3",
+                                "sender_id": "5",
+                                "body": "I will be in meeting room",
+                                "created_at": "2017-04-17 06:57:01"
+                            },
+                            {
+                                "id": 11,
+                                "thread_id": "3",
+                                "sender_id": "5",
+                                "body": "I will be in meeting room",
+                                "created_at": "2017-04-17 06:57:15"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+## Send Message to User [POST /messages]
+
+
++ Parameters
+    + user_id: (integer, required) - 
+    + message: (string, required) - 
+
++ Request (application/json)
+    + Body
+
+            {
+                "user_id": 11,
+                "message": "I will be in meeting room"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": {
+                    "id": 12,
+                    "thread_id": "4",
+                    "sender_id": "5",
+                    "body": "I will be in meeting room",
+                    "created_at": "2017-04-17 06:57:39"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not add Message.",
+                "errors": {
+                    "message": [
+                        "The message field is required."
+                    ],
+                    "user_id": [
+                        "The user id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Unread Messages Count [GET /messages/unread-messages-count]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "unread_messages_count": 4
+            }

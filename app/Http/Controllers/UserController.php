@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Profile as Profile;
 use Auth;
+use File;
+use Imageupload;
 
 /**
  * @Resource("Users", uri="/users" )
@@ -63,7 +65,7 @@ class UserController extends Controller
             $profile_model->withAnyTag($qualifications);
         }
 //        $profile_model->latest();
-        return $profile_model->paginate(1);
+        return $profile_model->paginate(20);
     }
 
     /**
@@ -136,5 +138,35 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Upload User Avatar
+     *
+     * @Post("/avatar")
+     * 
+     * @Parameters({
+     *      @Parameter("avatar", description="This request is not Json based. So, please be careful before using it", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Response(200, body={"profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads/avatars/P2ehhNLyHx53dpY1ve6wYT6Tl5exCzYPYfCtnKA4.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","qualifications":{"Mba","Bs"}}}),
+     *      @Response(422, body={"message":"Could not update user avatar.","errors":{"errors":{"avatar":"The avatar field is required."}},"status_code":422})
+     * })
+     */
+    public function avatar(Request $request)
+    {
+        $profile = Auth::user()->profile;
+        if ($request->hasFile('avatar')) {
+//            return Imageupload::upload($request->file('avatar'));
+            $old_avatar = $profile->avatar;
+            $path = $request->file('avatar')->storePublicly('avatars', ['disk' => 'uploads']);
+            $profile->avatar = 'uploads' . DIRECTORY_SEPARATOR . $path;
+            if ($profile->save()) {
+                File::delete($old_avatar);
+            }
+            return $profile;
+        }
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user avatar.', ['errors' => ['avatar' => "The avatar field is required."]]);
     }
 }
