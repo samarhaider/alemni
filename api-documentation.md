@@ -309,6 +309,163 @@ Token is returned which will be required in every request
                 "status_code": 422
             }
 
+## List of Answers of profile Questionnaires [GET /users/questionnaires]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "answers": [
+                    {
+                        "id": 26,
+                        "questionable_id": "13",
+                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "2",
+                        "choice_id": "4",
+                        "created_at": "2017-04-12 18:58:10"
+                    },
+                    {
+                        "id": 27,
+                        "questionable_id": "13",
+                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "5",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 18:58:10"
+                    },
+                    {
+                        "id": 28,
+                        "questionable_id": "13",
+                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "9",
+                        "choice_id": "4",
+                        "created_at": "2017-04-12 18:58:10"
+                    },
+                    {
+                        "id": 29,
+                        "questionable_id": "13",
+                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "11",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 18:58:10"
+                    },
+                    {
+                        "id": 30,
+                        "questionable_id": "13",
+                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "13",
+                        "choice_id": "5",
+                        "created_at": "2017-04-12 18:58:10"
+                    }
+                ]
+            }
+
+## Add/Edit Answer of Profile Questionnaires [POST /users/questionnaires]
+
+
++ Parameters
+    + answers: (array, required) - array of objects
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "answers": [
+                    {
+                        "question_id": 1,
+                        "choice_id": 2
+                    },
+                    {
+                        "question_id": 4,
+                        "choice_id": 2
+                    },
+                    {
+                        "question_id": 6,
+                        "choice_id": 2
+                    },
+                    {
+                        "question_id": 8,
+                        "choice_id": 2
+                    },
+                    {
+                        "question_id": 12,
+                        "choice_id": 2
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "answers": [
+                    {
+                        "id": 21,
+                        "questionable_id": "5",
+                        "questionable_type": "App\\Models\\Tution",
+                        "question_id": "1",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 17:32:21"
+                    },
+                    {
+                        "id": 22,
+                        "questionable_id": "5",
+                        "questionable_type": "App\\Models\\Tution",
+                        "question_id": "4",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 17:32:21"
+                    },
+                    {
+                        "id": 23,
+                        "questionable_id": "5",
+                        "questionable_type": "App\\Models\\Tution",
+                        "question_id": "6",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 17:32:21"
+                    },
+                    {
+                        "id": 24,
+                        "questionable_id": "5",
+                        "questionable_type": "App\\Models\\Tution",
+                        "question_id": "8",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 17:32:21"
+                    },
+                    {
+                        "id": 25,
+                        "questionable_id": "5",
+                        "questionable_type": "App\\Models\\Tution",
+                        "question_id": "12",
+                        "choice_id": "2",
+                        "created_at": "2017-04-12 17:32:22"
+                    }
+                ]
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not add answers.",
+                "errors": {
+                    "answers": [
+                        "Invalid number of answers"
+                    ]
+                },
+                "status_code": 422
+            }
+
 # Question [/questions]
 
 ## List of Questionnaires with options [GET /questions]
@@ -486,165 +643,6 @@ for student/tutor profile and tutions
                         ]
                     }
                 ]
-            }
-
-# Answer [/answers]
-
-## List of Answers of profile Questionnaires [GET /answers]
-
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer {token}
-    + Body
-
-            []
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "answers": [
-                    {
-                        "id": 26,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "2",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 27,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "5",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 28,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "9",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 29,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "11",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 30,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "13",
-                        "choice_id": "5",
-                        "created_at": "2017-04-12 18:58:10"
-                    }
-                ]
-            }
-
-## Add/Edit Answer of Profile Questionnaires [POST /answers]
-
-
-+ Parameters
-    + answers: (array, required) - array of objects
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer {token}
-    + Body
-
-            {
-                "answers": [
-                    {
-                        "question_id": 1,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 4,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 6,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 8,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 12,
-                        "choice_id": 2
-                    }
-                ]
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "answers": [
-                    {
-                        "id": 21,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "1",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 22,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "4",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 23,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "6",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 24,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "8",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 25,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "12",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:22"
-                    }
-                ]
-            }
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not add answers.",
-                "errors": {
-                    "answers": [
-                        "Invalid number of answers"
-                    ]
-                },
-                "status_code": 422
             }
 
 # Tutions [/tutions]

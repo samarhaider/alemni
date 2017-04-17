@@ -31,10 +31,12 @@ $api->version('v1', function ($api) {
 # Private Actions
 $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->post('users/avatar', 'App\Http\Controllers\UserController@avatar');
+    $api->get('users/questionnaires', 'App\Http\Controllers\UserController@questionnairesList');
+    $api->post('users/questionnaires', 'App\Http\Controllers\UserController@updateQuestionnaires');
     $api->post('users/{id}', 'App\Http\Controllers\UserController@update');
     $api->resource('users', 'App\Http\Controllers\UserController');
     $api->resource('questions', 'App\Http\Controllers\QuestionController');
-    $api->resource('answers', 'App\Http\Controllers\AnswerController');
+//    $api->resource('answers', 'App\Http\Controllers\AnswerController');
     $api->resource('tutions', 'App\Http\Controllers\TutionController');
     $api->get('messages/unread-messages-count', 'App\Http\Controllers\MessageController@UnreadMessagesCount');
     $api->post('messages/read-thread', 'App\Http\Controllers\MessageController@ReadThread');
