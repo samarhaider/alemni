@@ -57,6 +57,7 @@ class MessageController extends Controller
      *      @Parameter("user_id", type="integer", required=true),
      *      @Parameter("message", required=true)
      * })
+     * 
      * @Transaction({
      *      @Request({"user_id": 11, "message": "I will be in meeting room"}),
      *      @Response(200, body={"message":{"id":12,"thread_id":"4","sender_id":"5","body":"I will be in meeting room","created_at":"2017-04-17 06:57:39"}}),
@@ -73,19 +74,18 @@ class MessageController extends Controller
         return $sender->messagesSent()->latest()->first();
     }
 
-    
     public function show($id)
     {
-/**
-     * Message Information
-     *
-     * @Get("/{id}")
-     * 
-     * @Transaction({
-     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={})
-     * })
-     */        
+        /**
+         * Message Information
+         *
+         * @Get("/{id}")
+         * 
+         * @Transaction({
+         *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+         *      @Response(200, body={})
+         * })
+         */
     }
 
     /**
@@ -153,5 +153,31 @@ class MessageController extends Controller
         return [
             'unread_messages_count' => $unread_messages_count,
         ];
+    }
+
+    /**
+     * Read Thread/Messages
+     *
+     * @Post("/read-thread")
+     * 
+     * @Parameters({
+     *      @Parameter("thread_id", type="integer", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"thread_id": 2}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"message_thread":{"id":2,"pivot":{"user_id":"10","thread_id":"2","last_read":"2017-04-17 17:25:23"},"messages":{{"id":3,"thread_id":"2","sender_id":"11","body":"Salam","created_at":"2017-04-16 13:53:37"},{"id":4,"thread_id":"2","sender_id":"11","body":"How are you?","created_at":"2017-04-16 13:53:44"},{"id":5,"thread_id":"2","sender_id":"11","body":"Wait!","created_at":"2017-04-16 13:53:52"},{"id":6,"thread_id":"2","sender_id":"10","body":"WS","created_at":"2017-04-16 13:59:01"},{"id":7,"thread_id":"2","sender_id":"10","body":"Fine","created_at":"2017-04-16 13:59:09"}}}}),
+     *      @Response(422, body={"message":"Could not read Messages.","errors":{"thread_id":{"The thread_id field is required."}},"status_code":422})
+     * })
+     */
+    public function ReadThread(Request $request)
+    {
+        $user = Auth::user();
+        $thread_id = $request->get('thread_id', false);
+        if (!$thread_id) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not read Messages.', ['errors' => ['thread_id' => "The thread_id field is required."]]);
+        }
+        $user->markThreadAsRead($thread_id);
+        return $user->findThread($thread_id)->first();
     }
 }

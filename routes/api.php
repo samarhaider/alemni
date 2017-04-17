@@ -37,5 +37,6 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('answers', 'App\Http\Controllers\AnswerController');
     $api->resource('tutions', 'App\Http\Controllers\TutionController');
     $api->get('messages/unread-messages-count', 'App\Http\Controllers\MessageController@UnreadMessagesCount');
+    $api->post('messages/read-thread', 'App\Http\Controllers\MessageController@ReadThread');
     $api->resource('messages', 'App\Http\Controllers\MessageController');
 });
