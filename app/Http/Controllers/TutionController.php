@@ -19,6 +19,10 @@ class TutionController extends Controller
      *
      * @Get("/")
      * 
+     * @Parameters({
+     *      @Parameter("search_type", description="1= pending 2=completed, 3=near by me")
+     * })
+     * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
      *      @Response(200, body={"total":20,"per_page":1,"current_page":1,"last_page":1,"next_page_url":"http:\/\/localhost:8000\/api\/tutions?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":5,"student_id":"11","tutor_id":"6","status":"1","title":"Tution 3","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:21","tutor_profile":{"id":6,"gender":"M","name":"Alva Runolfsson","avatar":null,"latitude":"-50.45929600","longitude":"125.86288200","phone_number":"+18872230060","bio":"Beatae hic sint voluptatum ea. Ipsa quia et quos nam qui ut officiis laboriosam. Autem totam voluptates voluptate ducimus qui necessitatibus et ullam. Temporibus et magni totam.","hourly_rate":"4.00","radius":"7306","qualifications":{}}}}})
@@ -81,6 +85,7 @@ class TutionController extends Controller
      *      @Parameter("answers", type="array", description="array of objects", required=true),
      *      @Parameter("description")
      * })
+     * 
      * @Transaction({
      *      @Request({"title":"Tution 3","budget":"100 dollar","start_date": "2018-20-12", "day_of_week_0": 1, "day_of_week_1": 1, "day_of_week_2": 1, "day_of_week_3": 1, "day_of_week_4": 1, "day_of_week_5": 1, "day_of_week_6": 1, "latitude": "11.45609800", "longitude": "-51.78216000", "daily_timing": "05:00:00", "answers":{{"question_id": 1,"choice_id": 2},{"question_id": 4,"choice_id": 2},{"question_id": 6,"choice_id": 2},{"question_id": 8,"choice_id": 2},{"question_id": 12,"choice_id": 2}} }, headers={"Authorization": "Bearer {token}"}),
      *      @Response(200, body={"tution":{"title":"Tution 3","budget":"100 dollar","start_date":"2019-08-12 00:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"latitude":"11.45609800","longitude":"-51.78216000","daily_timing":"05:00:00","student_id":11,"created_at":"2017-04-12 17:32:21","id":5,"answers":{{"id":21,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"1","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":22,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"4","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":23,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"6","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":24,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"8","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":25,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"12","choice_id":"2","created_at":"2017-04-12 17:32:22"}}}}),

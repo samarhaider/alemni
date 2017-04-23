@@ -8,6 +8,8 @@ use App\Models\Profile as Profile;
 use Auth;
 use File;
 use Imageupload;
+use Hash;
+use JWTAuth;
 
 /**
  * @Resource("Users", uri="/users" )
@@ -66,6 +68,83 @@ class UserController extends Controller
         }
 //        $profile_model->latest();
         return $profile_model->paginate(20);
+    }
+
+    public function store(Request $request, $user_type)
+    {
+            $user = new User;
+            $user->emailPasswordValidation();
+            $user->email = $request->get('email');
+            $user->password = $request->get('password');
+            if ($user_type == 'tutor') {
+                $user->user_type = User::TYPE_TUTOR;
+            } else {
+                $user->user_type = User::TYPE_STUDENT;
+            }
+            if ($user->isInvalid()) {
+                throw new \Dingo\Api\Exception\ResourceException("Could not register {$user_type}.", $user->getErrors());
+            }
+            $user->password = Hash::make($user->password);
+            $user->save();
+
+            $profile = new Profile;
+            $profile->user_id = $user->id;
+            $profile->name = $request->get('name');
+//            $profile->avatar = $provider_user->getAvatar();
+            $profile->save();
+
+        $token = JWTAuth::fromUser($user);
+        return response()->json(['token' => $token, 'user' => $user]);
+    }
+
+    /**
+     * Register Student
+     *
+     * @Post("/register/student")
+     * 
+     * @Parameters({
+     *      @Parameter("email", description="Student Email address", required=true),
+     *      @Parameter("password", description="Password", required=true),
+     *      @Parameter("name", description="Student Name")
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email": "tlabadie1@example.com", "password": "123456"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(422, body={"message":"Could not register student.","errors":{"email":{"The email has already been taken."}},"status_code":422}),
+     *      @Response(422, body={"message":"Could not register student.","errors":{"email":{"The email has already been taken."}},"status_code":422}),
+     *      @Response(422, body={"message":"Could not register student.","errors":{"email":{"The email must be a valid email address."}},"status_code":422})
+     * })
+     * 
+     */
+    public function student(Request $request)
+    {
+        return $this->store($request, User::TYPE_STUDENT);
+    }
+
+    /**
+     * Register Tutor
+     *
+     * @Post("/register/tutor")
+     * 
+     * @Parameters({
+     *      @Parameter("email", description="Tutor Email address", required=true),
+     *      @Parameter("password", description="Password", required=true),
+     *      @Parameter("name", description="Tutor Name", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email": "tlabadie1@example.com", "password": "123456"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(422, body={"message":"Could not register tutor.","errors":{"email":{"The email has already been taken."}},"status_code":422}),
+     *      @Response(422, body={"message":"Could not register tutor.","errors":{"email":{"The email has already been taken."}},"status_code":422}),
+     *      @Response(422, body={"message":"Could not register tutor.","errors":{"email":{"The email must be a valid email address."}},"status_code":422})
+     * })
+     * 
+     */
+    public function tutor(Request $request)
+    {
+        return $this->store($request, User::TYPE_TUTOR);
     }
 
     /**

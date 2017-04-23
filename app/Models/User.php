@@ -51,7 +51,18 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
     protected $hidden = [
         'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at', 'deleted_at'
     ];
-
+    public function emailPasswordValidation($add = true)
+    {
+        if ($add) {
+            $this->rules['email'] = 'required|email|unique:users';
+            $this->rules['password'] = 'required';
+            unset($this->rules['google']);
+        } else {
+            unset($this->rules['email']);
+            unset($this->rules['password']);
+            $this->rules['google'] = 'required';
+        }
+    }
     public function profile()
     {
         return $this->hasOne('App\Models\Profile');

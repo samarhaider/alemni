@@ -10,6 +10,11 @@ class Tution extends AppModel
 
     use Taggable;
 
+    const STATUS_NEW = 1;
+    const STATUS_INPROGRESS = 2;
+    const STATUS_COMPLETED = 3;
+    const STATUS_CANCELLED = 4;
+
     /**
      * The database table used by the model.
      *
@@ -66,6 +71,7 @@ class Tution extends AppModel
      * @var array
      */
     protected $dates = ['start_date', 'deleted_at', 'created_at', 'updated_at'];
+    protected $with = ['answers'];
 
     /**
      * Get Profile
@@ -113,5 +119,10 @@ class Tution extends AppModel
     public function answers()
     {
         return $this->morphMany('App\Models\Answer', 'questionable');
+    }
+
+    public function bids()
+    {
+        return $this->hasMany('App\Models\Bid', 'tution_id');
     }
 }

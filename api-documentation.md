@@ -8,6 +8,9 @@ FORMAT: 1A
 Login user with a google code.
 Token is returned which will be required in every request
 
++ Parameters
+    + code: (string, required) - Google Code
+
 + Request (application/json)
     + Body
 
@@ -58,11 +61,122 @@ Token is returned which will be required in every request
 Login user with a google code.
 Token is returned which will be required in every request
 
++ Parameters
+    + code: (string, required) - Google Code
+
 + Request (application/json)
     + Body
 
             {
                 "code": "4/7zE1BAw89p1hyBuVS1NCMjMVIVfHD81VIPo0PdFhpTU"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
+                "user": {
+                    "email": "user2@mailinator.com",
+                    "created_at": "2017-04-03 07:29:40",
+                    "id": 2
+                }
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "error": "invalid_credentials",
+                "message": "Invalid credentials",
+                "status_code": 401
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "error": "user_blocked",
+                "message": "Your Account has been blocked.",
+                "status_code": 401
+            }
+
++ Response 500 (application/json)
+    + Body
+
+            {
+                "error": "could_not_create_token",
+                "message": "Internal Server Error",
+                "status_code": 500
+            }
+
+## Tutor Login with Email and Password [POST /login/tutor]
+Token is returned which will be required in every request
+
++ Parameters
+    + email: (string, required) - 
+    + password: (string, required) - 
+
++ Request (application/json)
+    + Body
+
+            {
+                "email": "tlabadie@example.com",
+                "password": "123456"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
+                "user": {
+                    "email": "user2@mailinator.com",
+                    "created_at": "2017-04-03 07:29:40",
+                    "id": 2
+                }
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "error": "invalid_credentials",
+                "message": "Invalid credentials",
+                "status_code": 401
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "error": "user_blocked",
+                "message": "Your Account has been blocked.",
+                "status_code": 401
+            }
+
++ Response 500 (application/json)
+    + Body
+
+            {
+                "error": "could_not_create_token",
+                "message": "Internal Server Error",
+                "status_code": 500
+            }
+
+## Student Login with Email and Password [POST /login/student]
+Token is returned which will be required in every request
+
++ Parameters
+    + email: (string, required) - 
+    + password: (string, required) - 
+
++ Request (application/json)
+    + Body
+
+            {
+                "email": "tlabadie@example.com",
+                "password": "123456"
             }
 
 + Response 200 (application/json)
@@ -151,6 +265,140 @@ Token is returned which will be required in every request
                         "qualifications": []
                     }
                 ]
+            }
+
+## Register Student [POST /users/register/student]
+
+
++ Parameters
+    + email: (string, required) - Student Email address
+    + password: (string, required) - Password
+    + name: (string, optional) - Student Name
+
++ Request (application/json)
+    + Body
+
+            {
+                "email": "tlabadie1@example.com",
+                "password": "123456"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
+                "user": {
+                    "email": "user2@mailinator.com",
+                    "created_at": "2017-04-03 07:29:40",
+                    "id": 2
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register student.",
+                "errors": {
+                    "email": [
+                        "The email has already been taken."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register student.",
+                "errors": {
+                    "email": [
+                        "The email has already been taken."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register student.",
+                "errors": {
+                    "email": [
+                        "The email must be a valid email address."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Register Tutor [POST /users/register/tutor]
+
+
++ Parameters
+    + email: (string, required) - Tutor Email address
+    + password: (string, required) - Password
+    + name: (string, required) - Tutor Name
+
++ Request (application/json)
+    + Body
+
+            {
+                "email": "tlabadie1@example.com",
+                "password": "123456"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
+                "user": {
+                    "email": "user2@mailinator.com",
+                    "created_at": "2017-04-03 07:29:40",
+                    "id": 2
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register tutor.",
+                "errors": {
+                    "email": [
+                        "The email has already been taken."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register tutor.",
+                "errors": {
+                    "email": [
+                        "The email has already been taken."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not register tutor.",
+                "errors": {
+                    "email": [
+                        "The email must be a valid email address."
+                    ]
+                },
+                "status_code": 422
             }
 
 ## Show My Account info [GET /users/me]
@@ -649,6 +897,9 @@ for student/tutor profile and tutions
 
 ## List of my tutions [GET /tutions]
 
+
++ Parameters
+    + search_type: (string, optional) - 1= pending 2=completed, 3=near by me
 
 + Request (application/json)
     + Headers
@@ -1200,6 +1451,702 @@ for student/tutor profile and tutions
                 "errors": {
                     "thread_id": [
                         "The thread_id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Proposal [/proposals]
+
+## List of Proposals [GET /proposals]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": 2,
+                        "tutor_id": "5",
+                        "tution_id": "3",
+                        "status": "1",
+                        "description": "This is cover letter",
+                        "deleted_at": null,
+                        "created_at": "2017-04-18 17:59:26",
+                        "updated_at": "2017-04-18 17:59:26",
+                        "tution": {
+                            "id": 3,
+                            "student_id": "11",
+                            "tutor_id": null,
+                            "status": "1",
+                            "title": "Tution 1",
+                            "budget": "100 dollar",
+                            "latitude": "11.45609800",
+                            "longitude": "-51.78216000",
+                            "start_date": "2019-08-12 00:00:00",
+                            "daily_timing": "05:00:00",
+                            "day_of_week_0": true,
+                            "day_of_week_1": true,
+                            "day_of_week_2": true,
+                            "day_of_week_3": true,
+                            "day_of_week_4": true,
+                            "day_of_week_5": true,
+                            "day_of_week_6": true,
+                            "description": null,
+                            "created_at": "2017-04-12 17:32:05"
+                        }
+                    }
+                ]
+            }
+
+## Submit Proposal by Tutor [POST /proposals]
+
+
++ Parameters
+    + tution_id: (integer, required) - 
+    + description: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "tution_id": 3,
+                "description": "This is cover letter"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "tution_id": 3,
+                    "description": "This is cover letter",
+                    "tutor_id": 10,
+                    "updated_at": "2017-04-18 17:32:47",
+                    "created_at": "2017-04-18 17:32:47",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Proposal.",
+                "errors": {
+                    "tution_id": [
+                        "You have already applied on this tution."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Proposal.",
+                "errors": {
+                    "description": [
+                        "The description id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Proposal.",
+                "errors": {
+                    "tution_id": [
+                        "The tution id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## View specific proposal [GET /proposals/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": "1",
+                    "description": "This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:32:47",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+## Update Proposal by Tutor [POST /proposals/{id}]
+
+
++ Parameters
+    + description: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "description": "This is cover letter"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "tution_id": 3,
+                    "description": "This is cover letter",
+                    "tutor_id": 10,
+                    "updated_at": "2017-04-18 17:32:47",
+                    "created_at": "2017-04-18 17:32:47",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Proposal.",
+                "errors": {
+                    "description": [
+                        "The description id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Withdrawl proposal by Tutor [POST /proposals/withdrawl/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": 4,
+                    "description": "Update: This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:57:20",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+## Accept proposal by Student [POST /proposals/accept/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": 4,
+                    "description": "Update: This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:57:20",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+## Reject proposal by Student [POST /proposals/reject/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": 4,
+                    "description": "Update: This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:57:20",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+# Invitation [/invitations]
+
+## List of Invitations [GET /invitations]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": 2,
+                        "tutor_id": "5",
+                        "tution_id": "3",
+                        "status": "1",
+                        "description": "This is cover letter",
+                        "deleted_at": null,
+                        "created_at": "2017-04-18 17:59:26",
+                        "updated_at": "2017-04-18 17:59:26",
+                        "tution": {
+                            "id": 3,
+                            "student_id": "11",
+                            "tutor_id": null,
+                            "status": "1",
+                            "title": "Tution 1",
+                            "budget": "100 dollar",
+                            "latitude": "11.45609800",
+                            "longitude": "-51.78216000",
+                            "start_date": "2019-08-12 00:00:00",
+                            "daily_timing": "05:00:00",
+                            "day_of_week_0": true,
+                            "day_of_week_1": true,
+                            "day_of_week_2": true,
+                            "day_of_week_3": true,
+                            "day_of_week_4": true,
+                            "day_of_week_5": true,
+                            "day_of_week_6": true,
+                            "description": null,
+                            "created_at": "2017-04-12 17:32:05"
+                        }
+                    }
+                ]
+            }
+
+## Submit Invitation by Student [POST /invitations]
+
+
++ Parameters
+    + tution_id: (integer, required) - 
+    + tutor_id: (integer, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "tutor_id": 7,
+                "tution_id": 3
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "invitation": {
+                    "tutor_id": 7,
+                    "tution_id": 3,
+                    "updated_at": "2017-04-18 18:15:06",
+                    "created_at": "2017-04-18 18:15:06",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Invitation.",
+                "errors": {
+                    "tution_id": [
+                        "You have already sent invitation of this tutor."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Invitation.",
+                "errors": {
+                    "tution_id": [
+                        "The tution id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not submit Invitation.",
+                "errors": {
+                    "tutor_id": [
+                        "The tutor id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## View specific invitation [GET /invitations/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "invitation": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": "1",
+                    "description": "This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:32:47",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+## Update Invitation [POST /invitations/{id}]
+
+
++ Parameters
+    + description: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "description": "This is cover letter"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "invitation": {
+                    "tution_id": 3,
+                    "description": "This is cover letter",
+                    "tutor_id": 10,
+                    "updated_at": "2017-04-18 17:32:47",
+                    "created_at": "2017-04-18 17:32:47",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not update Invitation.",
+                "errors": {
+                    "description": [
+                        "The description id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Reject invitation by Tutor [POST /invitations/reject/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "invitation": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": 3,
+                    "description": "Update: This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:57:20",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
+## Accept proposal by Student [POST /invitations/accept/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "proposal": {
+                    "id": 1,
+                    "tutor_id": "10",
+                    "tution_id": "3",
+                    "status": 4,
+                    "description": "Update: This is cover letter",
+                    "deleted_at": null,
+                    "created_at": "2017-04-18 17:32:47",
+                    "updated_at": "2017-04-18 17:57:20",
+                    "tution": {
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": null,
+                        "status": "1",
+                        "title": "Tution 1",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:05"
+                    }
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not accept Invitation.",
+                "errors": {
+                    "description": [
+                        "The description id field is required."
                     ]
                 },
                 "status_code": 422

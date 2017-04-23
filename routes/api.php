@@ -22,7 +22,9 @@ $api = app('Dingo\Api\Routing\Router');
 # Public Actions
 $api->version('v1', function ($api) {
     $api->post('login/google/{user_type}', 'App\Http\Controllers\Auth\LoginController@google');
-    $api->post('login/simple', 'App\Http\Controllers\Auth\LoginController@simple');
+    $api->post('login/{user_type}', 'App\Http\Controllers\Auth\LoginController@simple');
+    $api->post('users/register/student', 'App\Http\Controllers\UserController@student');
+    $api->post('users/register/tutor', 'App\Http\Controllers\UserController@tutor');
 //        $api->post('users/login', 'App\Http\Controllers\UserController@login');
 //        $api->post('users/send-password-reset-code', 'App\Http\Controllers\UserController@sendPasswordResetCode');
 //        $api->post('users/reset-password', 'App\Http\Controllers\UserController@setPassword');
@@ -41,4 +43,10 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->get('messages/unread-messages-count', 'App\Http\Controllers\MessageController@UnreadMessagesCount');
     $api->post('messages/read-thread', 'App\Http\Controllers\MessageController@ReadThread');
     $api->resource('messages', 'App\Http\Controllers\MessageController');
+    $api->post('proposals/{id}', 'App\Http\Controllers\ProposalController@update');
+    $api->post('proposals/withdrawl/{id}', 'App\Http\Controllers\ProposalController@withdrawl');
+    $api->resource('proposals', 'App\Http\Controllers\ProposalController');
+    $api->post('invitations/{id}', 'App\Http\Controllers\InvitationController@update');
+    $api->post('invitations/reject/{id}', 'App\Http\Controllers\InvitationController@reject');
+    $api->resource('invitations', 'App\Http\Controllers\InvitationController');
 });

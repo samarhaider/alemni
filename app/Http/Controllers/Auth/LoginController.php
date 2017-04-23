@@ -47,6 +47,10 @@ class LoginController extends Controller
      *
      * @Post("/google/tutor")
      * 
+     * @Parameters({
+     *      @Parameter("code", description="Google Code", required=true)
+     * })
+     * 
      * @Transaction({
      *      @Request({"code":"4/7zE1BAw89p1hyBuVS1NCMjMVIVfHD81VIPo0PdFhpTU"}),
      *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
@@ -102,6 +106,10 @@ class LoginController extends Controller
      *
      * @Post("/google/student")
      * 
+     * @Parameters({
+     *      @Parameter("code", description="Google Code", required=true)
+     * })
+     * 
      * @Transaction({
      *      @Request({"code":"4/7zE1BAw89p1hyBuVS1NCMjMVIVfHD81VIPo0PdFhpTU"}),
      *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
@@ -115,7 +123,27 @@ class LoginController extends Controller
         
     }
 
-    public function simple(Request $request)
+    /**
+     * Tutor Login with Email and Password
+     *
+     * Token is returned which will be required in every request
+     *
+     * @Post("/tutor")
+     * 
+     * @Parameters({
+     *      @Parameter("email", required=true),
+     *      @Parameter("password", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email": "tlabadie@example.com", "password": "123456"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
+     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
+     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
+     * })
+     */
+    public function simple(Request $request, $type)
     {
         $credentials = $request->only('email', 'password');
 
@@ -131,6 +159,40 @@ class LoginController extends Controller
                     'message' => 'Internal Server Error', 'status_code' => 500], 500);
         }
         $user = JWTAuth::toUser($token);
+        //        if (($user_type == 'tutor' && $user->isTutor()) ||
+//            ($user_type == 'student' && !$user->isStudent())) {
+//            return response()->json(['error' => 'invalid_credentials',
+//                    'message' => 'Invalid credentials', 'status_code' => 401], 401);
+//        }
+        if ($user->isBlocked()) {
+            return response()->json(['error' => 'user_blocked',
+                    'message' => 'Your Account has been blocked.', 'status_code' => 401], 401);
+        }
         return response()->json(['token' => $token, 'user' => $user]);
+    }
+
+    /**
+     * Student Login with Email and Password
+     *
+     * Token is returned which will be required in every request
+     *
+     * @Post("/student")
+     * 
+     * @Parameters({
+     *      @Parameter("email", required=true),
+     *      @Parameter("password", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email": "tlabadie@example.com", "password": "123456"}),
+     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
+     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
+     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
+     * })
+     */
+    public function simpleStudent(Request $request)
+    {
+        
     }
 }
