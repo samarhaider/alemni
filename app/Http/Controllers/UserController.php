@@ -76,11 +76,7 @@ class UserController extends Controller
             $user->emailPasswordValidation();
             $user->email = $request->get('email');
             $user->password = $request->get('password');
-            if ($user_type == 'tutor') {
-                $user->user_type = User::TYPE_TUTOR;
-            } else {
-                $user->user_type = User::TYPE_STUDENT;
-            }
+            $user->user_type = $user_type;
             if ($user->isInvalid()) {
                 throw new \Dingo\Api\Exception\ResourceException("Could not register {$user_type}.", $user->getErrors());
             }
