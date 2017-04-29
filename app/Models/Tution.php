@@ -142,4 +142,10 @@ class Tution extends AppModel
     {
         return $query->where('student_id', '=', $student_id);
     }
+
+    public function scopeNearBy($query, $lat, $long, $distance)
+    {
+        $condition = "distance({$lat}, {$long}, latitude, longitude, 'ME') <= {$distance}";
+        return $query->whereRaw($condition);
+    }
 }

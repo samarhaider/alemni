@@ -21,7 +21,7 @@ class TutionController extends Controller
      * @Get("/")
      * 
      * @Parameters({
-     *      @Parameter("search_type", description="1= pending 2=completed, 3=near by me")
+     *      @Parameter("search_type", description="1= new, 2= pending 3=completed, 100=near by me")
      * })
      * 
      * @Transaction({
@@ -32,6 +32,7 @@ class TutionController extends Controller
     public function index(Request $request)
     {
         $tutor_id = $student_id = false;
+        $search_type = $request->get('search_type', 1);
         $relations = null;
         if (Auth::user()->isStudent()) {
             $student_id = Auth::user()->id;
@@ -45,10 +46,21 @@ class TutionController extends Controller
         $tutions = Tution::with($relations);
 //            ->join('questions', 'questions.id', '=', 'tutions.question_id');
         if ($student_id) {
-            $tutions->where('student_id', '=', $student_id);
+            $tutions->findStudent($student_id);
         }
-        if ($tutor_id) {
-            $tutions->where('tutor_id', '=', $tutor_id);
+        if ($tutor_id && ($search_type != 1 || $search_type != 100)) {
+            $tutions->findTutor($tutor_id);
+        }
+        if ($search_type < 5) {
+            $tutions->status($search_type);
+        }
+        if ($search_type == 100) {
+            $tutions->status(Tution::STATUS_NEW);
+            $profile = Auth::user()->profile;
+            $latitude = $request->get('latitude', $profile->latitude);
+            $longitude = $request->get('longitude', $profile->longitude);
+            $distance = $request->get('radius', 5000);
+            $tutions->nearBy($latitude, $longitude, $distance);
         }
         $tutions->latest();
         return $tutions->paginate(20);
@@ -216,7 +228,7 @@ class TutionController extends Controller
     {
         $user = Auth::user();
         $query = Tution::whereKey($id)
-//            ->status(Tution::STATUS_COMPLETED)
+            ->status(Tution::STATUS_COMPLETED)
         ;
         if ($user->isTutor()) {
             $query->findTutor($user->id);
@@ -227,7 +239,6 @@ class TutionController extends Controller
         if ($tution->userAverageRating) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not rate Tution.', ['rating' => 'You have already rated this tution.']);
         }
-//        return [$tution->userAverageRating];
         $other_user = null;
         if ($user->isTutor()) {
             $other_user = $tution->studentProfile;

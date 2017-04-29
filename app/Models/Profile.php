@@ -75,9 +75,9 @@ class Profile extends AppModel
     }
 
     /**
-     * Block 
+     * Near By 
      * 
-     * @return user_type array of User Object
+     * @return $query
      */
     public function scopeNearBy($query, $lat, $long, $distance)
     {
