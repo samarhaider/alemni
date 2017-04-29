@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Models\AppModel;
 use \Conner\Tagging\Taggable;
+use willvincent\Rateable\Rateable;
 
 class Tution extends AppModel
 {
 
-    use Taggable;
+    use Taggable,
+        Rateable;
 
     const STATUS_NEW = 1;
     const STATUS_INPROGRESS = 2;
@@ -124,5 +126,20 @@ class Tution extends AppModel
     public function bids()
     {
         return $this->hasMany('App\Models\Bid', 'tution_id');
+    }
+
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', '=', $status);
+    }
+
+    public function scopeFindTutor($query, $tutor_id)
+    {
+        return $query->where('tutor_id', '=', $tutor_id);
+    }
+
+    public function scopeFindStudent($query, $student_id)
+    {
+        return $query->where('student_id', '=', $student_id);
     }
 }

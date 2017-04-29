@@ -166,6 +166,7 @@ return [
         \Conner\Tagging\Providers\TaggingServiceProvider::class, # Added on 07-Apr-2017
         Matriphe\Imageupload\ImageuploadServiceProvider::class, # Added on 15-Apr-2017
         Gerardojbaez\Messenger\MessengerServiceProvider::class, # Added on 15-Apr-2017
+        willvincent\Rateable\RateableServiceProvider::class, # Added on 26-Apr-2017
     ],
     /*
       |--------------------------------------------------------------------------

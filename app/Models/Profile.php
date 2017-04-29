@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\AppModel;
 use App\Models\User;
 use \Conner\Tagging\Taggable;
+use willvincent\Rateable\Rateable;
 
 class Profile extends AppModel
 {
 
-    use Taggable;
+    use Taggable,
+        Rateable;
 
     public $qualifications;
 
