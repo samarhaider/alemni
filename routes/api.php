@@ -40,6 +40,7 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('users', 'App\Http\Controllers\UserController');
     $api->resource('questions', 'App\Http\Controllers\QuestionController');
 //    $api->resource('answers', 'App\Http\Controllers\AnswerController');
+    $api->post('tutions/{id}/rate', 'App\Http\Controllers\TutionController@rate');
     $api->resource('tutions', 'App\Http\Controllers\TutionController');
     $api->get('messages/unread-messages-count', 'App\Http\Controllers\MessageController@UnreadMessagesCount');
     $api->post('messages/read-thread', 'App\Http\Controllers\MessageController@ReadThread');

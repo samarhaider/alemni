@@ -207,16 +207,17 @@ class TutionController extends Controller
      * })
      * 
      * @Transaction({
-     *      @Request({"title":"Tution 3","budget":"100 dollar","start_date": "2018-20-12", "day_of_week_0": 1, "day_of_week_1": 1, "day_of_week_2": 1, "day_of_week_3": 1, "day_of_week_4": 1, "day_of_week_5": 1, "day_of_week_6": 1, "latitude": "11.45609800", "longitude": "-51.78216000", "daily_timing": "05:00:00", "answers":{{"question_id": 1,"choice_id": 2},{"question_id": 4,"choice_id": 2},{"question_id": 6,"choice_id": 2},{"question_id": 8,"choice_id": 2},{"question_id": 12,"choice_id": 2}} }, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"tution":{"title":"Tution 3","budget":"100 dollar","start_date":"2019-08-12 00:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"latitude":"11.45609800","longitude":"-51.78216000","daily_timing":"05:00:00","student_id":11,"created_at":"2017-04-12 17:32:21","id":5,"answers":{{"id":21,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"1","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":22,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"4","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":23,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"6","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":24,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"8","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":25,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"12","choice_id":"2","created_at":"2017-04-12 17:32:22"}}}}),
-     *      @Response(422, body={"message":"Could not rate Tution.","errors":{"rating":{"You have already rated this tution."}}},"status_code":422})
+     *      @Request({"rating":"1"}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"rating":{"rating":3,"reviews":null,"user_id":11,"rateable_type":"App\\Models\\Profile","rateable_id":6,"updated_at":"2017-04-29 10:45:56","created_at":"2017-04-29 10:45:56","id":1}}),
+     *      @Response(422, body={"message":"Could not rate Tution.","errors":{"rating":{"You have already rated this tution."}},"status_code":422})
      * })
      */
     public function rate(Request $request, $id)
     {
         $user = Auth::user();
         $query = Tution::whereKey($id)
-            ->status(Tution::STATUS_COMPLETED);
+//            ->status(Tution::STATUS_COMPLETED)
+        ;
         if ($user->isTutor()) {
             $query->findTutor($user->id);
         } else {
@@ -226,7 +227,7 @@ class TutionController extends Controller
         if ($tution->userAverageRating) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not rate Tution.', ['rating' => 'You have already rated this tution.']);
         }
-
+//        return [$tution->userAverageRating];
         $other_user = null;
         if ($user->isTutor()) {
             $other_user = $tution->studentProfile;
@@ -241,6 +242,10 @@ class TutionController extends Controller
 
         if ($other_user) {
             $tution->ratings()->save($rating);
+            $rating = new Rating;
+            $rating->rating = $request->get('rating', 1);
+            $rating->reviews = $request->get('reviews', null);
+            $rating->user_id = $user->id;
             $other_user->ratings()->save($rating);
         }
 

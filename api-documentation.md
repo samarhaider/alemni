@@ -110,61 +110,7 @@ Token is returned which will be required in every request
                 "status_code": 500
             }
 
-## Tutor Login with Email and Password [POST /login/tutor]
-Token is returned which will be required in every request
-
-+ Parameters
-    + email: (string, required) - 
-    + password: (string, required) - 
-
-+ Request (application/json)
-    + Body
-
-            {
-                "email": "tlabadie@example.com",
-                "password": "123456"
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
-                "user": {
-                    "email": "user2@mailinator.com",
-                    "created_at": "2017-04-03 07:29:40",
-                    "id": 2
-                }
-            }
-
-+ Response 401 (application/json)
-    + Body
-
-            {
-                "error": "invalid_credentials",
-                "message": "Invalid credentials",
-                "status_code": 401
-            }
-
-+ Response 401 (application/json)
-    + Body
-
-            {
-                "error": "user_blocked",
-                "message": "Your Account has been blocked.",
-                "status_code": 401
-            }
-
-+ Response 500 (application/json)
-    + Body
-
-            {
-                "error": "could_not_create_token",
-                "message": "Internal Server Error",
-                "status_code": 500
-            }
-
-## Student Login with Email and Password [POST /login/student]
+## Tutor Login with Email and Password [POST /login]
 Token is returned which will be required in every request
 
 + Parameters
@@ -1153,6 +1099,51 @@ for student/tutor profile and tutions
     + Body
 
             []
+
+## Rate Tution by Student / Tutor [POST /tutions/{id}/rate]
+
+
++ Parameters
+    + rating: (integer, required) - value between 1-5
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "rating": "1"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "rating": {
+                    "rating": 3,
+                    "reviews": null,
+                    "user_id": 11,
+                    "rateable_type": "App\\Models\\Profile",
+                    "rateable_id": 6,
+                    "updated_at": "2017-04-29 10:45:56",
+                    "created_at": "2017-04-29 10:45:56",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not rate Tution.",
+                "errors": {
+                    "rating": [
+                        "You have already rated this tution."
+                    ]
+                },
+                "status_code": 422
+            }
 
 # Messages [/messages]
 
