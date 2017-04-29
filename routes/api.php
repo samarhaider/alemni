@@ -22,7 +22,8 @@ $api = app('Dingo\Api\Routing\Router');
 # Public Actions
 $api->version('v1', function ($api) {
     $api->post('login/google/{user_type}', 'App\Http\Controllers\Auth\LoginController@google');
-    $api->post('login/{user_type}', 'App\Http\Controllers\Auth\LoginController@simple');
+//    $api->post('login/{user_type}', 'App\Http\Controllers\Auth\LoginController@simple');
+    $api->post('login', 'App\Http\Controllers\Auth\LoginController@simple');
     $api->post('users/register/student', 'App\Http\Controllers\UserController@student');
     $api->post('users/register/tutor', 'App\Http\Controllers\UserController@tutor');
 //        $api->post('users/login', 'App\Http\Controllers\UserController@login');

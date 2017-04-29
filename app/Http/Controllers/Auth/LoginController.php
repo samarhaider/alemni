@@ -128,7 +128,7 @@ class LoginController extends Controller
      *
      * Token is returned which will be required in every request
      *
-     * @Post("/tutor")
+     * @Post("/")
      * 
      * @Parameters({
      *      @Parameter("email", required=true),
@@ -143,7 +143,7 @@ class LoginController extends Controller
      *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
      * })
      */
-    public function simple(Request $request, $type)
+    public function simple(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -171,28 +171,28 @@ class LoginController extends Controller
         return response()->json(['token' => $token, 'user' => $user]);
     }
 
-    /**
-     * Student Login with Email and Password
-     *
-     * Token is returned which will be required in every request
-     *
-     * @Post("/student")
-     * 
-     * @Parameters({
-     *      @Parameter("email", required=true),
-     *      @Parameter("password", required=true)
-     * })
-     * 
-     * @Transaction({
-     *      @Request({"email": "tlabadie@example.com", "password": "123456"}),
-     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
-     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
-     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
-     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
-     * })
-     */
-    public function simpleStudent(Request $request)
-    {
-        
-    }
+//    /**
+//     * Student Login with Email and Password
+//     *
+//     * Token is returned which will be required in every request
+//     *
+//     * @Post("/student")
+//     * 
+//     * @Parameters({
+//     *      @Parameter("email", required=true),
+//     *      @Parameter("password", required=true)
+//     * })
+//     * 
+//     * @Transaction({
+//     *      @Request({"email": "tlabadie@example.com", "password": "123456"}),
+//     *      @Response(200, body={"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA","user":{"email":"user2@mailinator.com","created_at":"2017-04-03 07:29:40","id":2}}),
+//     *      @Response(401, body={ "error":"invalid_credentials","message":"Invalid credentials", "status_code": 401 }),
+//     *      @Response(401, body={ "error": "user_blocked", "message": "Your Account has been blocked.", "status_code": 401 }),
+//     *      @Response(500, body={ "error":"could_not_create_token","message":"Internal Server Error", "status_code": 500 })
+//     * })
+//     */
+//    public function simpleStudent(Request $request)
+//    {
+//        
+//    }
 }
