@@ -1,5 +1,7 @@
 FORMAT: 1A
 
+HOST: http://52.35.243.250/v1/api
+
 # API
 
 # Login [/login]
@@ -845,7 +847,7 @@ for student/tutor profile and tutions
 
 
 + Parameters
-    + search_type: (string, optional) - 1= pending 2=completed, 3=near by me
+    + search_type: (string, optional) - 1= new, 2= pending 3=completed, 100=near by me
 
 + Request (application/json)
     + Headers
@@ -1115,6 +1117,46 @@ for student/tutor profile and tutions
             {
                 "rating": "1"
             }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "rating": {
+                    "rating": 3,
+                    "reviews": null,
+                    "user_id": 11,
+                    "rateable_type": "App\\Models\\Profile",
+                    "rateable_id": 6,
+                    "updated_at": "2017-04-29 10:45:56",
+                    "created_at": "2017-04-29 10:45:56",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not rate Tution.",
+                "errors": {
+                    "rating": [
+                        "You have already rated this tution."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Complete/Finished tution by Student / Tutor [POST /tutions/{id}/finished]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
 
 + Response 200 (application/json)
     + Body
@@ -1452,13 +1494,18 @@ for student/tutor profile and tutions
 ## List of Proposals [GET /proposals]
 
 
++ Parameters
+    + status: (integer, optional) - 1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl
+
 + Request (application/json)
     + Headers
 
             Authorization: Bearer {token}
     + Body
 
-            []
+            {
+                "status": 1
+            }
 
 + Response 200 (application/json)
     + Body

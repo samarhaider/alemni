@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Answer;
+use App\Models\Tution;
 use App\Models\Proposal;
 use Auth;
 
@@ -18,8 +18,12 @@ class ProposalController extends Controller
      *
      * @Get("/")
      * 
+     * @Parameters({
+     *      @Parameter("status", type="integer", description="1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl")
+     * })
+     * 
      * @Transaction({
-     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Request({"status": 1 }, headers={"Authorization": "Bearer {token}"}),
      *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"id":2,"tutor_id":"5","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:59:26","updated_at":"2017-04-18 17:59:26","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}})
      * })
      */
@@ -168,8 +172,8 @@ class ProposalController extends Controller
     {
         $user = Auth::user();
         $proposal = Proposal::findTutor($user->id)
-            ->where('id', $id)
-//            ->status(Proposal::STATUS_PENDING)
+            ->whereKey($id)
+            ->status(Proposal::STATUS_PENDING)
             ->firstOrFail();
         $proposal->status = Proposal::STATUS_WITHDRAWL;
         $proposal->save();
@@ -192,15 +196,26 @@ class ProposalController extends Controller
         $proposal = Proposal::whereHas('tution', function($query) use ($user) {
                 $query->where('tutions.student_id', '=', $user->id);
             })
-//            ->status(Proposal::STATUS_PENDING)
+            ->whereKey($id)
+            ->status(Proposal::STATUS_PENDING)
             ->firstOrFail();
+
+        $tution = Tution::whereKey($proposal->tution_id)
+            ->status(Tution::STATUS_NEW)
+//            ->findStudent($user->id)
+            ->firstOrFail();
+
         $proposal->status = Proposal::STATUS_ACCEPTED;
 //        $proposal->fill($request->all());
 //        $proposal->acceptValidation(true);
         if ($proposal->isInvalid()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not accept Proposal.', $proposal->getErrors());
         }
+
         $proposal->save();
+        $tution->tutor_id = $proposal->tutor_id;
+        $tution->status = Tution::STATUS_INPROGRESS;
+        $tution->save();
         return $proposal;
     }
 
@@ -220,7 +235,8 @@ class ProposalController extends Controller
         $proposal = Proposal::whereHas('tution', function($query) use ($user) {
                 $query->where('tutions.student_id', '=', $user->id);
             })
-//            ->status(Proposal::STATUS_PENDING)
+            ->status(Proposal::STATUS_PENDING)
+            ->whereKey($id)
             ->firstOrFail();
         $proposal->status = Proposal::STATUS_REJECTED;
         $proposal->save();

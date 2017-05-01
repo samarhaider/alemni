@@ -169,7 +169,7 @@ class InvitationController extends Controller
         $user = Auth::user();
         $invitation = Invitation::findTutor($user->id)
             ->where('id', $id)
-//            ->status(Invitation::STATUS_PENDING)
+            ->status(Invitation::STATUS_PENDING)
             ->firstOrFail();
         $invitation->status = Invitation::STATUS_REJECTED;
         $invitation->save();
@@ -191,8 +191,8 @@ class InvitationController extends Controller
     {
         $user = Auth::user();
         $invitation = Invitation::findTutor($user->id)
-            ->where('id', $id)
-//            ->status(Invitation::STATUS_PENDING)
+            ->whereKey($id)
+            ->status(Invitation::STATUS_PENDING)
             ->firstOrFail();
         $invitation->status = Proposal::STATUS_ACCEPTED;
         $invitation->fill($request->all());

@@ -40,6 +40,7 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('users', 'App\Http\Controllers\UserController');
     $api->resource('questions', 'App\Http\Controllers\QuestionController');
 //    $api->resource('answers', 'App\Http\Controllers\AnswerController');
+    $api->post('tutions/{id}/finished', 'App\Http\Controllers\TutionController@finished');
     $api->post('tutions/{id}/rate', 'App\Http\Controllers\TutionController@rate');
     $api->resource('tutions', 'App\Http\Controllers\TutionController');
     $api->get('messages/unread-messages-count', 'App\Http\Controllers\MessageController@UnreadMessagesCount');
@@ -47,8 +48,11 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('messages', 'App\Http\Controllers\MessageController');
     $api->post('proposals/{id}', 'App\Http\Controllers\ProposalController@update');
     $api->post('proposals/withdrawl/{id}', 'App\Http\Controllers\ProposalController@withdrawl');
+    $api->post('proposals/accept/{id}', 'App\Http\Controllers\ProposalController@accept');
+    $api->post('proposals/reject/{id}', 'App\Http\Controllers\ProposalController@reject');
     $api->resource('proposals', 'App\Http\Controllers\ProposalController');
     $api->post('invitations/{id}', 'App\Http\Controllers\InvitationController@update');
+    $api->post('invitations/accept/{id}', 'App\Http\Controllers\InvitationController@accept');
     $api->post('invitations/reject/{id}', 'App\Http\Controllers\InvitationController@reject');
     $api->resource('invitations', 'App\Http\Controllers\InvitationController');
 });

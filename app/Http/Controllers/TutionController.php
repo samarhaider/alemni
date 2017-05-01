@@ -48,7 +48,7 @@ class TutionController extends Controller
         if ($student_id) {
             $tutions->findStudent($student_id);
         }
-        if ($tutor_id && ($search_type != 1 || $search_type != 100)) {
+        if ($tutor_id && ($search_type != 1 && $search_type != 100)) {
             $tutions->findTutor($tutor_id);
         }
         if ($search_type < 5) {
@@ -261,5 +261,33 @@ class TutionController extends Controller
         }
 
         return $rating;
+    }
+
+    /**
+     * Complete/Finished tution by Student / Tutor
+     * 
+     * @Post("/{id}/finished")
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"rating":{"rating":3,"reviews":null,"user_id":11,"rateable_type":"App\\Models\\Profile","rateable_id":6,"updated_at":"2017-04-29 10:45:56","created_at":"2017-04-29 10:45:56","id":1}}),
+     *      @Response(422, body={"message":"Could not rate Tution.","errors":{"rating":{"You have already rated this tution."}},"status_code":422})
+     * })
+     */
+    public function finished(Request $request, $id)
+    {
+        $user = Auth::user();
+        $query = Tution::whereKey($id)
+            ->status(Tution::STATUS_INPROGRESS)
+        ;
+        if ($user->isTutor()) {
+            $query->findTutor($user->id);
+        } else {
+            $query->findStudent($user->id);
+        }
+        $tution = $query->firstOrFail();
+        $tution->status = Tution::STATUS_COMPLETED;
+        $tution->save();
+        return $tution;
     }
 }
