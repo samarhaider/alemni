@@ -72,22 +72,22 @@ class UserController extends Controller
 
     public function store(Request $request, $user_type)
     {
-            $user = new User;
-            $user->emailPasswordValidation();
-            $user->email = $request->get('email');
-            $user->password = $request->get('password');
-            $user->user_type = $user_type;
-            if ($user->isInvalid()) {
-                throw new \Dingo\Api\Exception\ResourceException("Could not register {$user_type}.", $user->getErrors());
-            }
-            $user->password = Hash::make($user->password);
-            $user->save();
+        $user = new User;
+        $user->emailPasswordValidation();
+        $user->email = $request->get('email');
+        $user->password = $request->get('password');
+        $user->user_type = $user_type;
+        if ($user->isInvalid()) {
+            throw new \Dingo\Api\Exception\ResourceException("Could not register {$user_type}.", $user->getErrors());
+        }
+        $user->password = Hash::make($user->password);
+        $user->save();
 
-            $profile = new Profile;
-            $profile->user_id = $user->id;
-            $profile->name = $request->get('name');
+        $profile = new Profile;
+        $profile->user_id = $user->id;
+        $profile->name = $request->get('name');
 //            $profile->avatar = $provider_user->getAvatar();
-            $profile->save();
+        $profile->save();
 
         $token = JWTAuth::fromUser($user);
         return response()->json(['token' => $token, 'user' => $user]);
@@ -159,7 +159,9 @@ class UserController extends Controller
             $id = Auth::user()->id;
         }
         $user = User::with('profile')->find($id);
-//        $user->profile->getQualification();
+        if ($user->id == Auth::user()->id) {
+            $user->profile->answers;
+        }
         return $user;
     }
 
@@ -233,10 +235,14 @@ class UserController extends Controller
     {
         $profile = Auth::user()->profile;
         if ($request->hasFile('avatar')) {
-//            return Imageupload::upload($request->file('avatar'));
+            $image_upload = Imageupload::upload($request->file('avatar'));
             $old_avatar = $profile->avatar;
-            $path = $request->file('avatar')->storePublicly('avatars', ['disk' => 'uploads']);
-            $profile->avatar = 'uploads' . DIRECTORY_SEPARATOR . $path;
+            if ($image_upload['dimensions']['square250']) {
+                $profile->avatar = $image_upload['dimensions']['square250']['filedir'];
+            } else {
+                $path = $request->file('avatar')->storePublicly('avatars', ['disk' => 'uploads']);
+                $profile->avatar = 'uploads' . DIRECTORY_SEPARATOR . $path;
+            }
             if ($profile->save()) {
                 File::delete($old_avatar);
             }
