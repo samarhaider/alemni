@@ -1,7 +1,5 @@
 FORMAT: 1A
 
-HOST: http://52.35.243.250/v1/api
-
 # API
 
 # Login [/login]
@@ -112,7 +110,7 @@ Token is returned which will be required in every request
                 "status_code": 500
             }
 
-## Tutor Login with Email and Password [POST /login]
+## Tutor/Student Login with Email and Password [POST /login]
 Token is returned which will be required in every request
 
 + Parameters

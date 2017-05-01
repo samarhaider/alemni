@@ -124,7 +124,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Tutor Login with Email and Password
+     * Tutor/Student Login with Email and Password
      *
      * Token is returned which will be required in every request
      *
