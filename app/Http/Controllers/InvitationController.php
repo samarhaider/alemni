@@ -34,7 +34,7 @@ class InvitationController extends Controller
                     $query->where('tutions.student_id', '=', $user->id);
                 });
         }
-        $status = $request->get('status', false);
+        $status = $request->get('status', Invitation::STATUS_PENDING);
         if ($status) {
             $invitations->status($status);
         }
