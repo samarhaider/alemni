@@ -49,7 +49,7 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at', 'deleted_at'
+        'password', 'remember_token', 'google', 'active', 'block', 'updated_at', 'deleted_at'
     ];
     public function emailPasswordValidation($add = true)
     {
