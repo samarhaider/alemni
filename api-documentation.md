@@ -1865,6 +1865,9 @@ for student/tutor profile and tutions
 ## List of Invitations [GET /invitations]
 
 
++ Parameters
+    + status: (integer, optional) - 1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl
+
 + Request (application/json)
     + Headers
 
@@ -2129,7 +2132,7 @@ for student/tutor profile and tutions
                 }
             }
 
-## Accept proposal by Student [POST /invitations/accept/{id}]
+## Accept Invitation by Tutor [POST /invitations/accept/{id}]
 
 
 + Request (application/json)
