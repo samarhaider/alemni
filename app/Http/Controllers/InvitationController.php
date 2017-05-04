@@ -205,7 +205,7 @@ class InvitationController extends Controller
 //            ->findStudent($user->id)
             ->firstOrFail();
 
-        $invitation->status = Proposal::STATUS_ACCEPTED;
+        $invitation->status = Invitation::STATUS_ACCEPTED;
         $invitation->fill($request->all());
 //        $invitation->acceptValidation(true);
         if ($invitation->isInvalid()) {
