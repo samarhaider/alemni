@@ -181,7 +181,27 @@ class TutionController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = Auth::user();
+        if ($user->isStudent()) {
+            $student_id = $user->id;
+            $relations = ['tutorProfile', 'invitations.tutor'];
+            $relations[] = 'proposals.tutor';
+        }
+        if ($user->isTutor()) {
+            $tutor_id = $user->id;
+            $relations = 'studentProfile';
+        }
+        $query = Tution::with($relations)
+            ->whereKey($id);
+        if ($user->isTutor()) {
+//            $query->findTutor($user->id);
+            $query->publicOnlyAndInvitedUser($user->id);
+        } else {
+            $query->findStudent($user->id);
+        }
+        
+        $tution = $query->firstOrFail();
+        return $tution;
     }
 
     /**

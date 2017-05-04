@@ -209,6 +209,7 @@ Token is returned which will be required in every request
                         "bio": "Occaecati incidunt doloremque id rerum incidunt tempora. Dolore tempore recusandae sequi commodi. Repellendus dolorem ea iusto quidem. Quis assumenda et eveniet.",
                         "hourly_rate": "10.00",
                         "radius": "4580",
+                        "experience": "1",
                         "email": "doyle.freddie@example.org",
                         "qualifications": []
                     }
@@ -380,6 +381,7 @@ Token is returned which will be required in every request
                         "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                         "hourly_rate": "12.00",
                         "radius": "5000",
+                        "experience": "1",
                         "qualifications": [
                             "Mba",
                             "Bs"
@@ -451,6 +453,7 @@ Token is returned which will be required in every request
     + phone_number: (string, optional) - 
     + hourly_rate: (decimal, optional) - 
     + radius: (integer, optional) - Radius in meters
+    + experience: (integer, optional) - Experience in Years
     + address: (string, optional) - 
     + qualifications: (array, optional) - string array of qualification
     + bio: (string, optional) - 
@@ -471,6 +474,7 @@ Token is returned which will be required in every request
                 "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                 "hourly_rate": "1.00",
                 "radius": "10588",
+                "experience": "1",
                 "address": "test",
                 "qualifications": [
                     "MBA",
@@ -491,6 +495,7 @@ Token is returned which will be required in every request
                 "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                 "hourly_rate": "1.00",
                 "radius": "10588",
+                "experience": "1",
                 "address": "test",
                 "qualifications": [
                     "MBA",
@@ -538,6 +543,7 @@ Token is returned which will be required in every request
                     "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                     "hourly_rate": "12.00",
                     "radius": "5000",
+                    "experience": "1",
                     "qualifications": [
                         "Mba",
                         "Bs"

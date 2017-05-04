@@ -33,8 +33,8 @@ class UserController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":8,"per_page":1,"current_page":1,"last_page":8,"next_page_url":"http:\/\/localhost:8000\/api\/users?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":1,"gender":"M","name":"Maye Klocko","avatar":null,"latitude":"40.53965400","longitude":"36.50458600","phone_number":"383-672-5171 x714","bio":"Occaecati incidunt doloremque id rerum incidunt tempora. Dolore tempore recusandae sequi commodi. Repellendus dolorem ea iusto quidem. Quis assumenda et eveniet.","hourly_rate":"10.00","radius":"4580","email":"doyle.freddie@example.org","qualifications":{}}}})
-     * })
+     *      @Response(200, body={"total":8,"per_page":1,"current_page":1,"last_page":8,"next_page_url":"http:\/\/localhost:8000\/api\/users?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":1,"gender":"M","name":"Maye Klocko","avatar":null,"latitude":"40.53965400","longitude":"36.50458600","phone_number":"383-672-5171 x714","bio":"Occaecati incidunt doloremque id rerum incidunt tempora. Dolore tempore recusandae sequi commodi. Repellendus dolorem ea iusto quidem. Quis assumenda et eveniet.","hourly_rate":"10.00","radius":"4580", "experience": "1","email":"doyle.freddie@example.org","qualifications":{}}}})
+     * })r
      */
     public function index(Request $request)
     {
@@ -152,7 +152,7 @@ class UserController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03","profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","qualifications":{"Mba","Bs"},"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}}})
+     *      @Response(200, body={"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03","profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000", "experience": "1","qualifications":{"Mba","Bs"},"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}}})
      * })
      */
     public function show($id)
@@ -180,14 +180,15 @@ class UserController extends Controller
      *      @Parameter("phone_number"),
      *      @Parameter("hourly_rate", type="decimal"),
      *      @Parameter("radius", type="integer", description="Radius in meters"),
+     *      @Parameter("experience", type="integer", description="Experience in Years"),
      *      @Parameter("address"),
      *      @Parameter("qualifications", type="array", description="string array of qualification"),
      *      @Parameter("bio")
      * })
      * 
      * @Transaction({
-     *      @Request({"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}),
+     *      @Request({"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "experience": "1", "address": "test", "qualifications": {"MBA","BS"}}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "experience": "1", "address": "test", "qualifications": {"MBA","BS"}}),
      *      @Response(422, body={"message":"Could not update user profile information.","errors":{"message":"Could not update user profile information.","errors":{"latitude":{"The latitude format is invalid."},"longitude":{"The longitude format is invalid."}},"status_code":422}})
      * })
      */
@@ -198,7 +199,7 @@ class UserController extends Controller
         }
         $user = User::with('profile')->findOrFail($id);
         $profile = $user->profile;
-        $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius', 'address');
+        $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius', 'experience', 'address');
         $profile->fill($profile_data);
         $qualifications = $request->get('qualifications', []);
         $profile->retag($qualifications);
@@ -229,7 +230,7 @@ class UserController extends Controller
      * })
      * 
      * @Transaction({
-     *      @Response(200, body={"profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads/avatars/P2ehhNLyHx53dpY1ve6wYT6Tl5exCzYPYfCtnKA4.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","qualifications":{"Mba","Bs"}}}),
+     *      @Response(200, body={"profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads/avatars/P2ehhNLyHx53dpY1ve6wYT6Tl5exCzYPYfCtnKA4.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000", "experience": "1","qualifications":{"Mba","Bs"}}}),
      *      @Response(422, body={"message":"Could not update user avatar.","errors":{"errors":{"avatar":"The avatar field is required."}},"status_code":422})
      * })
      */

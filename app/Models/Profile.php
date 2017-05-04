@@ -29,6 +29,7 @@ class Profile extends AppModel
         'phone_number' => 'nullable', # user phone validation library
         'bio' => 'nullable',
         'address' => 'nullable',
+        'experience' => 'nullable',
     ];
 
     /**
@@ -37,7 +38,7 @@ class Profile extends AppModel
      * @var array
      */
     protected $fillable = [
-        'name', 'hourly_rate', 'gender', 'radius', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
+        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
     ];
 
     /**
