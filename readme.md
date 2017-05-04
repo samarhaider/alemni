@@ -18,3 +18,6 @@ http://stackoverflow.com/questions/7102521/database-design-for-developing-quiz-w
 php artisan generate:modelfromtable --table=questions --folder=app/Models --namespace="app\Models"
 
 https://marvelapp.com/1gg0873
+
+If seeder reflection class not found
+composer dumpautoload

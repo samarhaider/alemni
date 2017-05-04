@@ -954,6 +954,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": "6",
                         "status": "1",
+                        "private": true,
                         "title": "Tution 3",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -991,6 +992,7 @@ for student/tutor profile and tutions
 
 + Parameters
     + title: (string, optional) - Customer Name
+    + private: (boolean, required) - 
     + start_date: (date, required) - date format Y-m-d like 2016-12-12
     + latitude: (decimal, required) - 
     + longitude: (decimal, required) - 
@@ -1014,6 +1016,7 @@ for student/tutor profile and tutions
 
             {
                 "title": "Tution 3",
+                "private": true,
                 "budget": "100 dollar",
                 "start_date": "2018-20-12",
                 "day_of_week_0": 1,
@@ -1056,6 +1059,7 @@ for student/tutor profile and tutions
             {
                 "tution": {
                     "title": "Tution 3",
+                    "private": true,
                     "budget": "100 dollar",
                     "start_date": "2019-08-12 00:00:00",
                     "day_of_week_0": true,
@@ -1613,6 +1617,7 @@ for student/tutor profile and tutions
                             "student_id": "11",
                             "tutor_id": null,
                             "status": "1",
+                            "private": true,
                             "title": "Tution 1",
                             "budget": "100 dollar",
                             "latitude": "11.45609800",
@@ -1733,6 +1738,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1824,6 +1830,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1872,6 +1879,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1920,6 +1928,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1982,6 +1991,7 @@ for student/tutor profile and tutions
                             "student_id": "11",
                             "tutor_id": null,
                             "status": "1",
+                            "private": true,
                             "title": "Tution 1",
                             "budget": "100 dollar",
                             "latitude": "11.45609800",
@@ -2101,6 +2111,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -2192,6 +2203,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -2240,6 +2252,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",

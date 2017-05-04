@@ -24,7 +24,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"id":2,"tutor_id":"5","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:59:26","updated_at":"2017-04-18 17:59:26","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}})
+     *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"id":2,"tutor_id":"5","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:59:26","updated_at":"2017-04-18 17:59:26","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}})
      * })
      */
     public function index(Request $request)
@@ -102,7 +102,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:32:47","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
+     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:32:47","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
      * })
      */
     public function show($id)
@@ -165,7 +165,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":3,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
+     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":3,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
      * })
      */
     public function reject(Request $request, $id)
@@ -187,7 +187,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"proposal":{"id":1,"tutor_id":"10","tution_id":"3","status":4,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}),
+     *      @Response(200, body={"proposal":{"id":1,"tutor_id":"10","tution_id":"3","status":4,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}),
      *      @Response(422, body={"message":"Could not accept Invitation.","errors":{"description":{"The description id field is required."}},"status_code":422})
      * })
      */
