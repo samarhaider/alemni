@@ -365,23 +365,76 @@ Token is returned which will be required in every request
 
             {
                 "user": {
-                    "id": 10,
-                    "email": "tanner.damore@example.com",
-                    "created_at": "2017-04-05 18:40:47",
+                    "id": 11,
+                    "email": "cleta71@example.net",
+                    "user_type": "2",
+                    "created_at": "2017-04-06 05:28:03",
                     "profile": {
-                        "gender": "F",
-                        "name": "Destinee Leannon",
-                        "avatar": null,
+                        "id": 13,
+                        "gender": "M",
+                        "name": "Sam",
+                        "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
                         "latitude": "-69.92557000",
                         "longitude": "-144.58138800",
                         "phone_number": "+1-548-519-6469",
                         "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
-                        "hourly_rate": "1.00",
-                        "radius": "10588",
-                        "address": "test",
+                        "hourly_rate": "12.00",
+                        "radius": "5000",
                         "qualifications": [
-                            "MBA",
-                            "BS"
+                            "Mba",
+                            "Bs"
+                        ],
+                        "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                        "answers": [
+                            {
+                                "id": 1,
+                                "questionable_id": "13",
+                                "question_id": "1",
+                                "text": "IT\/CS",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 2,
+                                "questionable_id": "13",
+                                "question_id": "2",
+                                "text": "A1",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 3,
+                                "questionable_id": "13",
+                                "question_id": "3",
+                                "text": "4",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 4,
+                                "questionable_id": "13",
+                                "question_id": "4",
+                                "text": "2",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 5,
+                                "questionable_id": "13",
+                                "question_id": "5",
+                                "text": "Samar",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 6,
+                                "questionable_id": "13",
+                                "question_id": "6",
+                                "text": "Test",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 7,
+                                "questionable_id": "13",
+                                "question_id": "7",
+                                "text": "Test one of these",
+                                "created_at": "2017-05-04 05:39:52"
+                            }
                         ]
                     }
                 }
@@ -522,44 +575,53 @@ Token is returned which will be required in every request
             {
                 "answers": [
                     {
-                        "id": 26,
+                        "id": 1,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "1",
+                        "text": "IT\/CS",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 2,
+                        "questionable_id": "13",
                         "question_id": "2",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
+                        "text": "A1",
+                        "created_at": "2017-05-04 05:39:51"
                     },
                     {
-                        "id": 27,
+                        "id": 3,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "3",
+                        "text": "4",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 4,
+                        "questionable_id": "13",
+                        "question_id": "4",
+                        "text": "2",
+                        "created_at": "2017-05-04 05:39:52"
+                    },
+                    {
+                        "id": 5,
+                        "questionable_id": "13",
                         "question_id": "5",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
+                        "text": "Samar",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 28,
+                        "id": 6,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "9",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
+                        "question_id": "6",
+                        "text": "Test",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 29,
+                        "id": 7,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "11",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 30,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "13",
-                        "choice_id": "5",
-                        "created_at": "2017-04-12 18:58:10"
+                        "question_id": "7",
+                        "text": "Test one of these",
+                        "created_at": "2017-05-04 05:39:52"
                     }
                 ]
             }
@@ -580,23 +642,31 @@ Token is returned which will be required in every request
                 "answers": [
                     {
                         "question_id": 1,
-                        "choice_id": 2
+                        "text": "IT/CS"
+                    },
+                    {
+                        "question_id": 2,
+                        "text": "A1"
+                    },
+                    {
+                        "question_id": 3,
+                        "text": 4
                     },
                     {
                         "question_id": 4,
-                        "choice_id": 2
+                        "text": 2
+                    },
+                    {
+                        "question_id": 5,
+                        "text": "Samar"
                     },
                     {
                         "question_id": 6,
-                        "choice_id": 2
+                        "text": "Test"
                     },
                     {
-                        "question_id": 8,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 12,
-                        "choice_id": 2
+                        "question_id": 7,
+                        "text": "Test one of these"
                     }
                 ]
             }
@@ -607,44 +677,53 @@ Token is returned which will be required in every request
             {
                 "answers": [
                     {
-                        "id": 21,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 1,
+                        "questionable_id": "13",
                         "question_id": "1",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "IT\/CS",
+                        "created_at": "2017-05-04 05:39:51"
                     },
                     {
-                        "id": 22,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 2,
+                        "questionable_id": "13",
+                        "question_id": "2",
+                        "text": "A1",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 3,
+                        "questionable_id": "13",
+                        "question_id": "3",
+                        "text": "4",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 4,
+                        "questionable_id": "13",
                         "question_id": "4",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "2",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 23,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 5,
+                        "questionable_id": "13",
+                        "question_id": "5",
+                        "text": "Samar",
+                        "created_at": "2017-05-04 05:39:52"
+                    },
+                    {
+                        "id": 6,
+                        "questionable_id": "13",
                         "question_id": "6",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "Test",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 24,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "8",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 25,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "12",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:22"
+                        "id": 7,
+                        "questionable_id": "13",
+                        "question_id": "7",
+                        "text": "Test one of these",
+                        "created_at": "2017-05-04 05:39:52"
                     }
                 ]
             }

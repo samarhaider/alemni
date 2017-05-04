@@ -3,6 +3,10 @@
 > php artisan migrate
 > cd public && npm install
 
+
+> php artisan db:seed --class=StudentQuestionnariesSeeder
+> php artisan db:seed --class=TutorQuestionnariesSeeder
+
 For documentation creation
 > php artisan api:docs --name API --use-version v2 --output-file api-documentation.md
 
