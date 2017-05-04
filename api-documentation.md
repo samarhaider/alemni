@@ -1,6 +1,6 @@
 FORMAT: 1A
 
-HOST: http://52.35.243.250/v1/api
+HOST: http://52.35.243.250/v1/api/
 
 # API
 

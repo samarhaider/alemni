@@ -173,4 +173,9 @@ class Tution extends AppModel
                     });
             });
     }
+    
+    public function scopePublicOnly($query)
+    {
+        return $query->where('private', '=', self::TYPE_PUBLIC);
+    }
 }

@@ -54,7 +54,8 @@ class TutionController extends Controller
         if ($search_type < 5) {
             $tutions->status($search_type);
             if (Auth::user()->isTutor()) {
-                $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
+                $tutions->publicOnly();
+//                $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
             }
         }
         if ($search_type == 100) {
@@ -64,7 +65,8 @@ class TutionController extends Controller
             $longitude = $request->get('longitude', $profile->longitude);
             $distance = $request->get('radius', 5000);
             $tutions->nearBy($latitude, $longitude, $distance);
-            $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
+            $tutions->publicOnly();
+//            $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
         }
         $tutions->latest();
         return $tutions->paginate(20);
