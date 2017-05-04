@@ -99,9 +99,14 @@ class Proposal extends AppModel
         return $query->where('status', '=', self::STATUS_WITHDRAWL);
     }
 
-    public function tutors()
+     public function tutors()
     {
         return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
+    }
+    
+    public function tutor()
+    {
+        return $this->hasMany('App\Models\Profile', 'user_id', 'tutor_id');
     }
 
     public function tution()

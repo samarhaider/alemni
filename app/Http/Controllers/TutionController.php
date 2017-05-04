@@ -7,6 +7,7 @@ use Auth;
 use App\Models\Tution;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\Invitation;
 use willvincent\Rateable\Rating;
 
 /**
@@ -36,7 +37,8 @@ class TutionController extends Controller
         $relations = null;
         if (Auth::user()->isStudent()) {
             $student_id = Auth::user()->id;
-            $relations = 'tutorProfile';
+            $relations = ['tutorProfile', 'invitations.tutor'];
+//            $relations[] = 'proposals.tutor';
         }
         if (Auth::user()->isTutor()) {
             $tutor_id = Auth::user()->id;

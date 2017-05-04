@@ -117,6 +117,11 @@ class Invitation extends AppModel
     {
         return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
     }
+    
+    public function tutor()
+    {
+        return $this->hasMany('App\Models\Profile', 'user_id', 'tutor_id');
+    }
 
     public function tution()
     {
