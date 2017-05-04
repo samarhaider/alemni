@@ -41,7 +41,7 @@ class QuestionController extends Controller
         }
 
         return Question::select(['id', 'text'])
-                ->with('choices')
+//                ->with('choices')
                 ->for($user_type)
                 ->get();
     }

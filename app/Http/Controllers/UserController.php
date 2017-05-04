@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Profile as Profile;
+use App\Models\Profile;
+use App\Models\Question;
+use App\Models\Answer;
 use Auth;
 use File;
 use Imageupload;
@@ -150,7 +152,7 @@ class UserController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"user":{"id":10,"email":"tanner.damore@example.com","created_at":"2017-04-05 18:40:47","profile":{"gender":"F","name":"Destinee Leannon","avatar":null,"latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"1.00","radius":"10588", "address": "test", "qualifications": {"MBA","BS"}}}})
+     *      @Response(200, body={"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03","profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","qualifications":["Mba","Bs"],"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}}})
      * })
      */
     public function show($id)
@@ -258,7 +260,7 @@ class UserController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"answers":{{"id":26,"questionable_id":"13","questionable_type":"App\\Models\\Profile","question_id":"2","choice_id":"4","created_at":"2017-04-12 18:58:10"},{"id":27,"questionable_id":"13","questionable_type":"App\\Models\\Profile","question_id":"5","choice_id":"2","created_at":"2017-04-12 18:58:10"},{"id":28,"questionable_id":"13","questionable_type":"App\\Models\\Profile","question_id":"9","choice_id":"4","created_at":"2017-04-12 18:58:10"},{"id":29,"questionable_id":"13","questionable_type":"App\\Models\\Profile","question_id":"11","choice_id":"2","created_at":"2017-04-12 18:58:10"},{"id":30,"questionable_id":"13","questionable_type":"App\\Models\\Profile","question_id":"13","choice_id":"5","created_at":"2017-04-12 18:58:10"}}})
+     *      @Response(200, body={"answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}),
      * })
      */
     public function questionnairesList(Request $request)
@@ -276,9 +278,10 @@ class UserController extends Controller
      * @Parameters({
      *      @Parameter("answers", type="array", description="array of objects", required=true)
      * })
+     * 
      * @Transaction({
-     *      @Request({"answers":{{"question_id": 1,"choice_id": 2},{"question_id": 4,"choice_id": 2},{"question_id": 6,"choice_id": 2},{"question_id": 8,"choice_id": 2},{"question_id": 12,"choice_id": 2}} }, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"answers":{{"id":21,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"1","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":22,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"4","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":23,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"6","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":24,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"8","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":25,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"12","choice_id":"2","created_at":"2017-04-12 17:32:22"}}}),
+     *      @Request({"answers": {{"question_id":1, "text":"IT/CS"},{"question_id":2,"text":"A1"},{"question_id":3,"text":4},{"question_id":4,"text":2},{"question_id":5,"text":"Samar"},{"question_id":6,"text": "Test"},{"question_id":7,"text": "Test one of these"}}}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}),
      *      @Response(422, body={"message":"Could not add answers.","errors":{"answers":{"Invalid number of answers"}},"status_code":422})
      * })
      */
@@ -300,7 +303,8 @@ class UserController extends Controller
         $answers_response = [];
         foreach ($answers as $key => $answer) {
             $question_id = isset($answer['question_id']) ? $answer['question_id'] : null;
-            $choice_id = isset($answer['choice_id']) ? $answer['choice_id'] : null;
+//            $choice_id = isset($answer['choice_id']) ? $answer['choice_id'] : null;
+            $text = isset($answer['text']) ? $answer['text'] : null;
             $answer = Auth::user()->profile
                 ->answers()
                 ->where('question_id', $question_id)
@@ -309,7 +313,8 @@ class UserController extends Controller
                 $answer = new Answer;
                 $answer->question_id = $question_id;
             }
-            $answer->choice_id = $choice_id;
+//            $answer->choice_id = $choice_id;
+            $answer->text = $text;
             if ($answer->isInvalid()) {
                 $errors[] = $answer->getErrors()->getMessages();
             } else {
@@ -320,6 +325,6 @@ class UserController extends Controller
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not add answers.', $errors);
         }
         Auth::user()->profile->answers()->saveMany($answers_response);
-        return $answers_response;
+        return Auth::user()->profile->answers;
     }
 }

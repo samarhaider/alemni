@@ -121,11 +121,11 @@ class TutorQuestionnariesSeeder extends Seeder
             $created_question->text = $question['text'];
             $created_question->type = $question['type'];
             $created_question->save();
-            foreach ($question['choices'] as $key => $choice) {
-                $choice_data = new Choice;
-                $choice_data->text = $choice;
-                $created_question->choices()->save($choice_data);
-            }
+//            foreach ($question['choices'] as $key => $choice) {
+//                $choice_data = new Choice;
+//                $choice_data->text = $choice;
+//                $created_question->choices()->save($choice_data);
+//            }
         }
 
         Model::reguard();
