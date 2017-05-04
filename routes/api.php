@@ -55,4 +55,7 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->post('invitations/accept/{id}', 'App\Http\Controllers\InvitationController@accept');
     $api->post('invitations/reject/{id}', 'App\Http\Controllers\InvitationController@reject');
     $api->resource('invitations', 'App\Http\Controllers\InvitationController');
+    $api->resource('credit-cards', 'App\Http\Controllers\CreditCardController');
+//    $api->get('credit-cards', 'App\Http\Controllers\CreditCardController@index');
+//    $api->post('credit-cards', 'App\Http\Controllers\CreditCardController@store');
 });

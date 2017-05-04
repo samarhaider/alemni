@@ -163,6 +163,7 @@ class UserController extends Controller
         $user = User::with('profile')->find($id);
         if ($user->id == Auth::user()->id) {
             $user->profile->answers;
+            $user->creditCard;
         }
         return $user;
     }

@@ -2290,3 +2290,91 @@ for student/tutor profile and tutions
                 },
                 "status_code": 422
             }
+
+# CreditCard [/credit-cards]
+
+## List of CreditCards [GET /credit-cards]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "credit_card": {
+                    "id": 1,
+                    "user_id": "15",
+                    "name": null,
+                    "month": "11",
+                    "year": "2018",
+                    "card_number": "4242-4242-4242-4242",
+                    "cvc": "123"
+                }
+            }
+
+## Add/Edit CreditCard [POST /credit-cards]
+
+
++ Parameters
+    + month: (integer, required) - 
+    + year: (integer, required) - 
+    + card_number: (string, required) - 
+    + cvc: (integer, required) - 
+    + name: (string, optional) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "month": "11",
+                "year": "2018",
+                "card_number": "4242-4242-4242-4242",
+                "cvc": 123
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "credit_card": {
+                    "id": 1,
+                    "user_id": "15",
+                    "name": null,
+                    "month": "11",
+                    "year": "2018",
+                    "card_number": "4242-4242-4242-4242",
+                    "cvc": "123"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not update credit card information.",
+                "errors": {
+                    "month": [
+                        "The month field is required."
+                    ],
+                    "year": [
+                        "The year field is required."
+                    ],
+                    "card_number": [
+                        "The card number field is required."
+                    ],
+                    "cvc": [
+                        "The cvc field is required."
+                    ]
+                },
+                "status_code": 422
+            }

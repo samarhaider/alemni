@@ -187,4 +187,9 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
     {
         return $this->belongsToMany('App\Models\Question', 'answer');
     }
+    
+    public function CreditCard()
+    {
+        return $this->hasOne('App\Models\CreditCard');
+    }
 }
