@@ -55,7 +55,7 @@ class TutionController extends Controller
         }
         if ($search_type < 5) {
             $tutions->status($search_type);
-            if (Auth::user()->isTutor()) {
+            if (Auth::user()->isTutor() && $search_type == Tution::STATUS_NEW) {
                 $tutions->publicOnly();
 //                $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
             }
