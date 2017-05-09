@@ -200,7 +200,8 @@ class UserController extends Controller
         }
         $user = User::with('profile')->findOrFail($id);
         $profile = $user->profile;
-        $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius', 'experience', 'address');
+//        $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius', 'experience', 'address');
+        $profile_data = $request->all();
         $profile->fill($profile_data);
         $qualifications = $request->get('qualifications', []);
         $profile->retag($qualifications);
