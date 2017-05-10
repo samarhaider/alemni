@@ -1011,6 +1011,7 @@ for student/tutor profile and tutions
     + day_of_week_4: (boolean, required) - 
     + day_of_week_5: (boolean, required) - 
     + day_of_week_6: (boolean, required) - 
+    + subjects: (array, optional) - string array of subjects
     + answers: (array, required) - array of objects
     + description: (string, optional) - 
 
@@ -1035,6 +1036,10 @@ for student/tutor profile and tutions
                 "latitude": "11.45609800",
                 "longitude": "-51.78216000",
                 "daily_timing": "05:00:00",
+                "subjects": [
+                    "English",
+                    "Urdu"
+                ],
                 "answers": [
                     {
                         "question_id": 1,
@@ -1078,6 +1083,10 @@ for student/tutor profile and tutions
                     "latitude": "11.45609800",
                     "longitude": "-51.78216000",
                     "daily_timing": "05:00:00",
+                    "subjects": [
+                        "English",
+                        "Urdu"
+                    ],
                     "student_id": 11,
                     "created_at": "2017-04-12 17:32:21",
                     "id": 5,

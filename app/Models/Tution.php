@@ -63,7 +63,7 @@ class Tution extends AppModel
      *
      * @var array
      */
-    protected $hidden = ['deleted_at', 'updated_at'];
+    protected $hidden = ['tagged', 'deleted_at', 'updated_at'];
 
     /**
      * The attributes that should be casted to native types.
@@ -79,6 +79,20 @@ class Tution extends AppModel
      */
     protected $dates = ['start_date', 'deleted_at', 'created_at', 'updated_at'];
     protected $with = ['answers'];
+
+    /**
+     * Attributes that get appended on serialization
+     *
+     * @var array
+     */
+    protected $appends = [
+        'subjects',
+    ];
+
+    public function getSubjectsAttribute()
+    {
+        return $this->tagNames();
+    }
 
     /**
      * Get Profile
@@ -173,7 +187,7 @@ class Tution extends AppModel
                     });
             });
     }
-    
+
     public function scopePublicOnly($query)
     {
         return $query->where('private', '=', self::TYPE_PUBLIC);
