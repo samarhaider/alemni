@@ -211,7 +211,10 @@ Token is returned which will be required in every request
                         "radius": "4580",
                         "experience": "1",
                         "email": "doyle.freddie@example.org",
-                        "qualifications": []
+                        "qualifications": [],
+                        "teaches": "Matric",
+                        "specialist": "Maths",
+                        "average_rating": "3.0000"
                     }
                 ]
             }
@@ -386,6 +389,10 @@ Token is returned which will be required in every request
                             "Mba",
                             "Bs"
                         ],
+                        "stage_complete": 1,
+                        "teaches": "Matric",
+                        "specialist": "Maths",
+                        "average_rating": "3.0000",
                         "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
                         "answers": [
                             {
@@ -455,6 +462,9 @@ Token is returned which will be required in every request
     + radius: (integer, optional) - Radius in meters
     + experience: (integer, optional) - Experience in Years
     + address: (string, optional) - 
+    + stage_complete: (integer, optional) - 
+    + teaches: (string, optional) - 
+    + specialist: (string, optional) - 
     + qualifications: (array, optional) - string array of qualification
     + bio: (string, optional) - 
 
@@ -479,7 +489,11 @@ Token is returned which will be required in every request
                 "qualifications": [
                     "MBA",
                     "BS"
-                ]
+                ],
+                "stage_complete": 1,
+                "teaches": "Matric",
+                "specialist": "Maths",
+                "average_rating": "3.0000"
             }
 
 + Response 200 (application/json)
@@ -500,7 +514,10 @@ Token is returned which will be required in every request
                 "qualifications": [
                     "MBA",
                     "BS"
-                ]
+                ],
+                "teaches": "Matric",
+                "specialist": "Maths",
+                "average_rating": "3.0000"
             }
 
 + Response 422 (application/json)

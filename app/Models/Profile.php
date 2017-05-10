@@ -30,6 +30,9 @@ class Profile extends AppModel
         'bio' => 'nullable',
         'address' => 'nullable',
         'experience' => 'nullable',
+        'stage_complete' => 'nullable',
+        'specialist' => 'nullable',
+        'teaches' => 'nullable',
     ];
 
     /**
@@ -38,7 +41,7 @@ class Profile extends AppModel
      * @var array
      */
     protected $fillable = [
-        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
+        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'stage_complete', 'specialist', 'teaches', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
     ];
 
     /**
@@ -59,6 +62,7 @@ class Profile extends AppModel
      */
     protected $appends = [
         'qualifications',
+        'average_rating',
         'avatar_url',
     ];
 
@@ -159,9 +163,9 @@ class Profile extends AppModel
 //        }
 //        return [];
     }
-    
+
     public function getAvatarUrlAttribute()
     {
-        return env('APP_URL').'/'.$this->avatar;
+        return env('APP_URL') . '/' . $this->avatar;
     }
 }
