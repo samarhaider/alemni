@@ -49,6 +49,10 @@ class Tution extends AppModel
         'day_of_week_4' => 'required',
         'day_of_week_5' => 'required',
         'day_of_week_6' => 'required',
+        'state' => 'nullable',
+        'city' => 'nullable',
+        'date' => 'nullable',
+        'time' => 'nullable',
     ];
 
     /**
@@ -56,7 +60,7 @@ class Tution extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['student_id', 'tutor_id', 'status', 'private', 'title', 'budget', 'latitude', 'longitude', 'start_date', 'daily_timing', 'day_of_week_0', 'day_of_week_1', 'day_of_week_2', 'day_of_week_3', 'day_of_week_4', 'day_of_week_5', 'day_of_week_6', 'description', 'deleted_at', 'created_at', 'updated_at'];
+    protected $fillable = ['student_id', 'tutor_id', 'status', 'private', 'title', 'budget', 'latitude', 'longitude', 'start_date', 'daily_timing', 'day_of_week_0', 'day_of_week_1', 'day_of_week_2', 'day_of_week_3', 'day_of_week_4', 'day_of_week_5', 'day_of_week_6', 'description', 'deleted_at', 'created_at', 'updated_at', 'city', 'state', 'date', 'time'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -87,12 +91,36 @@ class Tution extends AppModel
      */
     protected $appends = [
         'subjects',
+        'last_class',
+        'next_class',
+//        'date',
+//        'time',
     ];
 
     public function getSubjectsAttribute()
     {
         return $this->tagNames();
     }
+
+    public function getLastClassAttribute()
+    {
+        return "";
+    }
+
+    public function getNextClassAttribute()
+    {
+        return "";
+    }
+
+//    public function getDateAttribute()
+//    {
+//        return "";
+//    }
+//
+//    public function getTimeAttribute()
+//    {
+//        return "";
+//    }
 
     /**
      * Get Profile
@@ -160,6 +188,11 @@ class Tution extends AppModel
     public function scopeStatus($query, $status)
     {
         return $query->where('status', '=', $status);
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', '=', self::STATUS_COMPLETED);
     }
 
     public function scopeFindTutor($query, $tutor_id)

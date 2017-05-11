@@ -15,25 +15,40 @@ class MessageController extends Controller
 {
 
     /**
-     * List of my messages
+     * List of Communications
      *
      * @Get("/")
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":2,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":2,"data":{{"id":2,"unread_messages_count":3,"last_message":{"id":7,"thread_id":"2","sender_id":"10","body":"Fine","created_at":"2017-04-16 13:59:09"},"participants":{{"id":3,"thread_id":"2","user_id":"11","last_read":null,"deleted_at":null},{"id":4,"thread_id":"2","user_id":"10","last_read":null,"deleted_at":null}},"pivot":{"user_id":"10","thread_id":"2","last_read":null},"messages":{{"id":3,"thread_id":"2","sender_id":"11","body":"Salam","created_at":"2017-04-16 13:53:37"},{"id":4,"thread_id":"2","sender_id":"11","body":"How are you?","created_at":"2017-04-16 13:53:44"},{"id":5,"thread_id":"2","sender_id":"11","body":"Wait!","created_at":"2017-04-16 13:53:52"},{"id":6,"thread_id":"2","sender_id":"10","body":"WS","created_at":"2017-04-16 13:59:01"},{"id":7,"thread_id":"2","sender_id":"10","body":"Fine","created_at":"2017-04-16 13:59:09"}}},{"id":3,"unread_messages_count":4,"last_message":{"id":11,"thread_id":"3","sender_id":"5","body":"I will be in meeting room","created_at":"2017-04-17 06:57:15"},"participants":{{"id":5,"thread_id":"3","user_id":"5","last_read":null,"deleted_at":null},{"id":6,"thread_id":"3","user_id":"10","last_read":null,"deleted_at":null}},"pivot":{"user_id":"10","thread_id":"3","last_read":null},"messages":{{"id":8,"thread_id":"3","sender_id":"5","body":"Hello,","created_at":"2017-04-17 06:55:11"},{"id":9,"thread_id":"3","sender_id":"5","body":"Lets discuss on new project","created_at":"2017-04-17 06:55:25"},{"id":10,"thread_id":"3","sender_id":"5","body":"I will be in meeting room","created_at":"2017-04-17 06:57:01"},{"id":11,"thread_id":"3","sender_id":"5","body":"I will be in meeting room","created_at":"2017-04-17 06:57:15"}}}}})
+     *      @Response(200, body={"message":{"total":2,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":2,"data":{{"id":1,"last_message":{"id":52,"thread_id":"1","sender_id":"4","body":"I will be in meeting room","created_at":"2017-05-09 11:14:00"},"messages":{{"id":52,"thread_id":"1","sender_id":"4","body":"I will be in meeting room","created_at":"2017-05-09 11:14:00"}},"participants":{{"id":1,"thread_id":"1","user_id":"4","last_read":"2017-05-09 13:12:32","deleted_at":null,"user":{"id":4,"username":"jamaal23","email":"jamaal23@example.org","created_at":"2017-05-03 07:25:41","banned_at":null,"profile":{"name":"jamaal 23","weight":null,"height":null,"gender":null,"dob":null,"biceps":null,"shoulders":null,"gym_name":null,"avatar":null,"ethnicity":null,"latitude":null,"longitude":null,"description":null}}},{"id":2,"thread_id":"1","user_id":"11","last_read":null,"deleted_at":null,"user":{"id":11,"username":"cecelia.mertz","email":"jacquelyn20@example.com","created_at":"2017-05-09 10:05:19","banned_at":null,"profile":{"name":"Roslyn Smitham","weight":"140.14","height":"126.77","gender":"M","dob":"1977-12-30","biceps":"24.57","shoulders":"42.74","gym_name":"Glover, Lubowitz and Torphy","avatar":"http:\/\/lorempixel.com\/640\/480\/?18089","ethnicity":"4","latitude":"73.93778600","longitude":"-94.09201300","description":"I'm grown up now,' she added in a hurry. 'No, I'll look first,' she said, 'for her hair goes in such a puzzled expression that she knew the meaning of it in asking riddles that have no idea what."}}}},"pivot":{"user_id":"4","thread_id":"1","last_read":"2017-05-09 13:12:32"}}}}}),
      * })
      */
     public function index(Request $request)
     {
         $user = Auth::user();
         $threads = $user->threads()
-            ->with('participants')
+            ->setEagerLoads(['messages' => function ($query) {
+                    $query->latest();
+                    $query->limit(1);
+                }])
+            ->with([
+//                'participants',
+                'participants.user.profile',
+            ])
             ->paginate(20);
         foreach ($threads as $key => $thread) {
-            $thread->unread_messages_count = $thread->unreadMessagesCount;
-            $thread->last_message = $thread->lastMessage;
-            unset($thread->messages);
+//            $thread->unread_messages_count = $thread->unreadMessagesCount;
+//            $thread->last_message = $thread->lastMessage;
+//            $thread->load([
+//                'messages' => function ($query) {
+//                    $query->latest();
+//                    $query->limit(1);
+//                }
+//            ]);
+            $thread->last_message = $thread->messages;
+//            unset($thread->messages);
+//            unset($thread->pivot);
         }
         return $threads;
     }
@@ -74,18 +89,28 @@ class MessageController extends Controller
         return $sender->messagesSent()->latest()->first();
     }
 
+    /**
+     * List of Messages of Specific Thread
+     * 
+     * @Get("/{id}")
+     * 
+     * id is thread Id
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"total":52,"per_page":3,"current_page":1,"last_page":18,"next_page_url":"http:\/\/localhost:8000\/api\/messages\/1?page=2","prev_page_url":null,"from":1,"to":3,"data":{{"id":52,"thread_id":"1","sender_id":"4","body":"I will be in meeting room","created_at":"2017-05-09 11:14:00"},{"id":53,"thread_id":"1","sender_id":"4","body":"I will be in meeting room","created_at":"2017-05-09 11:14:00"},{"id":49,"thread_id":"1","sender_id":"4","body":"I will be in meeting room","created_at":"2017-05-09 11:13:59"}}})
+     * })
+     */
     public function show($id)
     {
-        /**
-         * Message Information
-         *
-         * @Get("/{id}")
-         * 
-         * @Transaction({
-         *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-         *      @Response(200, body={})
-         * })
-         */
+        $user = Auth::user();
+        $thread = $user->findThread($id)->setEagerLoads([])->firstOrFail();
+        $user->markThreadAsRead($id);
+        $messages = Message::where('thread_id', '=', $id)
+            ->latest()
+            ->paginate(20);
+        $user->markThreadAsRead($id);
+        return $messages;
     }
 
     /**
@@ -120,7 +145,7 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message = Message::fromSender(Auth::user()->id)
-            ->where('id', '=', $id)
+            ->whereKey($id)
             ->firstOrFail();
         $message->delete();
         return $message;
@@ -166,7 +191,7 @@ class MessageController extends Controller
      * 
      * @Transaction({
      *      @Request({"thread_id": 2}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"message_thread":{"id":2,"pivot":{"user_id":"10","thread_id":"2","last_read":"2017-04-17 17:25:23"},"messages":{{"id":3,"thread_id":"2","sender_id":"11","body":"Salam","created_at":"2017-04-16 13:53:37"},{"id":4,"thread_id":"2","sender_id":"11","body":"How are you?","created_at":"2017-04-16 13:53:44"},{"id":5,"thread_id":"2","sender_id":"11","body":"Wait!","created_at":"2017-04-16 13:53:52"},{"id":6,"thread_id":"2","sender_id":"10","body":"WS","created_at":"2017-04-16 13:59:01"},{"id":7,"thread_id":"2","sender_id":"10","body":"Fine","created_at":"2017-04-16 13:59:09"}}}}),
+     *      @Response(200, body={"message_thread":{"id":2,"pivot":{"user_id":"4","thread_id":"2","last_read":"2017-05-09 13:15:59"}}}),
      *      @Response(422, body={"message":"Could not read Messages.","errors":{"thread_id":{"The thread_id field is required."}},"status_code":422})
      * })
      */
@@ -175,9 +200,9 @@ class MessageController extends Controller
         $user = Auth::user();
         $thread_id = $request->get('thread_id', false);
         if (!$thread_id) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not read Messages.', ['errors' => ['thread_id' => "The thread_id field is required."]]);
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not read Messages.', ['errors' => ['thread_id' => "The Thread Id field is required."]]);
         }
         $user->markThreadAsRead($thread_id);
-        return $user->findThread($thread_id)->first();
+        return $user->findThread($thread_id)->setEagerLoads([])->first();
     }
 }

@@ -33,6 +33,9 @@ class Profile extends AppModel
         'stage_complete' => 'nullable',
         'specialist' => 'nullable',
         'teaches' => 'nullable',
+        'paypal_address' => 'nullable',
+        'state' => 'nullable',
+        'city' => 'nullable',
     ];
 
     /**
@@ -41,7 +44,7 @@ class Profile extends AppModel
      * @var array
      */
     protected $fillable = [
-        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'stage_complete', 'specialist', 'teaches', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
+        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'stage_complete', 'specialist', 'teaches', 'phone_number', 'bio', 'latitude', 'longitude', 'address', 'city', 'state', 'paypal_address'
     ];
 
     /**
@@ -63,7 +66,9 @@ class Profile extends AppModel
     protected $appends = [
         'qualifications',
         'average_rating',
+        'completed_tutions',
         'avatar_url',
+        'total_hours',
     ];
 
     /**
@@ -167,5 +172,24 @@ class Profile extends AppModel
     public function getAvatarUrlAttribute()
     {
         return env('APP_URL') . '/' . $this->avatar;
+    }
+
+    public function tutions()
+    {
+        $foreign_key = 'student_id';
+        if ($this->user->user_type == User::TYPE_TUTOR) {
+            $foreign_key = 'tutor_id';
+        }
+        return $this->hasMany('App\Models\Tution', $foreign_key, 'user_id');
+    }
+
+    public function getCompletedTutionsAttribute()
+    {
+        return $this->tutions()->completed()->count();
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        return 5;
     }
 }
