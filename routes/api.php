@@ -58,4 +58,5 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('credit-cards', 'App\Http\Controllers\CreditCardController');
 //    $api->get('credit-cards', 'App\Http\Controllers\CreditCardController@index');
 //    $api->post('credit-cards', 'App\Http\Controllers\CreditCardController@store');
+    $api->post('uploads', 'App\Http\Controllers\UploadController@store');
 });

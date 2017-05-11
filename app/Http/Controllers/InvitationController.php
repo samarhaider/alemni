@@ -62,12 +62,15 @@ class InvitationController extends Controller
      * @Post("/")
      * 
      * @Parameters({
+     *      @Parameter("attachments", type="array", description="array of objects"),
+     *      @Parameter("description"),
+     *      @Parameter("grade"),
      *      @Parameter("tution_id", type="integer", required=true),
      *      @Parameter("tutor_id", type="integer", required=true)
      * })
      * @Transaction({
-     *      @Request({"tutor_id": 7, "tution_id": 3}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"tutor_id":7,"tution_id":3,"updated_at":"2017-04-18 18:15:06","created_at":"2017-04-18 18:15:06","id":1}}),
+     *      @Request({"tutor_id": 7, "tution_id": 3,"attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"}}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"invitation":{"tutor_id":7,"tution_id":3,"attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"},"updated_at":"2017-04-18 18:15:06","created_at":"2017-04-18 18:15:06","id":1}}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tution_id":{"You have already sent invitation of this tutor."}},"status_code":422}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tution_id":{"The tution id field is required."}},"status_code":422}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tutor_id":{"The tutor id field is required."}},"status_code":422})

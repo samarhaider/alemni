@@ -53,6 +53,7 @@ class Tution extends AppModel
         'city' => 'nullable',
         'date' => 'nullable',
         'time' => 'nullable',
+        'attachments' => 'nullable|array',
     ];
 
     /**
@@ -60,7 +61,7 @@ class Tution extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['student_id', 'tutor_id', 'status', 'private', 'title', 'budget', 'latitude', 'longitude', 'start_date', 'daily_timing', 'day_of_week_0', 'day_of_week_1', 'day_of_week_2', 'day_of_week_3', 'day_of_week_4', 'day_of_week_5', 'day_of_week_6', 'description', 'deleted_at', 'created_at', 'updated_at', 'city', 'state', 'date', 'time'];
+    protected $fillable = ['student_id', 'tutor_id', 'status', 'private', 'title', 'budget', 'latitude', 'longitude', 'start_date', 'daily_timing', 'day_of_week_0', 'day_of_week_1', 'day_of_week_2', 'day_of_week_3', 'day_of_week_4', 'day_of_week_5', 'day_of_week_6', 'description', 'deleted_at', 'created_at', 'updated_at', 'city', 'state', 'date', 'time', 'attachments'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -92,7 +93,7 @@ class Tution extends AppModel
     protected $appends = [
         'subjects',
         'last_class',
-        'next_class',
+//        'attachments',
 //        'date',
 //        'time',
     ];
@@ -112,6 +113,18 @@ class Tution extends AppModel
         return "";
     }
 
+    public function setAttachmentsAttribute($value)
+    {
+        $this->attributes['attachments'] = serialize($value);
+    }
+
+    public function getAttachmentsAttribute($value)
+    {
+        if ($value == null) {
+            return [];
+        }
+        return unserialize($value);
+    }
 //    public function getDateAttribute()
 //    {
 //        return "";
