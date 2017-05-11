@@ -14,13 +14,13 @@ use Hash;
 use JWTAuth;
 
 /**
- * @Resource("Images", uri="/uploads" )
+ * @Resource("Uploads", uri="/uploads" )
  */
 class UploadController extends Controller
 {
 
     /**
-     * Upload Images
+     * Upload Attachments
      *
      * @Post("/")
      * 

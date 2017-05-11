@@ -764,6 +764,30 @@ Token is returned which will be required in every request
                 "status_code": 422
             }
 
+# Subject [/subjects]
+
+## Subjects List [GET /subjects]
+
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                "Maths",
+                "Science",
+                "Language",
+                "Test preparation",
+                "Elementary education",
+                "Computer",
+                "Business",
+                "History",
+                "Music",
+                "Special Needs",
+                "Sports\/Recreation",
+                "Religion",
+                "Art"
+            ]
+
 # Question [/questions]
 
 ## List of Questionnaires with options [GET /questions]
@@ -2392,9 +2416,9 @@ for student/tutor profile and tutions
                 "status_code": 422
             }
 
-# Images [/uploads]
+# Uploads [/uploads]
 
-## Upload Images [POST /uploads]
+## Upload Attachments [POST /uploads]
 
 
 + Parameters
