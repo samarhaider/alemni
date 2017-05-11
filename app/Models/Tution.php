@@ -40,7 +40,7 @@ class Tution extends AppModel
         'budget' => 'required',
         'latitude' => ['required', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
         'longitude' => ['required', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
-        'start_date' => 'required|date',
+        'start_date' => 'required',
         'daily_timing' => 'required',
         'day_of_week_0' => 'required',
         'day_of_week_1' => 'required',
