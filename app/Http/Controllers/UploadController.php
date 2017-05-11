@@ -25,7 +25,7 @@ class UploadController extends Controller
      * @Post("/")
      * 
      * @Parameters({
-     *      @Parameter("attachments", "type"=array, required=true)
+     *      @Parameter("attachments", type="array", required=true)
      * })
      * 
      * @Transaction({

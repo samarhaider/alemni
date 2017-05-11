@@ -1030,6 +1030,7 @@ for student/tutor profile and tutions
     + day_of_week_6: (boolean, required) - 
     + subjects: (array, optional) - string array of subjects
     + answers: (array, required) - array of objects
+    + attachments: (array, optional) - array of objects
     + description: (string, optional) - 
 
 + Request (application/json)
@@ -1057,28 +1058,32 @@ for student/tutor profile and tutions
                     "English",
                     "Urdu"
                 ],
-                "answers": [
-                    {
+                "answers": {
+                    "0": {
                         "question_id": 1,
                         "choice_id": 2
                     },
-                    {
+                    "1": {
                         "question_id": 4,
                         "choice_id": 2
                     },
-                    {
+                    "2": {
                         "question_id": 6,
                         "choice_id": 2
                     },
-                    {
+                    "3": {
                         "question_id": 8,
                         "choice_id": 2
                     },
-                    {
+                    "4": {
                         "question_id": 12,
                         "choice_id": 2
-                    }
-                ]
+                    },
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ]
+                }
             }
 
 + Response 200 (application/json)
@@ -1089,6 +1094,10 @@ for student/tutor profile and tutions
                     "title": "Tution 3",
                     "private": true,
                     "budget": "100 dollar",
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
                     "start_date": "2019-08-12 00:00:00",
                     "day_of_week_0": true,
                     "day_of_week_1": true,
@@ -1304,7 +1313,7 @@ for student/tutor profile and tutions
 
 # Messages [/messages]
 
-## List of my messages [GET /messages]
+## List of Communications [GET /messages]
 
 
 + Request (application/json)
@@ -1319,147 +1328,102 @@ for student/tutor profile and tutions
     + Body
 
             {
-                "total": 2,
-                "per_page": 20,
-                "current_page": 1,
-                "last_page": 1,
-                "next_page_url": null,
-                "prev_page_url": null,
-                "from": 1,
-                "to": 2,
-                "data": [
-                    {
-                        "id": 2,
-                        "unread_messages_count": 3,
-                        "last_message": {
-                            "id": 7,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "Fine",
-                            "created_at": "2017-04-16 13:59:09"
-                        },
-                        "participants": [
-                            {
-                                "id": 3,
-                                "thread_id": "2",
-                                "user_id": "11",
-                                "last_read": null,
-                                "deleted_at": null
-                            },
-                            {
-                                "id": 4,
-                                "thread_id": "2",
-                                "user_id": "10",
-                                "last_read": null,
-                                "deleted_at": null
-                            }
-                        ],
-                        "pivot": {
-                            "user_id": "10",
-                            "thread_id": "2",
-                            "last_read": null
-                        },
-                        "messages": [
-                            {
-                                "id": 3,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "Salam",
-                                "created_at": "2017-04-16 13:53:37"
-                            },
-                            {
-                                "id": 4,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "How are you?",
-                                "created_at": "2017-04-16 13:53:44"
-                            },
-                            {
-                                "id": 5,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "Wait!",
-                                "created_at": "2017-04-16 13:53:52"
-                            },
-                            {
-                                "id": 6,
-                                "thread_id": "2",
-                                "sender_id": "10",
-                                "body": "WS",
-                                "created_at": "2017-04-16 13:59:01"
-                            },
-                            {
-                                "id": 7,
-                                "thread_id": "2",
-                                "sender_id": "10",
-                                "body": "Fine",
-                                "created_at": "2017-04-16 13:59:09"
-                            }
-                        ]
-                    },
-                    {
-                        "id": 3,
-                        "unread_messages_count": 4,
-                        "last_message": {
-                            "id": 11,
-                            "thread_id": "3",
-                            "sender_id": "5",
-                            "body": "I will be in meeting room",
-                            "created_at": "2017-04-17 06:57:15"
-                        },
-                        "participants": [
-                            {
-                                "id": 5,
-                                "thread_id": "3",
-                                "user_id": "5",
-                                "last_read": null,
-                                "deleted_at": null
-                            },
-                            {
-                                "id": 6,
-                                "thread_id": "3",
-                                "user_id": "10",
-                                "last_read": null,
-                                "deleted_at": null
-                            }
-                        ],
-                        "pivot": {
-                            "user_id": "10",
-                            "thread_id": "3",
-                            "last_read": null
-                        },
-                        "messages": [
-                            {
-                                "id": 8,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "Hello,",
-                                "created_at": "2017-04-17 06:55:11"
-                            },
-                            {
-                                "id": 9,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "Lets discuss on new project",
-                                "created_at": "2017-04-17 06:55:25"
-                            },
-                            {
-                                "id": 10,
-                                "thread_id": "3",
-                                "sender_id": "5",
+                "message": {
+                    "total": 2,
+                    "per_page": 20,
+                    "current_page": 1,
+                    "last_page": 1,
+                    "next_page_url": null,
+                    "prev_page_url": null,
+                    "from": 1,
+                    "to": 2,
+                    "data": [
+                        {
+                            "id": 1,
+                            "last_message": {
+                                "id": 52,
+                                "thread_id": "1",
+                                "sender_id": "4",
                                 "body": "I will be in meeting room",
-                                "created_at": "2017-04-17 06:57:01"
+                                "created_at": "2017-05-09 11:14:00"
                             },
-                            {
-                                "id": 11,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "I will be in meeting room",
-                                "created_at": "2017-04-17 06:57:15"
+                            "messages": [
+                                {
+                                    "id": 52,
+                                    "thread_id": "1",
+                                    "sender_id": "4",
+                                    "body": "I will be in meeting room",
+                                    "created_at": "2017-05-09 11:14:00"
+                                }
+                            ],
+                            "participants": [
+                                {
+                                    "id": 1,
+                                    "thread_id": "1",
+                                    "user_id": "4",
+                                    "last_read": "2017-05-09 13:12:32",
+                                    "deleted_at": null,
+                                    "user": {
+                                        "id": 4,
+                                        "username": "jamaal23",
+                                        "email": "jamaal23@example.org",
+                                        "created_at": "2017-05-03 07:25:41",
+                                        "banned_at": null,
+                                        "profile": {
+                                            "name": "jamaal 23",
+                                            "weight": null,
+                                            "height": null,
+                                            "gender": null,
+                                            "dob": null,
+                                            "biceps": null,
+                                            "shoulders": null,
+                                            "gym_name": null,
+                                            "avatar": null,
+                                            "ethnicity": null,
+                                            "latitude": null,
+                                            "longitude": null,
+                                            "description": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "id": 2,
+                                    "thread_id": "1",
+                                    "user_id": "11",
+                                    "last_read": null,
+                                    "deleted_at": null,
+                                    "user": {
+                                        "id": 11,
+                                        "username": "cecelia.mertz",
+                                        "email": "jacquelyn20@example.com",
+                                        "created_at": "2017-05-09 10:05:19",
+                                        "banned_at": null,
+                                        "profile": {
+                                            "name": "Roslyn Smitham",
+                                            "weight": "140.14",
+                                            "height": "126.77",
+                                            "gender": "M",
+                                            "dob": "1977-12-30",
+                                            "biceps": "24.57",
+                                            "shoulders": "42.74",
+                                            "gym_name": "Glover, Lubowitz and Torphy",
+                                            "avatar": "http:\/\/lorempixel.com\/640\/480\/?18089",
+                                            "ethnicity": "4",
+                                            "latitude": "73.93778600",
+                                            "longitude": "-94.09201300",
+                                            "description": "I'm grown up now,' she added in a hurry. 'No, I'll look first,' she said, 'for her hair goes in such a puzzled expression that she knew the meaning of it in asking riddles that have no idea what."
+                                        }
+                                    }
+                                }
+                            ],
+                            "pivot": {
+                                "user_id": "4",
+                                "thread_id": "1",
+                                "last_read": "2017-05-09 13:12:32"
                             }
-                        ]
-                    }
-                ]
+                        }
+                    ]
+                }
             }
 
 ## Send Message to User [POST /messages]
@@ -1506,6 +1470,54 @@ for student/tutor profile and tutions
                 "status_code": 422
             }
 
+## List of Messages of Specific Thread [GET /messages/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 52,
+                "per_page": 3,
+                "current_page": 1,
+                "last_page": 18,
+                "next_page_url": "http:\/\/localhost:8000\/api\/messages\/1?page=2",
+                "prev_page_url": null,
+                "from": 1,
+                "to": 3,
+                "data": [
+                    {
+                        "id": 52,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:14:00"
+                    },
+                    {
+                        "id": 53,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:14:00"
+                    },
+                    {
+                        "id": 49,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:13:59"
+                    }
+                ]
+            }
+
 ## Unread Messages Count [GET /messages/unread-messages-count]
 
 
@@ -1547,47 +1559,10 @@ for student/tutor profile and tutions
                 "message_thread": {
                     "id": 2,
                     "pivot": {
-                        "user_id": "10",
+                        "user_id": "4",
                         "thread_id": "2",
-                        "last_read": "2017-04-17 17:25:23"
-                    },
-                    "messages": [
-                        {
-                            "id": 3,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "Salam",
-                            "created_at": "2017-04-16 13:53:37"
-                        },
-                        {
-                            "id": 4,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "How are you?",
-                            "created_at": "2017-04-16 13:53:44"
-                        },
-                        {
-                            "id": 5,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "Wait!",
-                            "created_at": "2017-04-16 13:53:52"
-                        },
-                        {
-                            "id": 6,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "WS",
-                            "created_at": "2017-04-16 13:59:01"
-                        },
-                        {
-                            "id": 7,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "Fine",
-                            "created_at": "2017-04-16 13:59:09"
-                        }
-                    ]
+                        "last_read": "2017-05-09 13:15:59"
+                    }
                 }
             }
 
@@ -2048,6 +2023,10 @@ for student/tutor profile and tutions
 
 
 + Parameters
+    + attachments: (array, optional) - array of objects
+    + description: (string, optional) - 
+    + grade: (string, optional) - 
+    + end_date: (string, optional) - 
     + tution_id: (integer, required) - 
     + tutor_id: (integer, required) - 
 
@@ -2059,7 +2038,11 @@ for student/tutor profile and tutions
 
             {
                 "tutor_id": 7,
-                "tution_id": 3
+                "tution_id": 3,
+                "attachments": [
+                    "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                    "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                ]
             }
 
 + Response 200 (application/json)
@@ -2069,6 +2052,10 @@ for student/tutor profile and tutions
                 "invitation": {
                     "tutor_id": 7,
                     "tution_id": 3,
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
                     "updated_at": "2017-04-18 18:15:06",
                     "created_at": "2017-04-18 18:15:06",
                     "id": 1
@@ -2400,6 +2387,35 @@ for student/tutor profile and tutions
                     ],
                     "cvc": [
                         "The cvc field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Images [/uploads]
+
+## Upload Images [POST /uploads]
+
+
++ Parameters
+    + attachments: (array, required) - 
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                "attachments/m5YVZqMJagSdoUxalVFe5CYfPVmhPOvjFPgLlkkt.txt",
+                "attachments/hMdyme9xiDBmN577nuDiGo4o5qGs8qtI3YsqdMCj.html"
+            ]
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not upload attachments.",
+                "errors": {
+                    "attachments": [
+                        "Attachments is required."
                     ]
                 },
                 "status_code": 422
