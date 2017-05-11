@@ -17,7 +17,7 @@ class InvitationsAdditions1 extends Migration
             $table->date('end_date')->after('status')->nullable()->default(null);
             $table->string('grade')->after('end_date')->nullable()->default(null);
             $table->text('attachments')->after('grade')->nullable()->default(null);
-            $table->text('description')->after('attachments')->nullable()->default(null);
+//            $table->text('description')->after('attachments')->nullable()->default(null);
         });
     }
 

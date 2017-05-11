@@ -82,7 +82,7 @@ class Tution extends AppModel
      *
      * @var array
      */
-    protected $dates = ['start_date', 'deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
     protected $with = ['answers'];
 
     /**
