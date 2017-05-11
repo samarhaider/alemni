@@ -31,6 +31,7 @@ class Invitation extends AppModel
         'attachments' => 'nullable|array',
         'description' => 'nullable',
         'grade' => 'nullable',
+        'end_date' => 'nullable',
     ];
 
     /**
@@ -38,7 +39,7 @@ class Invitation extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['tutor_id', 'tution_id', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at', 'attachments', 'grade'];
+    protected $fillable = ['tutor_id', 'tution_id', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at', 'attachments', 'grade', 'end_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -59,7 +60,7 @@ class Invitation extends AppModel
      *
      * @var array
      */
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['end_date', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be mutated to dates.

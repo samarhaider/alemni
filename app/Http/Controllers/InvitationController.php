@@ -65,6 +65,7 @@ class InvitationController extends Controller
      *      @Parameter("attachments", type="array", description="array of objects"),
      *      @Parameter("description"),
      *      @Parameter("grade"),
+     *      @Parameter("end_date"),
      *      @Parameter("tution_id", type="integer", required=true),
      *      @Parameter("tutor_id", type="integer", required=true)
      * })
