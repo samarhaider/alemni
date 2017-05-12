@@ -97,6 +97,7 @@ class InvitationController extends Controller
         if ($already_invitation) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You have already sent invitation of this tutor.']);
         }
+        $invitation->status = Invitation::STATUS_PENDING;
         $invitation->save();
         return $invitation;
     }

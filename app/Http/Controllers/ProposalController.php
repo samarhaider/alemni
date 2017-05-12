@@ -90,6 +90,7 @@ class ProposalController extends Controller
         if ($already_proposal) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Proposal.', ['tution_id' => 'You have already applied on this tution.']);
         }
+        $proposal->status = Proposal::STATUS_PENDING;
         $proposal->save();
         return $proposal;
     }

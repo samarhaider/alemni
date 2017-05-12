@@ -162,6 +162,7 @@ class TutionController extends Controller
         if ($errors) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not add Tution.', $errors);
         }
+        $tution->status = Tution::STATUS_NEW;
         $tution->save();
         if ($request->get('subjects')) {
             $tution->retag($request->get('subjects'));
