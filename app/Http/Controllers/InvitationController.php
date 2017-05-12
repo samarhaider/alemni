@@ -37,7 +37,8 @@ class InvitationController extends Controller
         } else {
             $invitations = Invitation::whereHas('tution', function($query) use ($user) {
                     $query->where('tutions.student_id', '=', $user->id);
-                });
+                })
+                ->with('tutor');
         }
         $status = $request->get('status', Invitation::STATUS_PENDING);
         if ($status) {
