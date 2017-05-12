@@ -33,7 +33,7 @@ class InvitationController extends Controller
         $user = Auth::user();
         $invitations = new Invitation;
         if ($user->isTutor()) {
-            $invitations = Invitation::findTutor($user->id);
+            $invitations = Invitation::findTutor($user->id)->with('tution.studentProfile');
         } else {
             $invitations = Invitation::whereHas('tution', function($query) use ($user) {
                     $query->where('tutions.student_id', '=', $user->id);
