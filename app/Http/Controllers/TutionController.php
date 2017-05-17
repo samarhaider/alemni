@@ -27,7 +27,7 @@ class TutionController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":20,"per_page":1,"current_page":1,"last_page":1,"next_page_url":"http:\/\/localhost:8000\/api\/tutions?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":5,"student_id":"11","tutor_id":"6","status":"1","private": true,"title":"Tution 3","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:21","tutor_profile":{"id":6,"gender":"M","name":"Alva Runolfsson","avatar":null,"latitude":"-50.45929600","longitude":"125.86288200","phone_number":"+18872230060","bio":"Beatae hic sint voluptatum ea. Ipsa quia et quos nam qui ut officiis laboriosam. Autem totam voluptates voluptate ducimus qui necessitatibus et ullam. Temporibus et magni totam.","hourly_rate":"4.00","radius":"7306","qualifications":{}}}}})
+     *      @Response(200, body={"total":2,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":2,"data":{{"id":6,"student_id":"11","tutor_id":"6","status":"2","private":true,"title":"Tution 6","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":{},"day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 19:20:03","subjects":{},"last_class":"","answers":{},"student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}},{"id":4,"student_id":"11","tutor_id":"6","status":"2","private":true,"title":"Tution 4","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":{},"day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:16","subjects":{},"last_class":"","answers":{},"student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}}}})
      * })
      */
     public function index(Request $request)
@@ -37,12 +37,12 @@ class TutionController extends Controller
         $relations = null;
         if (Auth::user()->isStudent()) {
             $student_id = Auth::user()->id;
-            $relations = ['tutorProfile', 'invitations.tutor'];
+            $relations = ['tutor', 'invitations.tutor'];
 //            $relations[] = 'proposals.tutor';
         }
         if (Auth::user()->isTutor()) {
             $tutor_id = Auth::user()->id;
-            $relations = 'studentProfile';
+            $relations = 'student';
         }
 
         $tutions = Tution::with($relations);
@@ -187,12 +187,12 @@ class TutionController extends Controller
         $user = Auth::user();
         if ($user->isStudent()) {
             $student_id = $user->id;
-            $relations = ['tutorProfile', 'invitations.tutor'];
+            $relations = ['tutor', 'invitations.tutor'];
             $relations[] = 'proposals.tutor';
         }
         if ($user->isTutor()) {
             $tutor_id = $user->id;
-            $relations = 'studentProfile';
+            $relations = 'student';
         }
         $query = Tution::with($relations)
             ->whereKey($id);
@@ -273,9 +273,9 @@ class TutionController extends Controller
         }
         $other_user = null;
         if ($user->isTutor()) {
-            $other_user = $tution->studentProfile;
+            $other_user = $tution->student;
         } else {
-            $other_user = $tution->tutorProfile;
+            $other_user = $tution->tutor;
         }
 
         $rating = new Rating;

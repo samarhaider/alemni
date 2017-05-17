@@ -82,7 +82,7 @@ class Tution extends AppModel
      *
      * @var array
      */
-    protected $dates = [ 'deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
     protected $with = ['answers'];
 
     /**
@@ -140,7 +140,7 @@ class Tution extends AppModel
      * 
      * @return type Object of Profile 
      */
-    public function studentProfile()
+    public function student()
     {
         return $this->belongsTo('App\Models\Profile', 'student_id', 'user_id');
     }
@@ -160,7 +160,7 @@ class Tution extends AppModel
      * 
      * @return type Object of Profile 
      */
-    public function tutorProfile()
+    public function tutor()
     {
         return $this->belongsTo('App\Models\Profile', 'tutor_id', 'user_id');
     }
