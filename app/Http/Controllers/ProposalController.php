@@ -61,12 +61,17 @@ class ProposalController extends Controller
      * @Post("/")
      * 
      * @Parameters({
+     *      @Parameter("title", required=true),
+     *      @Parameter("availability_from"),
+     *      @Parameter("availability_to"),
+     *      @Parameter("schedule"),
+     *      @Parameter("attachments", type="array", description="array of objects"),
      *      @Parameter("tution_id", type="integer", required=true),
      *      @Parameter("description", required=true)
      * })
      * 
      * @Transaction({
-     *      @Request({"tution_id": 3, "description": "This is cover letter"}, headers={"Authorization": "Bearer {token}"}),
+     *      @Request({"title": "title abc", "tution_id": 3, "description": "This is cover letter"}, headers={"Authorization": "Bearer {token}"}),
      *      @Response(200, body={"proposal":{"tution_id":3,"description":"This is cover letter","tutor_id":10,"updated_at":"2017-04-18 17:32:47","created_at":"2017-04-18 17:32:47","id":1}}),
      *      @Response(422, body={"message":"Could not submit Proposal.","errors":{"tution_id":{"You have already applied on this tution."}},"status_code":422}),
      *      @Response(422, body={"message":"Could not submit Proposal.","errors":{"description":{"The description id field is required."}},"status_code":422}),

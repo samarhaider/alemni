@@ -322,4 +322,9 @@ class TutionController extends Controller
         $tution->save();
         return $tution;
     }
+    
+    public function offers(Request $request)
+    {
+        
+    }
 }

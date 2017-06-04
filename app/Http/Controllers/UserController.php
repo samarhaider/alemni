@@ -12,6 +12,8 @@ use File;
 use Imageupload;
 use Hash;
 use JWTAuth;
+use App\Models\PasswordReset;
+use App\Mail\PasswordResetCode;
 
 /**
  * @Resource("Users", uri="/users" )
@@ -165,7 +167,24 @@ class UserController extends Controller
             $user->profile->answers;
             $user->creditCard;
         }
+        $user->profile->ratings;
+        $user->profile->averageRating;
         return $user;
+    }
+
+    /**
+     * Show User profile
+     *
+     * @Get("/{id}")
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03","profile":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000", "experience": "1","qualifications":{"Mba","Bs"},"stage_complete":1,"teaches":"Matric","specialist":"Maths","average_rating":"3.0000","avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}}})
+     * })
+     */
+    public function viewprofile($id)
+    {
+        
     }
 
     /**
@@ -332,5 +351,93 @@ class UserController extends Controller
         }
         Auth::user()->profile->answers()->saveMany($answers_response);
         return Auth::user()->profile->answers;
+    }
+
+    /**
+     * Send Password Reset Code
+     *
+     * @Post("/send-password-reset-code")
+     * 
+     * @Parameters({
+     *      @Parameter("email",  description="Email for code", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email":"user@mailinator.om"}),
+     *      @Response(200),
+     *      @Response(422, body={"message": "Could not send reset password email.", "errors": {"email": {"Email does not exists."}}, "status_code": 422,}),
+     *      @Response(422, body={"message":"Could not send reset password email.","status_code":422})
+     * })
+     */
+    public function sendPasswordResetCode(Request $request)
+    {
+        $email = $request->get('email');
+        $user = User::where('email', '=', $email)->first();
+        if (!$user) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not send reset password email.', ['email' => 'Email does not exists.']);
+        }
+
+        $password_reset = PasswordReset::where('email', '=', $user->email)->first();
+        if (!$password_reset) {
+            $password_reset = new PasswordReset;
+            $password_reset->email = $user->email;
+        }
+        $password_reset->token = mt_rand(1000, 9999);
+        if ($password_reset->save()) {
+            # Send Email oops email work remain
+            \Mail::to($user)->send(new PasswordResetCode($password_reset));
+//            return [];
+            return $password_reset;
+        }
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not send reset password email.', $password_reset->getErrors());
+    }
+
+    /**
+     * Reset Customer password 
+     *
+     * @Post("/reset-password")
+     * 
+     * @Parameters({
+     *      @Parameter("email", description="Email for code", required=true),
+     *      @Parameter("token", description="4 digits code", required=true),
+     *      @Parameter("password", description="4 digits password", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"email":"user1@mailinator.com", "token": 3646, "password":1234, "confirm_password": 1234}),
+     *      @Response(200, body={"user": { "email": "user1@mailinator.com", "name": "Customer One", "plate_number": "KBP-2440", "telephone_number": 123456789, "user_type": 3, "updated_at": "2016-12-13 08:15:30", "created_at": "2016-12-01 06:16:52", "confirm_password": 1234, "id": "583fc0547d2ae705f534d4b1" }}),
+     *      @Response(422, body={"message": "Could not update user password.", "errors": {"email": {"Email does not exists."}},"status_code":422}),
+     *      @Response(422, body={"message": "Could not update user password.", "errors": {"token": {"Code does not match."}},"status_code":422}),
+     *      @Response(422, body={"message": "Could not update user password.", "errors": {"password": {"The password field is required."}},"status_code":422}),
+     *      @Response(422, body={"message": "Could not send reset password email.","status_code":422})
+     * })
+     */
+    public function setPassword(Request $request)
+    {
+        $token = $request->get('token');
+        $email = $request->get('email');
+        $user = User::where('email', '=', $email)->first();
+        if (!$user) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', ['email' => 'Email does not exists.']);
+        }
+
+        $password_reset = PasswordReset::where('token', '=', $token)
+            ->where('email', '=', $email)
+            ->first();
+        if (!$password_reset) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', ['token' => 'Code does not match.']);
+        }
+
+        $user->changePasswordValidation();
+        $user->password = $request->get('password');
+        if ($user->isInvalid()) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', $user->getErrors());
+        }
+//        $user->changePasswordValidation(false);
+        $user->password = Hash::make($user->password);
+        if ($user->save() && $password_reset->forceDelete()) {
+            return $user;
+        }
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', $user->getErrors());
     }
 }
