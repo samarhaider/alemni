@@ -1,7 +1,5 @@
 FORMAT: 1A
 
-HOST: http://52.35.243.250/v1/api/
-
 # API
 
 # Login [/login]
@@ -860,58 +858,22 @@ Token is returned which will be required in every request
                 "status_code": 422
             }
 
-## Send Password Reset Code [POST /users/send-password-reset-code]
+## Change Password [POST /users/change-password]
 
 
 + Parameters
-    + email: (string, required) - Email for code
+    + current_password: (string, required) - 
+    + new_password: (string, required) - 
 
 + Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
     + Body
 
             {
-                "email": "user@mailinator.om"
-            }
-
-+ Response 200 (application/json)
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not send reset password email.",
-                "errors": {
-                    "email": [
-                        "Email does not exists."
-                    ]
-                },
-                "status_code": 422
-            }
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not send reset password email.",
-                "status_code": 422
-            }
-
-## Reset Customer password [POST /users/reset-password]
-
-
-+ Parameters
-    + email: (string, required) - Email for code
-    + token: (string, required) - 4 digits code
-    + password: (string, required) - 4 digits password
-
-+ Request (application/json)
-    + Body
-
-            {
-                "email": "user1@mailinator.com",
-                "token": 3646,
-                "password": 1234,
-                "confirm_password": 1234
+                "current_password": "new_password",
+                "new_password": "123456"
             }
 
 + Response 200 (application/json)
@@ -919,15 +881,10 @@ Token is returned which will be required in every request
 
             {
                 "user": {
-                    "email": "user1@mailinator.com",
-                    "name": "Customer One",
-                    "plate_number": "KBP-2440",
-                    "telephone_number": 123456789,
-                    "user_type": 3,
-                    "updated_at": "2016-12-13 08:15:30",
-                    "created_at": "2016-12-01 06:16:52",
-                    "confirm_password": 1234,
-                    "id": "583fc0547d2ae705f534d4b1"
+                    "id": 15,
+                    "email": "student2@mailinator.com",
+                    "user_type": "2",
+                    "created_at": "2017-04-27 18:01:32"
                 }
             }
 
@@ -935,46 +892,12 @@ Token is returned which will be required in every request
     + Body
 
             {
-                "message": "Could not update user password.",
+                "message": "Could not update password.",
                 "errors": {
-                    "email": [
-                        "Email does not exists."
+                    "current_password": [
+                        "Current password is not matched"
                     ]
                 },
-                "status_code": 422
-            }
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not update user password.",
-                "errors": {
-                    "token": [
-                        "Code does not match."
-                    ]
-                },
-                "status_code": 422
-            }
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not update user password.",
-                "errors": {
-                    "password": [
-                        "The password field is required."
-                    ]
-                },
-                "status_code": 422
-            }
-
-+ Response 422 (application/json)
-    + Body
-
-            {
-                "message": "Could not send reset password email.",
                 "status_code": 422
             }
 
@@ -2776,6 +2699,172 @@ for student/tutor profile and tutions
                     ],
                     "cvc": [
                         "The cvc field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Lecture [/lectures]
+
+## List of Lectures [GET /lectures]
+
+
++ Parameters
+    + tution_id: (integer, optional) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": 1,
+                        "tution_id": "3",
+                        "start_time": "2017-06-04 12:19:48",
+                        "end_time": "2017-06-04 12:24:48",
+                        "goals": "This is cover letter",
+                        "reviews": "reviews reviews reviews, reviews",
+                        "lecture_number": "1",
+                        "progress": "10",
+                        "attachments": [
+                            "attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                            "attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                        ],
+                        "created_at": "2017-06-04 12:19:48",
+                        "updated_at": "2017-06-04 12:24:48",
+                        "deleted_at": null
+                    }
+                ]
+            }
+
+## Start Lecture [POST /lectures/start]
+
+
++ Parameters
+    + tution_id: (integer, required) - 
+    + goals: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "tution_id": 3,
+                "goals": "This is cover letter"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "lecture": {
+                    "tution_id": 3,
+                    "goals": "This is cover letter",
+                    "lecture_number": 1,
+                    "start_time": "2017-06-04 12:19:48",
+                    "updated_at": "2017-06-04 12:19:48",
+                    "created_at": "2017-06-04 12:19:48",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not start Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "The tution id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not start Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "You have already started lecture."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## View specific lecture [POST /lectures/{lecture_id}/end]
+
+
++ Parameters
+    + attachments: (array, optional) - array of objects
+    + reviews: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "reviews": "reviews reviews reviews, reviews",
+                "progress": 10,
+                "attachments": [
+                    "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                    "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                ]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "lecture": {
+                    "id": 1,
+                    "tution_id": "3",
+                    "start_time": "2017-06-04 12:19:48",
+                    "end_time": "2017-06-04 12:24:48",
+                    "goals": "This is cover letter",
+                    "reviews": "reviews reviews reviews, reviews",
+                    "lecture_number": "1",
+                    "progress": 10,
+                    "attachments": [
+                        "attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
+                    "created_at": "2017-06-04 12:19:48",
+                    "updated_at": "2017-06-04 12:24:48",
+                    "deleted_at": null
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not end Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "You have already ended lecture."
                     ]
                 },
                 "status_code": 422

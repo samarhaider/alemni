@@ -51,6 +51,7 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
     protected $hidden = [
         'password', 'remember_token', 'google', 'active', 'block', 'updated_at', 'deleted_at'
     ];
+    
     public function emailPasswordValidation($add = true)
     {
         if ($add) {
@@ -63,6 +64,21 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
             $this->rules['google'] = 'required';
         }
     }
+    
+    public function changePasswordValidation($add = true)
+    {
+        if ($add) {
+            $this->rules = [
+                'current_password' => 'required',
+//                'new_password' => 'required|confirmed',
+                'new_password' => 'required',
+            ];
+        } else {
+            unset($this->rules['current_password']);
+            unset($this->rules['new_password']);
+        }
+    }
+    
     public function profile()
     {
         return $this->hasOne('App\Models\Profile');

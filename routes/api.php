@@ -34,6 +34,7 @@ $api->version('v1', function ($api) {
 
 # Private Actions
 $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
+    $api->post('users/change-password', 'App\Http\Controllers\UserController@changePassword');
     $api->post('users/avatar', 'App\Http\Controllers\UserController@avatar');
     $api->get('users/questionnaires', 'App\Http\Controllers\UserController@questionnairesList');
     $api->post('users/questionnaires', 'App\Http\Controllers\UserController@updateQuestionnaires');
@@ -57,6 +58,9 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->post('invitations/reject/{id}', 'App\Http\Controllers\InvitationController@reject');
     $api->resource('invitations', 'App\Http\Controllers\InvitationController');
     $api->resource('credit-cards', 'App\Http\Controllers\CreditCardController');
+    $api->get('lectures', 'App\Http\Controllers\LectureController@index');
+    $api->post('lectures/start', 'App\Http\Controllers\LectureController@start');
+    $api->post('lectures/{id}/end', 'App\Http\Controllers\LectureController@end');
 //    $api->get('credit-cards', 'App\Http\Controllers\CreditCardController@index');
 //    $api->post('credit-cards', 'App\Http\Controllers\CreditCardController@store');
     $api->post('uploads', 'App\Http\Controllers\UploadController@store');

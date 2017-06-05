@@ -34,6 +34,6 @@ class AddCreditCard extends Migration
      */
     public function down()
     {
-        Schema::drop('credit_cards');
+        Schema::dropIfExists('credit_cards');
     }
 }

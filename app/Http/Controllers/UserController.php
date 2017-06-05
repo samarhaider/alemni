@@ -309,6 +309,7 @@ class UserController extends Controller
      *      @Response(200, body={"answers":{{"id":1,"questionable_id":"13","question_id":"1","text":"IT\/CS","created_at":"2017-05-04 05:39:51"},{"id":2,"questionable_id":"13","question_id":"2","text":"A1","created_at":"2017-05-04 05:39:51"},{"id":3,"questionable_id":"13","question_id":"3","text":"4","created_at":"2017-05-04 05:39:51"},{"id":4,"questionable_id":"13","question_id":"4","text":"2","created_at":"2017-05-04 05:39:52"},{"id":5,"questionable_id":"13","question_id":"5","text":"Samar","created_at":"2017-05-04 05:39:52"},{"id":6,"questionable_id":"13","question_id":"6","text":"Test","created_at":"2017-05-04 05:39:52"},{"id":7,"questionable_id":"13","question_id":"7","text":"Test one of these","created_at":"2017-05-04 05:39:52"}}}),
      *      @Response(422, body={"message":"Could not add answers.","errors":{"answers":{"Invalid number of answers"}},"status_code":422})
      * })
+     * 
      */
     public function updateQuestionnaires(Request $request)
     {
@@ -354,90 +355,47 @@ class UserController extends Controller
     }
 
     /**
-     * Send Password Reset Code
-     *
-     * @Post("/send-password-reset-code")
+     * Change Password
+     * 
+     * @Post("/change-password")
      * 
      * @Parameters({
-     *      @Parameter("email",  description="Email for code", required=true)
+     *      @Parameter("current_password", required=true),
+     *      @Parameter("new_password", required=true)
      * })
      * 
      * @Transaction({
-     *      @Request({"email":"user@mailinator.om"}),
-     *      @Response(200),
-     *      @Response(422, body={"message": "Could not send reset password email.", "errors": {"email": {"Email does not exists."}}, "status_code": 422,}),
-     *      @Response(422, body={"message":"Could not send reset password email.","status_code":422})
-     * })
-     */
-    public function sendPasswordResetCode(Request $request)
-    {
-        $email = $request->get('email');
-        $user = User::where('email', '=', $email)->first();
-        if (!$user) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not send reset password email.', ['email' => 'Email does not exists.']);
-        }
-
-        $password_reset = PasswordReset::where('email', '=', $user->email)->first();
-        if (!$password_reset) {
-            $password_reset = new PasswordReset;
-            $password_reset->email = $user->email;
-        }
-        $password_reset->token = mt_rand(1000, 9999);
-        if ($password_reset->save()) {
-            # Send Email oops email work remain
-            \Mail::to($user)->send(new PasswordResetCode($password_reset));
-//            return [];
-            return $password_reset;
-        }
-        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not send reset password email.', $password_reset->getErrors());
-    }
-
-    /**
-     * Reset Customer password 
-     *
-     * @Post("/reset-password")
-     * 
-     * @Parameters({
-     *      @Parameter("email", description="Email for code", required=true),
-     *      @Parameter("token", description="4 digits code", required=true),
-     *      @Parameter("password", description="4 digits password", required=true)
+     *      @Request({"current_password": "new_password", "new_password": "123456"}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"user":{"id":15,"email":"student2@mailinator.com","user_type":"2","created_at":"2017-04-27 18:01:32"}}),
+     *      @Response(422, body={"message":"Could not update password.","errors":{"current_password":{"Current password is not matched"}},"status_code":422})
      * })
      * 
-     * @Transaction({
-     *      @Request({"email":"user1@mailinator.com", "token": 3646, "password":1234, "confirm_password": 1234}),
-     *      @Response(200, body={"user": { "email": "user1@mailinator.com", "name": "Customer One", "plate_number": "KBP-2440", "telephone_number": 123456789, "user_type": 3, "updated_at": "2016-12-13 08:15:30", "created_at": "2016-12-01 06:16:52", "confirm_password": 1234, "id": "583fc0547d2ae705f534d4b1" }}),
-     *      @Response(422, body={"message": "Could not update user password.", "errors": {"email": {"Email does not exists."}},"status_code":422}),
-     *      @Response(422, body={"message": "Could not update user password.", "errors": {"token": {"Code does not match."}},"status_code":422}),
-     *      @Response(422, body={"message": "Could not update user password.", "errors": {"password": {"The password field is required."}},"status_code":422}),
-     *      @Response(422, body={"message": "Could not send reset password email.","status_code":422})
-     * })
      */
-    public function setPassword(Request $request)
+    public function changePassword(Request $request)
     {
-        $token = $request->get('token');
-        $email = $request->get('email');
-        $user = User::where('email', '=', $email)->first();
-        if (!$user) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', ['email' => 'Email does not exists.']);
-        }
-
-        $password_reset = PasswordReset::where('token', '=', $token)
-            ->where('email', '=', $email)
-            ->first();
-        if (!$password_reset) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', ['token' => 'Code does not match.']);
-        }
-
+        $user = User::find(Auth::id());
         $user->changePasswordValidation();
-        $user->password = $request->get('password');
-        if ($user->isInvalid()) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', $user->getErrors());
-        }
-//        $user->changePasswordValidation(false);
-        $user->password = Hash::make($user->password);
-        if ($user->save() && $password_reset->forceDelete()) {
+        $hashedPassword = $user->password;
+        if (Hash::check($request->current_password, $hashedPassword)) {
+            $user->current_password = $request->current_password;
+            $user->new_password = $request->new_password;
+            //Change the password
+            $user->fill([
+                'password' => Hash::make($request->new_password)
+            ]);
+            if ($user->isInvalid()) {
+                throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update password.', $user->getErrors());
+            }
+            $user->changePasswordValidation(false);
+            unset($user->current_password);
+            unset($user->new_password);
+            $user->save();
             return $user;
         }
-        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user password.', $user->getErrors());
+
+        $errors = [
+            'current_password' => 'Current password is not matched',
+        ];
+        throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update password.', $errors);
     }
 }
