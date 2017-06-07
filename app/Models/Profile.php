@@ -6,6 +6,7 @@ use App\Models\AppModel;
 use App\Models\User;
 use App\Models\Verification;
 use SMS;
+use Nexmo;
 use \Conner\Tagging\Taggable;
 use willvincent\Rateable\Rateable;
 
@@ -202,15 +203,23 @@ class Profile extends AppModel
         if (!$profile->phone_number) {
             return false;
         }
-        SMS::send('Your phone verification code: ' . $rand_number, ['profile' => $profile], function($sms) use ($profile) {
-            $sms->to($profile->phone_number);
-        });
+//        SMS::send('Your phone verification code: ' . $rand_number, ['profile' => $profile], function($sms) use ($profile) {
+//            $sms->to($profile->phone_number);
+//        });
+        Nexmo::message()->send([
+            'to' => $profile->phone_number,
+            'from' => 'Alemni',
+            'text' => 'Your phone verification code: ' . $rand_number
+        ]);
+
         $verification = new Verification;
         $verification->type = Verification::TYPE_PHONE;
         $verification->value = $profile->phone_number;
         $verification->code = $rand_number;
         $verification->user_id = $profile->user_id;
         $verification->save();
+        $this->is_phone_number_verified = false;
+        $this->save();
         return $verification;
     }
 }
