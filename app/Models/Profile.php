@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\AppModel;
 use App\Models\User;
+use App\Models\Verification;
+use SMS;
 use \Conner\Tagging\Taggable;
 use willvincent\Rateable\Rateable;
 
@@ -191,5 +193,24 @@ class Profile extends AppModel
     public function getTotalHoursAttribute()
     {
         return 5;
+    }
+
+    public function sendPhoneVerificationCode()
+    {
+        $rand_number = mt_rand(1000, 9999);
+        $profile = $this;
+        if (!$profile->phone_number) {
+            return false;
+        }
+        SMS::send('Your phone verification code: ' . $rand_number, ['profile' => $profile], function($sms) use ($profile) {
+            $sms->to($profile->phone_number);
+        });
+        $verification = new Verification;
+        $verification->type = Verification::TYPE_PHONE;
+        $verification->value = $profile->phone_number;
+        $verification->code = $rand_number;
+        $verification->user_id = $profile->user_id;
+        $verification->save();
+        return $verification;
     }
 }

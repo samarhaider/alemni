@@ -4,7 +4,7 @@
  * https://simplesoftware.io/docs/simple-sms#docs-configuration for more information.
  */
 return [
-    'driver' => env('SMS_DRIVER', 'email'),
+    'driver' => env('SMS_DRIVER', 'nexmo'),
 
     'from' => env('SMS_FROM', 'Alemni'),
 
@@ -42,8 +42,8 @@ return [
     ],
 
     'nexmo' => [
-        'api_key' => env('NEXMO_KEY', 'Your Nexmo API key'),
-        'api_secret' => env('NEXMO_SECRET', 'Your Nexmo API secret')
+        'api_key' => env('NEXMO_KEY', 'a5fc828f'),
+        'api_secret' => env('NEXMO_SECRET', '3b72c77ba7ec9823')
     ],
 
     'plivo' => [

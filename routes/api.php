@@ -26,6 +26,7 @@ $api->version('v1', function ($api) {
     $api->post('login', 'App\Http\Controllers\Auth\LoginController@simple');
     $api->post('users/register/student', 'App\Http\Controllers\UserController@student');
     $api->post('users/register/tutor', 'App\Http\Controllers\UserController@tutor');
+    $api->post('users/verify-phone-number', 'App\Http\Controllers\UserController@verifyPhoneNumber');
 //        $api->post('users/login', 'App\Http\Controllers\UserController@login');
     $api->post('users/send-password-reset-code', 'App\Http\Controllers\UserController@sendPasswordResetCode');
     $api->post('users/reset-password', 'App\Http\Controllers\UserController@setPassword');
