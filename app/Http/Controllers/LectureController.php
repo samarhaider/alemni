@@ -89,7 +89,7 @@ class LectureController extends Controller
     }
 
     /**
-     * View specific lecture
+     * End lecture
      *
      * @Post("/{lecture_id}/end")
      * 

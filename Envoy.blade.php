@@ -30,7 +30,6 @@
         git checkout {{ $branch }}
     @endif
     composer install
-    composer install
     php artisan migrate --force
     php artisan up
 @endtask
