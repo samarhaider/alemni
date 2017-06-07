@@ -1,5 +1,7 @@
 FORMAT: 1A
 
+HOST: http://52.35.243.250/v1/api/
+
 # API
 
 # Login [/login]
@@ -899,6 +901,34 @@ Token is returned which will be required in every request
                     ]
                 },
                 "status_code": 422
+            }
+
+## Verify Phone Number [POST /users/verify-phone-number]
+
+
++ Parameters
+    + phone_number: (string, required) - 
+    + code: (string, required) - 
+
++ Request (application/json)
+    + Body
+
+            {
+                "phone_number": "923415641025",
+                "code": "5548"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            []
+
++ Response 500 (application/json)
+    + Body
+
+            {
+                "message": "No query results for model [App\\Models\\Verification].",
+                "status_code": 500
             }
 
 # Subject [/subjects]
@@ -2812,7 +2842,7 @@ for student/tutor profile and tutions
                 "status_code": 422
             }
 
-## View specific lecture [POST /lectures/{lecture_id}/end]
+## End lecture [POST /lectures/{lecture_id}/end]
 
 
 + Parameters

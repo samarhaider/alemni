@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\Verification;
 use Auth;
 use File;
 use Imageupload;
@@ -222,6 +223,7 @@ class UserController extends Controller
         }
         $user = User::with('profile')->findOrFail($id);
         $profile = $user->profile;
+        $old_phone_number = $profile->phone_number;
 //        $profile_data = $request->only('name', 'gender', 'latitude', 'longitude', 'phone_number', 'bio', 'hourly_rate', 'radius', 'experience', 'address');
         $profile_data = $request->all();
         $profile->fill($profile_data);
@@ -229,6 +231,9 @@ class UserController extends Controller
         $profile->retag($qualifications);
         if (!$profile->save()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update user profile information.', $profile->getErrors());
+        }
+        if ($old_phone_number != $profile->phone_number) {
+            $profile->sendPhoneVerificationCode();
         }
         return $profile;
     }
@@ -397,5 +402,36 @@ class UserController extends Controller
             'current_password' => 'Current password is not matched',
         ];
         throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not update password.', $errors);
+    }
+
+    /**
+     * Verify Phone Number
+     * 
+     * @Post("/verify-phone-number")
+     * 
+     * @Parameters({
+     *      @Parameter("phone_number", required=true),
+     *      @Parameter("code", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"phone_number": "923415641025", "code": "5548"}),
+     *      @Response(200, body={}),
+     *      @Response(500, body={"message":"No query results for model [App\\Models\\Verification].","status_code":500}),
+     * })
+     * 
+     */
+    public function verifyPhoneNumber(Request $request)
+    {
+        $verification = Verification::findPhoneNumber($request->get('phone_number'))
+            ->findCode($request->get('code'))
+            ->firstOrFail();
+        if ($verification) {
+            $profile = Profile::where('user_id', $verification->user_id)->first();
+            $profile->is_phone_number_verified = true;
+            $profile->save();
+            $verification->forceDelete();
+        }
+        return [];
     }
 }
