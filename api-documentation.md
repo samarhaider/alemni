@@ -1595,6 +1595,99 @@ for student/tutor profile and tutions
                 "status_code": 422
             }
 
+## List of Offers [GET /tutions/offers]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "type": "proposal",
+                        "offer_tutor_id": "6",
+                        "id": 3,
+                        "student_id": "11",
+                        "tutor_id": "6",
+                        "status": "3",
+                        "private": "1",
+                        "title": "Tution 3",
+                        "budget": "100 dollar",
+                        "latitude": "-50.45929600",
+                        "longitude": "125.86288200",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "city": null,
+                        "state": null,
+                        "date": null,
+                        "time": null,
+                        "attachments": null,
+                        "day_of_week_0": "1",
+                        "day_of_week_1": "1",
+                        "day_of_week_2": "1",
+                        "day_of_week_3": "1",
+                        "day_of_week_4": "1",
+                        "day_of_week_5": "1",
+                        "day_of_week_6": "1",
+                        "description": null,
+                        "deleted_at": null,
+                        "created_at": "2017-04-12 17:32:05",
+                        "updated_at": "2017-05-01 11:02:51",
+                        "student": {
+                            "id": 13,
+                            "gender": "M",
+                            "name": "Sam",
+                            "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "latitude": "-69.92557000",
+                            "longitude": "-144.58138800",
+                            "address": "My locatio",
+                            "phone_number": "+1-548-519-6469",
+                            "is_phone_number_verified": "0",
+                            "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                            "hourly_rate": "12.00",
+                            "radius": "5000",
+                            "experience": "1",
+                            "stage_complete": null,
+                            "teaches": null,
+                            "city": null,
+                            "state": null,
+                            "paypal_address": null,
+                            "specialist": null,
+                            "qualifications": [
+                                "Mba",
+                                "Bs"
+                            ],
+                            "average_rating": "3.0000",
+                            "completed_tutions": 2,
+                            "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "total_hours": 5,
+                            "user": {
+                                "id": 11,
+                                "email": "cleta71@example.net",
+                                "user_type": "2",
+                                "created_at": "2017-04-06 05:28:03"
+                            }
+                        }
+                    }
+                ]
+            }
+
 # Messages [/messages]
 
 ## List of Communications [GET /messages]

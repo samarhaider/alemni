@@ -43,6 +43,7 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->resource('users', 'App\Http\Controllers\UserController');
     $api->resource('questions', 'App\Http\Controllers\QuestionController');
 //    $api->resource('answers', 'App\Http\Controllers\AnswerController');
+    $api->get('tutions/offers', 'App\Http\Controllers\TutionController@offers');
     $api->post('tutions/{id}/finished', 'App\Http\Controllers\TutionController@finished');
     $api->post('tutions/{id}/rate', 'App\Http\Controllers\TutionController@rate');
     $api->resource('tutions', 'App\Http\Controllers\TutionController');
