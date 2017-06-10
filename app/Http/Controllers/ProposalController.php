@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tution;
 use App\Models\Proposal;
+use App\Models\User;
 use Auth;
+use App\Notifications\ProposalRecieved;
+use App\Notifications\ProposalAccepted;
 
 /**
  * @Resource("Proposal", uri="/proposals" )
@@ -97,6 +100,8 @@ class ProposalController extends Controller
         }
         $proposal->status = Proposal::STATUS_PENDING;
         $proposal->save();
+        $student = User::find($proposal->tution->student_id);
+        $student->notify(new ProposalRecieved($proposal));
         return $proposal;
     }
 
@@ -222,6 +227,9 @@ class ProposalController extends Controller
         $tution->tutor_id = $proposal->tutor_id;
         $tution->status = Tution::STATUS_INPROGRESS;
         $tution->save();
+        
+        $student = User::find($proposal->tutor_id);
+        $student->notify(new ProposalAccepted($proposal));
         return $proposal;
     }
 

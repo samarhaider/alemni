@@ -10,6 +10,8 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Invitation;
 use willvincent\Rateable\Rating;
+use App\Notifications\TutionCompleted;
+use App\Notifications\TutionRated;
 
 /**
  * @Resource("Tutions", uri="/tutions" )
@@ -293,6 +295,12 @@ class TutionController extends Controller
             $other_user->ratings()->save($rating);
         }
 
+        if ($user->isTutor()) {
+            $notify_user = $tution->studentUser;
+        } else {
+            $notify_user = $tution->tutorUser;
+        }
+        $notify_user->notify(new TutionRated($tution));
         return $rating;
     }
 
@@ -311,8 +319,7 @@ class TutionController extends Controller
     {
         $user = Auth::user();
         $query = Tution::whereKey($id)
-            ->status(Tution::STATUS_INPROGRESS)
-        ;
+            ->status(Tution::STATUS_INPROGRESS);
         if ($user->isTutor()) {
             $query->findTutor($user->id);
         } else {
@@ -321,6 +328,12 @@ class TutionController extends Controller
         $tution = $query->firstOrFail();
         $tution->status = Tution::STATUS_COMPLETED;
         $tution->save();
+        if ($user->isTutor()) {
+            $notify_user = $tution->studentUser;
+        } else {
+            $notify_user = $tution->tutorUser;
+        }
+        $notify_user->notify(new TutionCompleted($tution));
         return $tution;
     }
 

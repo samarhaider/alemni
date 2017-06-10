@@ -66,4 +66,8 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
 //    $api->get('credit-cards', 'App\Http\Controllers\CreditCardController@index');
 //    $api->post('credit-cards', 'App\Http\Controllers\CreditCardController@store');
     $api->post('uploads', 'App\Http\Controllers\UploadController@store');
+    #Notifications
+    $api->get('notifications', 'App\Http\Controllers\NotificationController@index');
+    $api->get('notifications/unread', 'App\Http\Controllers\NotificationController@unread');
+    $api->post('notifications/read', 'App\Http\Controllers\NotificationController@read');
 });

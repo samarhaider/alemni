@@ -3021,3 +3021,46 @@ for student/tutor profile and tutions
                 },
                 "status_code": 422
             }
+
+# Notifications [/notifications]
+
+## List of Notifications [GET /notifications]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 10,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": "575c031c-60db-4d53-b5fb-b3f8ec00587e",
+                        "type": "App\\Notifications\\InvitationRecieved",
+                        "notifiable_id": "6",
+                        "notifiable_type": "App\\Models\\User",
+                        "data": {
+                            "student_id": "11",
+                            "tution_id": 31,
+                            "message": "Sam has sent you tution invitation."
+                        },
+                        "read_at": null,
+                        "created_at": "2017-06-10 09:39:37",
+                        "updated_at": "2017-06-10 09:39:37"
+                    }
+                ]
+            }

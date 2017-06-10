@@ -152,7 +152,7 @@ class Tution extends AppModel
      */
     public function studentUser()
     {
-        return $this->belongsTo('App\Models\User', 'student_id', 'user_id');
+        return $this->belongsTo('App\Models\User', 'student_id');
     }
 
     /**

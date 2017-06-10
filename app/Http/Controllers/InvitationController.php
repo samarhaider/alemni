@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invitation;
 use App\Models\Tution;
+use App\Models\User;
 use Auth;
+use App\Notifications\InvitationRecieved;
+use App\Notifications\InvitationAccepted;
 
 /**
  * @Resource("Invitation", uri="/invitations" )
@@ -89,7 +92,7 @@ class InvitationController extends Controller
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', $invitation->getErrors());
         }
         if (!$invitation->tution || $invitation->tution->student_id != $user->id) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You have already sent invitation of this tutor.']);
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You are not autherized to this tution.']);
         }
         $already_invitation = Invitation::findTutor($invitation->tutor_id)
             ->findTution($invitation->tution_id)
@@ -99,6 +102,8 @@ class InvitationController extends Controller
         }
         $invitation->status = Invitation::STATUS_PENDING;
         $invitation->save();
+        $tutor = User::find($invitation->tutor_id);
+        $tutor->notify(new InvitationRecieved($invitation));
         return $invitation;
     }
 
@@ -221,6 +226,8 @@ class InvitationController extends Controller
         $tution->tutor_id = $invitation->tutor_id;
         $tution->status = Tution::STATUS_INPROGRESS;
         $tution->save();
+        $tutor = User::find($invitation->tutor_id);
+        $tutor->notify(new InvitationAccepted($invitation));
         return $invitation;
     }
 
