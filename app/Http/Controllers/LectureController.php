@@ -66,7 +66,7 @@ class LectureController extends Controller
     public function start(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isStudent()) {
+        if (!$user->isTutor()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not start Lecture.', ['tution_id' => 'You are not allowed to start lecture on this tution.']);
         }
         $lecture = new Lecture($request->all());
@@ -107,7 +107,7 @@ class LectureController extends Controller
     public function end(Request $request, $id)
     {
         $user = Auth::user();
-        if (!$user->isStudent()) {
+        if (!$user->isTutor()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not end Lecture.', ['tution_id' => 'You are not allowed to end lecture on this tution.']);
         }
         $lecture = Lecture::whereKey($id)->firstOrFail();
