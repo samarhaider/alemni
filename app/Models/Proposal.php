@@ -119,12 +119,12 @@ class Proposal extends AppModel
 
     public function tutors()
     {
-        return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
+        return $this->hasMany('App\Models\Profile', 'user_id', 'tutor_id');
     }
 
     public function tutor()
     {
-        return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
+        return $this->hasOne('App\Models\Profile', 'user_id', 'tutor_id');
     }
 
     public function tution()
