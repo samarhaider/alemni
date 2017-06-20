@@ -41,7 +41,7 @@ class TutionController extends Controller
         if (Auth::user()->isStudent()) {
             $student_id = Auth::user()->id;
             $relations = ['tutor', 'invitations.tutor'];
-//            $relations[] = 'proposals.tutor';
+            $relations[] = 'proposals.tutor';
         }
         if (Auth::user()->isTutor()) {
             $tutor_id = Auth::user()->id;
