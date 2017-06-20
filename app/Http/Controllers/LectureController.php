@@ -32,8 +32,7 @@ class LectureController extends Controller
     public function index(Request $request)
     {
         $tution_id = $request->get('tution_id', 0);
-        $lectures = new Lecture;
-        $lectures->findTution($tution_id);
+        $lectures = Lecture::findTution($tution_id);
         return $lectures->latest()->paginate(20);
     }
 
