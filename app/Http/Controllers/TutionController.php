@@ -348,9 +348,32 @@ class TutionController extends Controller
      * })
      * 
      */
+//    public function offers(Request $request)
+//    {
+//        $first = Tution::select(
+//            \DB::raw("'proposal' as 'type', proposals.tutor_id as offer_tutor_id, tutions.* "))
+//            ->where('tutions.status',Tution::STATUS_NEW)
+//            ->join('proposals', 'tutions.id', '=', 'proposals.tution_id');
+//
+//        $offers = Tution::select(
+//                \DB::raw("'invitation' as 'type', invitations.tutor_id as offer_tutor_id, tutions.* "))
+//            ->join('invitations', 'tutions.id', '=', 'invitations.tution_id')
+//            ->where('tutions.status',Tution::STATUS_NEW)
+//            ->union($first)
+//            ->latest()
+//            ->paginate(20);
+//        return $offers;
+//    }
+
     public function offers(Request $request)
     {
-        $offers = Offer::with('student')
+        $relations = [
+//            'tutor',
+            'invitations.tutor',
+            'proposals.tutor',
+            'student'
+        ];
+        $offers = Offer::with($relations)
             ->findTutor(Auth::user()->id);
         $status = $request->get('status', Tution::STATUS_NEW);
         if ($status) {

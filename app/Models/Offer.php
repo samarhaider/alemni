@@ -34,14 +34,14 @@ class Offer extends AppModel
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['tagged', 'deleted_at', 'updated_at'];
 
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = ['private' => 'boolean', 'day_of_week_0' => 'boolean', 'day_of_week_1' => 'boolean', 'day_of_week_2' => 'boolean', 'day_of_week_3' => 'boolean', 'day_of_week_4' => 'boolean', 'day_of_week_5' => 'boolean', 'day_of_week_6' => 'boolean'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -49,6 +49,22 @@ class Offer extends AppModel
      * @var array
      */
     protected $dates = ['start_date', 'deleted_at', 'created_at', 'updated_at'];
+
+//    protected $with = ['answers'];
+
+    /**
+     * Attributes that get appended on serialization
+     *
+     * @var array
+     */
+    protected $appends = [
+        'subjects',
+        'last_class',
+        'answers',
+//        'attachments',
+//        'date',
+//        'time',
+    ];
 
     public function invitations()
     {
@@ -83,5 +99,50 @@ class Offer extends AppModel
     public function student()
     {
         return $this->belongsTo('App\Models\Profile', 'student_id', 'user_id');
+    }
+
+    public function setAttachmentsAttribute($value)
+    {
+        $this->attributes['attachments'] = serialize($value);
+    }
+
+    public function getAttachmentsAttribute($value)
+    {
+        if ($value == null) {
+            return [];
+        }
+        return unserialize($value);
+    }
+
+    public function getSubjectsAttribute()
+    {
+        $subjects = \Conner\Tagging\Model\Tagged::where('taggable_id', $this->id)
+            ->where('taggable_type', 'App\Models\Tution')
+            ->get();
+        return $subjects->map(function($item) {
+                return $item->tag_name;
+            })->toArray();
+    }
+
+    public function getLastClassAttribute()
+    {
+        return "";
+    }
+
+    public function getNextClassAttribute()
+    {
+        return "";
+    }
+
+    /**
+     * Get all of the answer's of tution.
+     */
+//    public function answers()
+    public function getAnswersAttribute()
+    {
+        $answers = \App\Models\Answer::where('questionable_id', $this->id)
+            ->where('questionable_type', 'App\Models\Tution')
+            ->get();
+        return $answers;
     }
 }
