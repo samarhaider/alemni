@@ -66,6 +66,16 @@ class Offer extends AppModel
 //        'time',
     ];
 
+    public function invitation()
+    {
+        return $this->hasOne('App\Models\Invitation', 'tution_id')->where('tutor_id', \Auth::id());
+    }
+
+    public function proposal()
+    {
+        return $this->hasOne('App\Models\Proposal', 'tution_id')->where('tutor_id', \Auth::id());
+    }
+
     public function invitations()
     {
         return $this->hasMany('App\Models\Invitation', 'tution_id');

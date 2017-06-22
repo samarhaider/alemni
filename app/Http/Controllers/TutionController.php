@@ -369,8 +369,8 @@ class TutionController extends Controller
     {
         $relations = [
 //            'tutor',
-            'invitations.tutor',
-            'proposals.tutor',
+            'invitation',
+            'proposal',
             'student'
         ];
         $offers = Offer::with($relations)
