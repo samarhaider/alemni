@@ -21,7 +21,7 @@ class Tution extends AppModel
      * @var string
      */
     protected $table = 'tutions';
-
+    Protected $primaryKey = "id";
     /**
      * The attributes for validation rules.
      *
@@ -80,7 +80,7 @@ class Tution extends AppModel
      */
     public function studentProfile()
     {
-        return $this->belongsTo('App\Models\Profile', 'student_id', 'user_id');
+        return $this->belongsTo('App\Models\Profile', 'student_id');
     }
 
     /**
@@ -90,7 +90,7 @@ class Tution extends AppModel
      */
     public function studentUser()
     {
-        return $this->belongsTo('App\Models\User', 'student_id', 'user_id');
+        return $this->belongsTo('App\Models\User', 'student_id');
     }
 
     /**

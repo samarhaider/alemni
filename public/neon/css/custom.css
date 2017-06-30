@@ -1,0 +1,90 @@
+/**
+ *
+ * Apply Here your Custom CSS
+ *
+*/
+
+	.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0 !important;
+}
+
+
+.table-user-information > tbody > tr > td {
+    border-top: 0 ;
+}
+.toppad
+{margin-top:20px;
+}
+
+
+.clientprofile>.panel .profileinfo{
+    border-color: #5a5a5a !important;
+}
+
+.profileinfo {
+    border-color: #5a5a5a !important;
+}
+
+.clientprofile> .profileinfo>.profilehead{
+    color: #ffffff !important;
+    background-color: #5a5a5a !important;
+    border-color: #656565 !important;
+    background-image: none !important;
+}
+
+/* .profimg{ border: 1px solid #5a5a5a !important; } */
+
+.proftableinfo > tbody > tr {
+    border-top: 1px solid #5a5a5a !important;
+}
+
+.proffooter{
+	background-color: #3b2d2d !important;
+   	border-top: 1px solid #5a5a5a !important;
+}
+
+.profmsgbtn {
+    background: #000000;
+    border: 1px solid #c7c7c7;
+    padding: 3px 10px;
+    color: #fff;
+    border-radius: 4px;
+}
+
+a.profmsgbtn:hover {
+    color: #000;
+    background: white;
+    border-color: #000;
+    transition: 300ms;
+}
+
+.proftableinfo a {
+    color: #000;
+    font-weight: 600;
+}
+.pf-title{
+	font-size: 16px !important;
+	font-weight: bold;
+}

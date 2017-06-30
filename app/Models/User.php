@@ -63,6 +63,14 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
             $this->rules['google'] = 'required';
         }
     }
+
+    public function tuitions(){
+        if ($this->user_type == self::TYPE_TUTOR) 
+            return $this->hasMany('App\Models\Tution','tutor_id');
+        if ($this->user_type == self::TYPE_STUDENT) 
+            return $this->hasMany('App\Models\Tution','student_id');
+    }
+
     public function profile()
     {
         return $this->hasOne('App\Models\Profile');

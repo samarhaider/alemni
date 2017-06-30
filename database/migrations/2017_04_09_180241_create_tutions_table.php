@@ -16,7 +16,7 @@ class CreateTutionsTable extends Migration
         Schema::create('tutions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('student_id')->index();
-            $table->integer('tutor_id')->nullable()->default(null)->index();
+            $table->integer('tutor_id')->nullable()->default(null);
             $table->unsignedTinyInteger('status')->default(1);
             $table->string('title');
             $table->string('budget');
