@@ -1,5 +1,7 @@
 FORMAT: 1A
 
+HOST: http://52.35.243.250/v1/api/
+
 # API
 
 # Login [/login]
@@ -110,61 +112,7 @@ Token is returned which will be required in every request
                 "status_code": 500
             }
 
-## Tutor Login with Email and Password [POST /login/tutor]
-Token is returned which will be required in every request
-
-+ Parameters
-    + email: (string, required) - 
-    + password: (string, required) - 
-
-+ Request (application/json)
-    + Body
-
-            {
-                "email": "tlabadie@example.com",
-                "password": "123456"
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6XC9cL2dhbmdzdGVyLXN0cmVuZ3RoLmxvY2FsXC9hcGlcL3VzZXJzXC9yZWdpc3RlciIsImlhdCI6MTQ5MTIwNDU4MSwiZXhwIjoxNDkxMjA4MTgxLCJuYmYiOjE0OTEyMDQ1ODEsImp0aSI6ImZiMzAxMzI1YzgyMmRiMzkxMzhmOTkzMjc0MDQ5NTk1In0.L2PcdY3kuUdakNzgWirglwuJqCTtdLa-uHaAfL5OZqA",
-                "user": {
-                    "email": "user2@mailinator.com",
-                    "created_at": "2017-04-03 07:29:40",
-                    "id": 2
-                }
-            }
-
-+ Response 401 (application/json)
-    + Body
-
-            {
-                "error": "invalid_credentials",
-                "message": "Invalid credentials",
-                "status_code": 401
-            }
-
-+ Response 401 (application/json)
-    + Body
-
-            {
-                "error": "user_blocked",
-                "message": "Your Account has been blocked.",
-                "status_code": 401
-            }
-
-+ Response 500 (application/json)
-    + Body
-
-            {
-                "error": "could_not_create_token",
-                "message": "Internal Server Error",
-                "status_code": 500
-            }
-
-## Student Login with Email and Password [POST /login/student]
+## Tutor/Student Login with Email and Password [POST /login]
 Token is returned which will be required in every request
 
 + Parameters
@@ -261,8 +209,12 @@ Token is returned which will be required in every request
                         "bio": "Occaecati incidunt doloremque id rerum incidunt tempora. Dolore tempore recusandae sequi commodi. Repellendus dolorem ea iusto quidem. Quis assumenda et eveniet.",
                         "hourly_rate": "10.00",
                         "radius": "4580",
+                        "experience": "1",
                         "email": "doyle.freddie@example.org",
-                        "qualifications": []
+                        "qualifications": [],
+                        "teaches": "Matric",
+                        "specialist": "Maths",
+                        "average_rating": "3.0000"
                     }
                 ]
             }
@@ -417,23 +369,177 @@ Token is returned which will be required in every request
 
             {
                 "user": {
-                    "id": 10,
-                    "email": "tanner.damore@example.com",
-                    "created_at": "2017-04-05 18:40:47",
+                    "id": 11,
+                    "email": "cleta71@example.net",
+                    "user_type": "2",
+                    "created_at": "2017-04-06 05:28:03",
                     "profile": {
-                        "gender": "F",
-                        "name": "Destinee Leannon",
-                        "avatar": null,
+                        "id": 13,
+                        "gender": "M",
+                        "name": "Sam",
+                        "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
                         "latitude": "-69.92557000",
                         "longitude": "-144.58138800",
                         "phone_number": "+1-548-519-6469",
                         "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
-                        "hourly_rate": "1.00",
-                        "radius": "10588",
-                        "address": "test",
+                        "hourly_rate": "12.00",
+                        "radius": "5000",
+                        "experience": "1",
                         "qualifications": [
-                            "MBA",
-                            "BS"
+                            "Mba",
+                            "Bs"
+                        ],
+                        "stage_complete": 1,
+                        "teaches": "Matric",
+                        "specialist": "Maths",
+                        "average_rating": "3.0000",
+                        "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                        "answers": [
+                            {
+                                "id": 1,
+                                "questionable_id": "13",
+                                "question_id": "1",
+                                "text": "IT\/CS",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 2,
+                                "questionable_id": "13",
+                                "question_id": "2",
+                                "text": "A1",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 3,
+                                "questionable_id": "13",
+                                "question_id": "3",
+                                "text": "4",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 4,
+                                "questionable_id": "13",
+                                "question_id": "4",
+                                "text": "2",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 5,
+                                "questionable_id": "13",
+                                "question_id": "5",
+                                "text": "Samar",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 6,
+                                "questionable_id": "13",
+                                "question_id": "6",
+                                "text": "Test",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 7,
+                                "questionable_id": "13",
+                                "question_id": "7",
+                                "text": "Test one of these",
+                                "created_at": "2017-05-04 05:39:52"
+                            }
+                        ]
+                    }
+                }
+            }
+
+## Show User profile [GET /users/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "user": {
+                    "id": 11,
+                    "email": "cleta71@example.net",
+                    "user_type": "2",
+                    "created_at": "2017-04-06 05:28:03",
+                    "profile": {
+                        "id": 13,
+                        "gender": "M",
+                        "name": "Sam",
+                        "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                        "latitude": "-69.92557000",
+                        "longitude": "-144.58138800",
+                        "phone_number": "+1-548-519-6469",
+                        "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                        "hourly_rate": "12.00",
+                        "radius": "5000",
+                        "experience": "1",
+                        "qualifications": [
+                            "Mba",
+                            "Bs"
+                        ],
+                        "stage_complete": 1,
+                        "teaches": "Matric",
+                        "specialist": "Maths",
+                        "average_rating": "3.0000",
+                        "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                        "answers": [
+                            {
+                                "id": 1,
+                                "questionable_id": "13",
+                                "question_id": "1",
+                                "text": "IT\/CS",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 2,
+                                "questionable_id": "13",
+                                "question_id": "2",
+                                "text": "A1",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 3,
+                                "questionable_id": "13",
+                                "question_id": "3",
+                                "text": "4",
+                                "created_at": "2017-05-04 05:39:51"
+                            },
+                            {
+                                "id": 4,
+                                "questionable_id": "13",
+                                "question_id": "4",
+                                "text": "2",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 5,
+                                "questionable_id": "13",
+                                "question_id": "5",
+                                "text": "Samar",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 6,
+                                "questionable_id": "13",
+                                "question_id": "6",
+                                "text": "Test",
+                                "created_at": "2017-05-04 05:39:52"
+                            },
+                            {
+                                "id": 7,
+                                "questionable_id": "13",
+                                "question_id": "7",
+                                "text": "Test one of these",
+                                "created_at": "2017-05-04 05:39:52"
+                            }
                         ]
                     }
                 }
@@ -450,7 +556,11 @@ Token is returned which will be required in every request
     + phone_number: (string, optional) - 
     + hourly_rate: (decimal, optional) - 
     + radius: (integer, optional) - Radius in meters
+    + experience: (integer, optional) - Experience in Years
     + address: (string, optional) - 
+    + stage_complete: (integer, optional) - 
+    + teaches: (string, optional) - 
+    + specialist: (string, optional) - 
     + qualifications: (array, optional) - string array of qualification
     + bio: (string, optional) - 
 
@@ -470,11 +580,16 @@ Token is returned which will be required in every request
                 "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                 "hourly_rate": "1.00",
                 "radius": "10588",
+                "experience": "1",
                 "address": "test",
                 "qualifications": [
                     "MBA",
                     "BS"
-                ]
+                ],
+                "stage_complete": 1,
+                "teaches": "Matric",
+                "specialist": "Maths",
+                "average_rating": "3.0000"
             }
 
 + Response 200 (application/json)
@@ -490,11 +605,15 @@ Token is returned which will be required in every request
                 "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                 "hourly_rate": "1.00",
                 "radius": "10588",
+                "experience": "1",
                 "address": "test",
                 "qualifications": [
                     "MBA",
                     "BS"
-                ]
+                ],
+                "teaches": "Matric",
+                "specialist": "Maths",
+                "average_rating": "3.0000"
             }
 
 + Response 422 (application/json)
@@ -537,6 +656,7 @@ Token is returned which will be required in every request
                     "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
                     "hourly_rate": "12.00",
                     "radius": "5000",
+                    "experience": "1",
                     "qualifications": [
                         "Mba",
                         "Bs"
@@ -574,44 +694,53 @@ Token is returned which will be required in every request
             {
                 "answers": [
                     {
-                        "id": 26,
+                        "id": 1,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "1",
+                        "text": "IT\/CS",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 2,
+                        "questionable_id": "13",
                         "question_id": "2",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
+                        "text": "A1",
+                        "created_at": "2017-05-04 05:39:51"
                     },
                     {
-                        "id": 27,
+                        "id": 3,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
+                        "question_id": "3",
+                        "text": "4",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 4,
+                        "questionable_id": "13",
+                        "question_id": "4",
+                        "text": "2",
+                        "created_at": "2017-05-04 05:39:52"
+                    },
+                    {
+                        "id": 5,
+                        "questionable_id": "13",
                         "question_id": "5",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
+                        "text": "Samar",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 28,
+                        "id": 6,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "9",
-                        "choice_id": "4",
-                        "created_at": "2017-04-12 18:58:10"
+                        "question_id": "6",
+                        "text": "Test",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 29,
+                        "id": 7,
                         "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "11",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 18:58:10"
-                    },
-                    {
-                        "id": 30,
-                        "questionable_id": "13",
-                        "questionable_type": "App\\Models\\Profile",
-                        "question_id": "13",
-                        "choice_id": "5",
-                        "created_at": "2017-04-12 18:58:10"
+                        "question_id": "7",
+                        "text": "Test one of these",
+                        "created_at": "2017-05-04 05:39:52"
                     }
                 ]
             }
@@ -632,23 +761,31 @@ Token is returned which will be required in every request
                 "answers": [
                     {
                         "question_id": 1,
-                        "choice_id": 2
+                        "text": "IT/CS"
+                    },
+                    {
+                        "question_id": 2,
+                        "text": "A1"
+                    },
+                    {
+                        "question_id": 3,
+                        "text": 4
                     },
                     {
                         "question_id": 4,
-                        "choice_id": 2
+                        "text": 2
+                    },
+                    {
+                        "question_id": 5,
+                        "text": "Samar"
                     },
                     {
                         "question_id": 6,
-                        "choice_id": 2
+                        "text": "Test"
                     },
                     {
-                        "question_id": 8,
-                        "choice_id": 2
-                    },
-                    {
-                        "question_id": 12,
-                        "choice_id": 2
+                        "question_id": 7,
+                        "text": "Test one of these"
                     }
                 ]
             }
@@ -659,44 +796,53 @@ Token is returned which will be required in every request
             {
                 "answers": [
                     {
-                        "id": 21,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 1,
+                        "questionable_id": "13",
                         "question_id": "1",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "IT\/CS",
+                        "created_at": "2017-05-04 05:39:51"
                     },
                     {
-                        "id": 22,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 2,
+                        "questionable_id": "13",
+                        "question_id": "2",
+                        "text": "A1",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 3,
+                        "questionable_id": "13",
+                        "question_id": "3",
+                        "text": "4",
+                        "created_at": "2017-05-04 05:39:51"
+                    },
+                    {
+                        "id": 4,
+                        "questionable_id": "13",
                         "question_id": "4",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "2",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 23,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
+                        "id": 5,
+                        "questionable_id": "13",
+                        "question_id": "5",
+                        "text": "Samar",
+                        "created_at": "2017-05-04 05:39:52"
+                    },
+                    {
+                        "id": 6,
+                        "questionable_id": "13",
                         "question_id": "6",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
+                        "text": "Test",
+                        "created_at": "2017-05-04 05:39:52"
                     },
                     {
-                        "id": 24,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "8",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:21"
-                    },
-                    {
-                        "id": 25,
-                        "questionable_id": "5",
-                        "questionable_type": "App\\Models\\Tution",
-                        "question_id": "12",
-                        "choice_id": "2",
-                        "created_at": "2017-04-12 17:32:22"
+                        "id": 7,
+                        "questionable_id": "13",
+                        "question_id": "7",
+                        "text": "Test one of these",
+                        "created_at": "2017-05-04 05:39:52"
                     }
                 ]
             }
@@ -713,6 +859,101 @@ Token is returned which will be required in every request
                 },
                 "status_code": 422
             }
+
+## Change Password [POST /users/change-password]
+
+
++ Parameters
+    + current_password: (string, required) - 
+    + new_password: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "current_password": "new_password",
+                "new_password": "123456"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "user": {
+                    "id": 15,
+                    "email": "student2@mailinator.com",
+                    "user_type": "2",
+                    "created_at": "2017-04-27 18:01:32"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not update password.",
+                "errors": {
+                    "current_password": [
+                        "Current password is not matched"
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Verify Phone Number [POST /users/verify-phone-number]
+
+
++ Parameters
+    + phone_number: (string, required) - 
+    + code: (string, required) - 
+
++ Request (application/json)
+    + Body
+
+            {
+                "phone_number": "923415641025",
+                "code": "5548"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            []
+
++ Response 500 (application/json)
+    + Body
+
+            {
+                "message": "No query results for model [App\\Models\\Verification].",
+                "status_code": 500
+            }
+
+# Subject [/subjects]
+
+## Subjects List [GET /subjects]
+
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                "Maths",
+                "Science",
+                "Language",
+                "Test preparation",
+                "Elementary education",
+                "Computer",
+                "Business",
+                "History",
+                "Music",
+                "Special Needs",
+                "Sports\/Recreation",
+                "Religion",
+                "Art"
+            ]
 
 # Question [/questions]
 
@@ -899,7 +1140,7 @@ for student/tutor profile and tutions
 
 
 + Parameters
-    + search_type: (string, optional) - 1= pending 2=completed, 3=near by me
+    + search_type: (string, optional) - 1= new, 2= pending 3=completed, 100=near by me
 
 + Request (application/json)
     + Headers
@@ -913,26 +1154,32 @@ for student/tutor profile and tutions
     + Body
 
             {
-                "total": 20,
-                "per_page": 1,
+                "total": 2,
+                "per_page": 20,
                 "current_page": 1,
                 "last_page": 1,
-                "next_page_url": "http:\/\/localhost:8000\/api\/tutions?page=2",
+                "next_page_url": null,
                 "prev_page_url": null,
                 "from": 1,
-                "to": 1,
+                "to": 2,
                 "data": [
                     {
-                        "id": 5,
+                        "id": 6,
                         "student_id": "11",
                         "tutor_id": "6",
-                        "status": "1",
-                        "title": "Tution 3",
+                        "status": "2",
+                        "private": true,
+                        "title": "Tution 6",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
                         "longitude": "-51.78216000",
-                        "start_date": "2019-08-12 00:00:00",
+                        "start_date": "2019-08-12",
                         "daily_timing": "05:00:00",
+                        "city": null,
+                        "state": null,
+                        "date": null,
+                        "time": null,
+                        "attachments": [],
                         "day_of_week_0": true,
                         "day_of_week_1": true,
                         "day_of_week_2": true,
@@ -941,19 +1188,107 @@ for student/tutor profile and tutions
                         "day_of_week_5": true,
                         "day_of_week_6": true,
                         "description": null,
-                        "created_at": "2017-04-12 17:32:21",
-                        "tutor_profile": {
-                            "id": 6,
+                        "created_at": "2017-04-12 19:20:03",
+                        "subjects": [],
+                        "last_class": "",
+                        "answers": [],
+                        "student": {
+                            "id": 13,
                             "gender": "M",
-                            "name": "Alva Runolfsson",
-                            "avatar": null,
-                            "latitude": "-50.45929600",
-                            "longitude": "125.86288200",
-                            "phone_number": "+18872230060",
-                            "bio": "Beatae hic sint voluptatum ea. Ipsa quia et quos nam qui ut officiis laboriosam. Autem totam voluptates voluptate ducimus qui necessitatibus et ullam. Temporibus et magni totam.",
-                            "hourly_rate": "4.00",
-                            "radius": "7306",
-                            "qualifications": []
+                            "name": "Sam",
+                            "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "latitude": "-69.92557000",
+                            "longitude": "-144.58138800",
+                            "address": "My locatio",
+                            "phone_number": "+1-548-519-6469",
+                            "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                            "hourly_rate": "12.00",
+                            "radius": "5000",
+                            "experience": "1",
+                            "stage_complete": null,
+                            "teaches": null,
+                            "city": null,
+                            "state": null,
+                            "paypal_address": null,
+                            "specialist": null,
+                            "qualifications": [
+                                "Mba",
+                                "Bs"
+                            ],
+                            "average_rating": "3.0000",
+                            "completed_tutions": 2,
+                            "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "total_hours": 5,
+                            "user": {
+                                "id": 11,
+                                "email": "cleta71@example.net",
+                                "user_type": "2",
+                                "created_at": "2017-04-06 05:28:03"
+                            }
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "student_id": "11",
+                        "tutor_id": "6",
+                        "status": "2",
+                        "private": true,
+                        "title": "Tution 4",
+                        "budget": "100 dollar",
+                        "latitude": "11.45609800",
+                        "longitude": "-51.78216000",
+                        "start_date": "2019-08-12",
+                        "daily_timing": "05:00:00",
+                        "city": null,
+                        "state": null,
+                        "date": null,
+                        "time": null,
+                        "attachments": [],
+                        "day_of_week_0": true,
+                        "day_of_week_1": true,
+                        "day_of_week_2": true,
+                        "day_of_week_3": true,
+                        "day_of_week_4": true,
+                        "day_of_week_5": true,
+                        "day_of_week_6": true,
+                        "description": null,
+                        "created_at": "2017-04-12 17:32:16",
+                        "subjects": [],
+                        "last_class": "",
+                        "answers": [],
+                        "student": {
+                            "id": 13,
+                            "gender": "M",
+                            "name": "Sam",
+                            "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "latitude": "-69.92557000",
+                            "longitude": "-144.58138800",
+                            "address": "My locatio",
+                            "phone_number": "+1-548-519-6469",
+                            "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                            "hourly_rate": "12.00",
+                            "radius": "5000",
+                            "experience": "1",
+                            "stage_complete": null,
+                            "teaches": null,
+                            "city": null,
+                            "state": null,
+                            "paypal_address": null,
+                            "specialist": null,
+                            "qualifications": [
+                                "Mba",
+                                "Bs"
+                            ],
+                            "average_rating": "3.0000",
+                            "completed_tutions": 2,
+                            "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "total_hours": 5,
+                            "user": {
+                                "id": 11,
+                                "email": "cleta71@example.net",
+                                "user_type": "2",
+                                "created_at": "2017-04-06 05:28:03"
+                            }
                         }
                     }
                 ]
@@ -964,6 +1299,7 @@ for student/tutor profile and tutions
 
 + Parameters
     + title: (string, optional) - Customer Name
+    + private: (boolean, required) - 
     + start_date: (date, required) - date format Y-m-d like 2016-12-12
     + latitude: (decimal, required) - 
     + longitude: (decimal, required) - 
@@ -976,7 +1312,9 @@ for student/tutor profile and tutions
     + day_of_week_4: (boolean, required) - 
     + day_of_week_5: (boolean, required) - 
     + day_of_week_6: (boolean, required) - 
+    + subjects: (array, optional) - string array of subjects
     + answers: (array, required) - array of objects
+    + attachments: (array, optional) - array of objects
     + description: (string, optional) - 
 
 + Request (application/json)
@@ -987,6 +1325,7 @@ for student/tutor profile and tutions
 
             {
                 "title": "Tution 3",
+                "private": true,
                 "budget": "100 dollar",
                 "start_date": "2018-20-12",
                 "day_of_week_0": 1,
@@ -999,28 +1338,36 @@ for student/tutor profile and tutions
                 "latitude": "11.45609800",
                 "longitude": "-51.78216000",
                 "daily_timing": "05:00:00",
-                "answers": [
-                    {
+                "subjects": [
+                    "English",
+                    "Urdu"
+                ],
+                "answers": {
+                    "0": {
                         "question_id": 1,
                         "choice_id": 2
                     },
-                    {
+                    "1": {
                         "question_id": 4,
                         "choice_id": 2
                     },
-                    {
+                    "2": {
                         "question_id": 6,
                         "choice_id": 2
                     },
-                    {
+                    "3": {
                         "question_id": 8,
                         "choice_id": 2
                     },
-                    {
+                    "4": {
                         "question_id": 12,
                         "choice_id": 2
-                    }
-                ]
+                    },
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ]
+                }
             }
 
 + Response 200 (application/json)
@@ -1029,7 +1376,12 @@ for student/tutor profile and tutions
             {
                 "tution": {
                     "title": "Tution 3",
+                    "private": true,
                     "budget": "100 dollar",
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
                     "start_date": "2019-08-12 00:00:00",
                     "day_of_week_0": true,
                     "day_of_week_1": true,
@@ -1041,6 +1393,10 @@ for student/tutor profile and tutions
                     "latitude": "11.45609800",
                     "longitude": "-51.78216000",
                     "daily_timing": "05:00:00",
+                    "subjects": [
+                        "English",
+                        "Urdu"
+                    ],
                     "student_id": 11,
                     "created_at": "2017-04-12 17:32:21",
                     "id": 5,
@@ -1154,9 +1510,52 @@ for student/tutor profile and tutions
 
             []
 
-# Messages [/messages]
+## Rate Tution by Student / Tutor [POST /tutions/{id}/rate]
 
-## List of my messages [GET /messages]
+
++ Parameters
+    + rating: (integer, required) - value between 1-5
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "rating": "1"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "rating": {
+                    "rating": 3,
+                    "reviews": null,
+                    "user_id": 11,
+                    "rateable_type": "App\\Models\\Profile",
+                    "rateable_id": 6,
+                    "updated_at": "2017-04-29 10:45:56",
+                    "created_at": "2017-04-29 10:45:56",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not rate Tution.",
+                "errors": {
+                    "rating": [
+                        "You have already rated this tution."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## Complete/Finished tution by Student / Tutor [POST /tutions/{id}/finished]
 
 
 + Request (application/json)
@@ -1171,147 +1570,237 @@ for student/tutor profile and tutions
     + Body
 
             {
-                "total": 2,
+                "rating": {
+                    "rating": 3,
+                    "reviews": null,
+                    "user_id": 11,
+                    "rateable_type": "App\\Models\\Profile",
+                    "rateable_id": 6,
+                    "updated_at": "2017-04-29 10:45:56",
+                    "created_at": "2017-04-29 10:45:56",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not rate Tution.",
+                "errors": {
+                    "rating": [
+                        "You have already rated this tution."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## List of Offers [GET /tutions/offers]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
                 "per_page": 20,
                 "current_page": 1,
                 "last_page": 1,
                 "next_page_url": null,
                 "prev_page_url": null,
                 "from": 1,
-                "to": 2,
+                "to": 1,
                 "data": [
                     {
-                        "id": 2,
-                        "unread_messages_count": 3,
-                        "last_message": {
-                            "id": 7,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "Fine",
-                            "created_at": "2017-04-16 13:59:09"
-                        },
-                        "participants": [
-                            {
-                                "id": 3,
-                                "thread_id": "2",
-                                "user_id": "11",
-                                "last_read": null,
-                                "deleted_at": null
-                            },
-                            {
-                                "id": 4,
-                                "thread_id": "2",
-                                "user_id": "10",
-                                "last_read": null,
-                                "deleted_at": null
-                            }
-                        ],
-                        "pivot": {
-                            "user_id": "10",
-                            "thread_id": "2",
-                            "last_read": null
-                        },
-                        "messages": [
-                            {
-                                "id": 3,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "Salam",
-                                "created_at": "2017-04-16 13:53:37"
-                            },
-                            {
-                                "id": 4,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "How are you?",
-                                "created_at": "2017-04-16 13:53:44"
-                            },
-                            {
-                                "id": 5,
-                                "thread_id": "2",
-                                "sender_id": "11",
-                                "body": "Wait!",
-                                "created_at": "2017-04-16 13:53:52"
-                            },
-                            {
-                                "id": 6,
-                                "thread_id": "2",
-                                "sender_id": "10",
-                                "body": "WS",
-                                "created_at": "2017-04-16 13:59:01"
-                            },
-                            {
-                                "id": 7,
-                                "thread_id": "2",
-                                "sender_id": "10",
-                                "body": "Fine",
-                                "created_at": "2017-04-16 13:59:09"
-                            }
-                        ]
-                    },
-                    {
+                        "type": "proposal",
+                        "offer_tutor_id": "6",
                         "id": 3,
-                        "unread_messages_count": 4,
-                        "last_message": {
-                            "id": 11,
-                            "thread_id": "3",
-                            "sender_id": "5",
-                            "body": "I will be in meeting room",
-                            "created_at": "2017-04-17 06:57:15"
-                        },
-                        "participants": [
-                            {
-                                "id": 5,
-                                "thread_id": "3",
-                                "user_id": "5",
-                                "last_read": null,
-                                "deleted_at": null
-                            },
-                            {
-                                "id": 6,
-                                "thread_id": "3",
-                                "user_id": "10",
-                                "last_read": null,
-                                "deleted_at": null
-                            }
-                        ],
-                        "pivot": {
-                            "user_id": "10",
-                            "thread_id": "3",
-                            "last_read": null
-                        },
-                        "messages": [
-                            {
-                                "id": 8,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "Hello,",
-                                "created_at": "2017-04-17 06:55:11"
-                            },
-                            {
-                                "id": 9,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "Lets discuss on new project",
-                                "created_at": "2017-04-17 06:55:25"
-                            },
-                            {
-                                "id": 10,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "I will be in meeting room",
-                                "created_at": "2017-04-17 06:57:01"
-                            },
-                            {
+                        "student_id": "11",
+                        "tutor_id": "6",
+                        "status": "3",
+                        "private": "1",
+                        "title": "Tution 3",
+                        "budget": "100 dollar",
+                        "latitude": "-50.45929600",
+                        "longitude": "125.86288200",
+                        "start_date": "2019-08-12 00:00:00",
+                        "daily_timing": "05:00:00",
+                        "city": null,
+                        "state": null,
+                        "date": null,
+                        "time": null,
+                        "attachments": null,
+                        "day_of_week_0": "1",
+                        "day_of_week_1": "1",
+                        "day_of_week_2": "1",
+                        "day_of_week_3": "1",
+                        "day_of_week_4": "1",
+                        "day_of_week_5": "1",
+                        "day_of_week_6": "1",
+                        "description": null,
+                        "deleted_at": null,
+                        "created_at": "2017-04-12 17:32:05",
+                        "updated_at": "2017-05-01 11:02:51",
+                        "student": {
+                            "id": 13,
+                            "gender": "M",
+                            "name": "Sam",
+                            "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "latitude": "-69.92557000",
+                            "longitude": "-144.58138800",
+                            "address": "My locatio",
+                            "phone_number": "+1-548-519-6469",
+                            "is_phone_number_verified": "0",
+                            "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                            "hourly_rate": "12.00",
+                            "radius": "5000",
+                            "experience": "1",
+                            "stage_complete": null,
+                            "teaches": null,
+                            "city": null,
+                            "state": null,
+                            "paypal_address": null,
+                            "specialist": null,
+                            "qualifications": [
+                                "Mba",
+                                "Bs"
+                            ],
+                            "average_rating": "3.0000",
+                            "completed_tutions": 2,
+                            "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                            "total_hours": 5,
+                            "user": {
                                 "id": 11,
-                                "thread_id": "3",
-                                "sender_id": "5",
-                                "body": "I will be in meeting room",
-                                "created_at": "2017-04-17 06:57:15"
+                                "email": "cleta71@example.net",
+                                "user_type": "2",
+                                "created_at": "2017-04-06 05:28:03"
                             }
-                        ]
+                        }
                     }
                 ]
+            }
+
+# Messages [/messages]
+
+## List of Communications [GET /messages]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": {
+                    "total": 2,
+                    "per_page": 20,
+                    "current_page": 1,
+                    "last_page": 1,
+                    "next_page_url": null,
+                    "prev_page_url": null,
+                    "from": 1,
+                    "to": 2,
+                    "data": [
+                        {
+                            "id": 1,
+                            "last_message": {
+                                "id": 52,
+                                "thread_id": "1",
+                                "sender_id": "4",
+                                "body": "I will be in meeting room",
+                                "created_at": "2017-05-09 11:14:00"
+                            },
+                            "messages": [
+                                {
+                                    "id": 52,
+                                    "thread_id": "1",
+                                    "sender_id": "4",
+                                    "body": "I will be in meeting room",
+                                    "created_at": "2017-05-09 11:14:00"
+                                }
+                            ],
+                            "participants": [
+                                {
+                                    "id": 1,
+                                    "thread_id": "1",
+                                    "user_id": "4",
+                                    "last_read": "2017-05-09 13:12:32",
+                                    "deleted_at": null,
+                                    "user": {
+                                        "id": 4,
+                                        "username": "jamaal23",
+                                        "email": "jamaal23@example.org",
+                                        "created_at": "2017-05-03 07:25:41",
+                                        "banned_at": null,
+                                        "profile": {
+                                            "name": "jamaal 23",
+                                            "weight": null,
+                                            "height": null,
+                                            "gender": null,
+                                            "dob": null,
+                                            "biceps": null,
+                                            "shoulders": null,
+                                            "gym_name": null,
+                                            "avatar": null,
+                                            "ethnicity": null,
+                                            "latitude": null,
+                                            "longitude": null,
+                                            "description": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "id": 2,
+                                    "thread_id": "1",
+                                    "user_id": "11",
+                                    "last_read": null,
+                                    "deleted_at": null,
+                                    "user": {
+                                        "id": 11,
+                                        "username": "cecelia.mertz",
+                                        "email": "jacquelyn20@example.com",
+                                        "created_at": "2017-05-09 10:05:19",
+                                        "banned_at": null,
+                                        "profile": {
+                                            "name": "Roslyn Smitham",
+                                            "weight": "140.14",
+                                            "height": "126.77",
+                                            "gender": "M",
+                                            "dob": "1977-12-30",
+                                            "biceps": "24.57",
+                                            "shoulders": "42.74",
+                                            "gym_name": "Glover, Lubowitz and Torphy",
+                                            "avatar": "http:\/\/lorempixel.com\/640\/480\/?18089",
+                                            "ethnicity": "4",
+                                            "latitude": "73.93778600",
+                                            "longitude": "-94.09201300",
+                                            "description": "I'm grown up now,' she added in a hurry. 'No, I'll look first,' she said, 'for her hair goes in such a puzzled expression that she knew the meaning of it in asking riddles that have no idea what."
+                                        }
+                                    }
+                                }
+                            ],
+                            "pivot": {
+                                "user_id": "4",
+                                "thread_id": "1",
+                                "last_read": "2017-05-09 13:12:32"
+                            }
+                        }
+                    ]
+                }
             }
 
 ## Send Message to User [POST /messages]
@@ -1358,6 +1847,54 @@ for student/tutor profile and tutions
                 "status_code": 422
             }
 
+## List of Messages of Specific Thread [GET /messages/{id}]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 52,
+                "per_page": 3,
+                "current_page": 1,
+                "last_page": 18,
+                "next_page_url": "http:\/\/localhost:8000\/api\/messages\/1?page=2",
+                "prev_page_url": null,
+                "from": 1,
+                "to": 3,
+                "data": [
+                    {
+                        "id": 52,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:14:00"
+                    },
+                    {
+                        "id": 53,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:14:00"
+                    },
+                    {
+                        "id": 49,
+                        "thread_id": "1",
+                        "sender_id": "4",
+                        "body": "I will be in meeting room",
+                        "created_at": "2017-05-09 11:13:59"
+                    }
+                ]
+            }
+
 ## Unread Messages Count [GET /messages/unread-messages-count]
 
 
@@ -1399,47 +1936,10 @@ for student/tutor profile and tutions
                 "message_thread": {
                     "id": 2,
                     "pivot": {
-                        "user_id": "10",
+                        "user_id": "4",
                         "thread_id": "2",
-                        "last_read": "2017-04-17 17:25:23"
-                    },
-                    "messages": [
-                        {
-                            "id": 3,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "Salam",
-                            "created_at": "2017-04-16 13:53:37"
-                        },
-                        {
-                            "id": 4,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "How are you?",
-                            "created_at": "2017-04-16 13:53:44"
-                        },
-                        {
-                            "id": 5,
-                            "thread_id": "2",
-                            "sender_id": "11",
-                            "body": "Wait!",
-                            "created_at": "2017-04-16 13:53:52"
-                        },
-                        {
-                            "id": 6,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "WS",
-                            "created_at": "2017-04-16 13:59:01"
-                        },
-                        {
-                            "id": 7,
-                            "thread_id": "2",
-                            "sender_id": "10",
-                            "body": "Fine",
-                            "created_at": "2017-04-16 13:59:09"
-                        }
-                    ]
+                        "last_read": "2017-05-09 13:15:59"
+                    }
                 }
             }
 
@@ -1461,13 +1961,18 @@ for student/tutor profile and tutions
 ## List of Proposals [GET /proposals]
 
 
++ Parameters
+    + status: (integer, optional) - 1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl
+
 + Request (application/json)
     + Headers
 
             Authorization: Bearer {token}
     + Body
 
-            []
+            {
+                "status": 1
+            }
 
 + Response 200 (application/json)
     + Body
@@ -1496,6 +2001,7 @@ for student/tutor profile and tutions
                             "student_id": "11",
                             "tutor_id": null,
                             "status": "1",
+                            "private": true,
                             "title": "Tution 1",
                             "budget": "100 dollar",
                             "latitude": "11.45609800",
@@ -1520,6 +2026,11 @@ for student/tutor profile and tutions
 
 
 + Parameters
+    + title: (string, required) - 
+    + availability_from: (string, optional) - 
+    + availability_to: (string, optional) - 
+    + schedule: (string, optional) - 
+    + attachments: (array, optional) - array of objects
     + tution_id: (integer, required) - 
     + description: (string, required) - 
 
@@ -1530,6 +2041,7 @@ for student/tutor profile and tutions
     + Body
 
             {
+                "title": "title abc",
                 "tution_id": 3,
                 "description": "This is cover letter"
             }
@@ -1616,6 +2128,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1707,6 +2220,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1755,6 +2269,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1803,6 +2318,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -1827,6 +2343,9 @@ for student/tutor profile and tutions
 ## List of Invitations [GET /invitations]
 
 
++ Parameters
+    + status: (integer, optional) - 1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl
+
 + Request (application/json)
     + Headers
 
@@ -1849,25 +2368,38 @@ for student/tutor profile and tutions
                 "to": 1,
                 "data": [
                     {
-                        "id": 2,
-                        "tutor_id": "5",
-                        "tution_id": "3",
+                        "id": 6,
+                        "tutor_id": "6",
+                        "tution_id": "31",
                         "status": "1",
-                        "description": "This is cover letter",
+                        "end_date": null,
+                        "grade": "A1",
+                        "attachments": [
+                            "attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                            "attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                        ],
+                        "description": "test",
+                        "message": null,
                         "deleted_at": null,
-                        "created_at": "2017-04-18 17:59:26",
-                        "updated_at": "2017-04-18 17:59:26",
+                        "created_at": "2017-05-12 10:01:28",
+                        "updated_at": "2017-05-12 10:01:28",
                         "tution": {
-                            "id": 3,
+                            "id": 31,
                             "student_id": "11",
                             "tutor_id": null,
                             "status": "1",
-                            "title": "Tution 1",
+                            "private": false,
+                            "title": "Tution 7",
                             "budget": "100 dollar",
                             "latitude": "11.45609800",
                             "longitude": "-51.78216000",
-                            "start_date": "2019-08-12 00:00:00",
+                            "start_date": "2019-08-12",
                             "daily_timing": "05:00:00",
+                            "city": null,
+                            "state": null,
+                            "date": null,
+                            "time": null,
+                            "attachments": [],
                             "day_of_week_0": true,
                             "day_of_week_1": true,
                             "day_of_week_2": true,
@@ -1876,7 +2408,47 @@ for student/tutor profile and tutions
                             "day_of_week_5": true,
                             "day_of_week_6": true,
                             "description": null,
-                            "created_at": "2017-04-12 17:32:05"
+                            "created_at": "2017-05-11 10:11:33",
+                            "subjects": [
+                                "English",
+                                "Urdu"
+                            ],
+                            "last_class": "",
+                            "answers": [],
+                            "student": {
+                                "id": 13,
+                                "gender": "M",
+                                "name": "Sam",
+                                "avatar": "uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                                "latitude": "-69.92557000",
+                                "longitude": "-144.58138800",
+                                "address": "My locatio",
+                                "phone_number": "+1-548-519-6469",
+                                "bio": "Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.",
+                                "hourly_rate": "12.00",
+                                "radius": "5000",
+                                "experience": "1",
+                                "stage_complete": null,
+                                "teaches": null,
+                                "city": null,
+                                "state": null,
+                                "paypal_address": null,
+                                "specialist": null,
+                                "qualifications": [
+                                    "Mba",
+                                    "Bs"
+                                ],
+                                "average_rating": "3.0000",
+                                "completed_tutions": 2,
+                                "avatar_url": "http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg",
+                                "total_hours": 5,
+                                "user": {
+                                    "id": 11,
+                                    "email": "cleta71@example.net",
+                                    "user_type": "2",
+                                    "created_at": "2017-04-06 05:28:03"
+                                }
+                            }
                         }
                     }
                 ]
@@ -1886,6 +2458,10 @@ for student/tutor profile and tutions
 
 
 + Parameters
+    + attachments: (array, optional) - array of objects
+    + description: (string, optional) - 
+    + grade: (string, optional) - 
+    + end_date: (string, optional) - 
     + tution_id: (integer, required) - 
     + tutor_id: (integer, required) - 
 
@@ -1897,7 +2473,11 @@ for student/tutor profile and tutions
 
             {
                 "tutor_id": 7,
-                "tution_id": 3
+                "tution_id": 3,
+                "attachments": [
+                    "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                    "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                ]
             }
 
 + Response 200 (application/json)
@@ -1907,6 +2487,10 @@ for student/tutor profile and tutions
                 "invitation": {
                     "tutor_id": 7,
                     "tution_id": 3,
+                    "attachments": [
+                        "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
                     "updated_at": "2017-04-18 18:15:06",
                     "created_at": "2017-04-18 18:15:06",
                     "id": 1
@@ -1981,6 +2565,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -2072,6 +2657,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -2091,7 +2677,7 @@ for student/tutor profile and tutions
                 }
             }
 
-## Accept proposal by Student [POST /invitations/accept/{id}]
+## Accept Invitation by Tutor [POST /invitations/accept/{id}]
 
 
 + Request (application/json)
@@ -2120,6 +2706,7 @@ for student/tutor profile and tutions
                         "student_id": "11",
                         "tutor_id": null,
                         "status": "1",
+                        "private": true,
                         "title": "Tution 1",
                         "budget": "100 dollar",
                         "latitude": "11.45609800",
@@ -2150,4 +2737,330 @@ for student/tutor profile and tutions
                     ]
                 },
                 "status_code": 422
+            }
+
+# CreditCard [/credit-cards]
+
+## List of CreditCards [GET /credit-cards]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "credit_card": {
+                    "id": 1,
+                    "user_id": "15",
+                    "name": null,
+                    "month": "11",
+                    "year": "2018",
+                    "card_number": "4242-4242-4242-4242",
+                    "cvc": "123"
+                }
+            }
+
+## Add/Edit CreditCard [POST /credit-cards]
+
+
++ Parameters
+    + month: (integer, required) - 
+    + year: (integer, required) - 
+    + card_number: (string, required) - 
+    + cvc: (integer, required) - 
+    + name: (string, optional) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "month": "11",
+                "year": "2018",
+                "card_number": "4242-4242-4242-4242",
+                "cvc": 123
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "credit_card": {
+                    "id": 1,
+                    "user_id": "15",
+                    "name": null,
+                    "month": "11",
+                    "year": "2018",
+                    "card_number": "4242-4242-4242-4242",
+                    "cvc": "123"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not update credit card information.",
+                "errors": {
+                    "month": [
+                        "The month field is required."
+                    ],
+                    "year": [
+                        "The year field is required."
+                    ],
+                    "card_number": [
+                        "The card number field is required."
+                    ],
+                    "cvc": [
+                        "The cvc field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Lecture [/lectures]
+
+## List of Lectures [GET /lectures]
+
+
++ Parameters
+    + tution_id: (integer, optional) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 20,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": 1,
+                        "tution_id": "3",
+                        "start_time": "2017-06-04 12:19:48",
+                        "end_time": "2017-06-04 12:24:48",
+                        "goals": "This is cover letter",
+                        "reviews": "reviews reviews reviews, reviews",
+                        "lecture_number": "1",
+                        "progress": "10",
+                        "attachments": [
+                            "attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                            "attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                        ],
+                        "created_at": "2017-06-04 12:19:48",
+                        "updated_at": "2017-06-04 12:24:48",
+                        "deleted_at": null
+                    }
+                ]
+            }
+
+## Start Lecture [POST /lectures/start]
+
+
++ Parameters
+    + tution_id: (integer, required) - 
+    + goals: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "tution_id": 3,
+                "goals": "This is cover letter"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "lecture": {
+                    "tution_id": 3,
+                    "goals": "This is cover letter",
+                    "lecture_number": 1,
+                    "start_time": "2017-06-04 12:19:48",
+                    "updated_at": "2017-06-04 12:19:48",
+                    "created_at": "2017-06-04 12:19:48",
+                    "id": 1
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not start Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "The tution id field is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not start Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "You have already started lecture."
+                    ]
+                },
+                "status_code": 422
+            }
+
+## End lecture [POST /lectures/{lecture_id}/end]
+
+
++ Parameters
+    + attachments: (array, optional) - array of objects
+    + reviews: (string, required) - 
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            {
+                "reviews": "reviews reviews reviews, reviews",
+                "progress": 10,
+                "attachments": [
+                    "attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                    "attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                ]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "lecture": {
+                    "id": 1,
+                    "tution_id": "3",
+                    "start_time": "2017-06-04 12:19:48",
+                    "end_time": "2017-06-04 12:24:48",
+                    "goals": "This is cover letter",
+                    "reviews": "reviews reviews reviews, reviews",
+                    "lecture_number": "1",
+                    "progress": 10,
+                    "attachments": [
+                        "attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt",
+                        "attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"
+                    ],
+                    "created_at": "2017-06-04 12:19:48",
+                    "updated_at": "2017-06-04 12:24:48",
+                    "deleted_at": null
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not end Lecture.",
+                "errors": {
+                    "tution_id": [
+                        "You have already ended lecture."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Uploads [/uploads]
+
+## Upload Attachments [POST /uploads]
+
+
++ Parameters
+    + attachments: (array, required) - 
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                "attachments/m5YVZqMJagSdoUxalVFe5CYfPVmhPOvjFPgLlkkt.txt",
+                "attachments/hMdyme9xiDBmN577nuDiGo4o5qGs8qtI3YsqdMCj.html"
+            ]
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not upload attachments.",
+                "errors": {
+                    "attachments": [
+                        "Attachments is required."
+                    ]
+                },
+                "status_code": 422
+            }
+
+# Notifications [/notifications]
+
+## List of Notifications [GET /notifications]
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer {token}
+    + Body
+
+            []
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "total": 1,
+                "per_page": 10,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": null,
+                "prev_page_url": null,
+                "from": 1,
+                "to": 1,
+                "data": [
+                    {
+                        "id": "575c031c-60db-4d53-b5fb-b3f8ec00587e",
+                        "type": "App\\Notifications\\InvitationRecieved",
+                        "notifiable_id": "6",
+                        "notifiable_type": "App\\Models\\User",
+                        "data": {
+                            "student_id": "11",
+                            "tution_id": 31,
+                            "message": "Sam has sent you tution invitation."
+                        },
+                        "read_at": null,
+                        "created_at": "2017-06-10 09:39:37",
+                        "updated_at": "2017-06-10 09:39:37"
+                    }
+                ]
             }

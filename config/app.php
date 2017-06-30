@@ -166,6 +166,8 @@ return [
         \Conner\Tagging\Providers\TaggingServiceProvider::class, # Added on 07-Apr-2017
         Matriphe\Imageupload\ImageuploadServiceProvider::class, # Added on 15-Apr-2017
         Gerardojbaez\Messenger\MessengerServiceProvider::class, # Added on 15-Apr-2017
+        willvincent\Rateable\RateableServiceProvider::class, # Added on 26-Apr-2017
+        Nexmo\Laravel\NexmoServiceProvider::class, # Added on 07-Jun-2017
     ],
     /*
       |--------------------------------------------------------------------------
@@ -225,6 +227,7 @@ return [
         'ActionLog' => Qylinfly\ActionLog\Facades\ActionLogFacade::class, # Added on 30-Mar-2017
         'Imageupload' => Matriphe\Imageupload\ImageuploadFacade::class, # Added on 15-Apr-2017
         'Messenger' => Gerardojbaez\Messenger\Facades\Messenger::class, # Added on 15-Apr-2017
+        'Nexmo' => \Nexmo\Laravel\Facade\Nexmo::class, # Added on 07-Jun-2017
     ],
     
 //    'token_secret' => 'some random string',

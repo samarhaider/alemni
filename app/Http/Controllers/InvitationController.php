@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invitation;
+use App\Models\Tution;
+use App\Models\User;
 use Auth;
+use App\Notifications\InvitationRecieved;
+use App\Notifications\InvitationAccepted;
 
 /**
  * @Resource("Invitation", uri="/invitations" )
@@ -18,9 +22,13 @@ class InvitationController extends Controller
      *
      * @Get("/")
      * 
+     * @Parameters({
+     *      @Parameter("status", type="integer", description="1 = pending, 2 = accepted, 3 = rejected, 4 = with drawl")
+     * })
+     * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"id":2,"tutor_id":"5","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:59:26","updated_at":"2017-04-18 17:59:26","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}})
+     *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"id":6,"tutor_id":"6","tution_id":"31","status":"1","end_date":null,"grade":"A1","attachments":{"attachments\/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments\/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"},"description":"test","message":null,"deleted_at":null,"created_at":"2017-05-12 10:01:28","updated_at":"2017-05-12 10:01:28","tution":{"id":31,"student_id":"11","tutor_id":null,"status":"1","private":false,"title":"Tution 7","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":{},"day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-05-11 10:11:33","subjects":{"English","Urdu"},"last_class":"","answers":{},"student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}}}}})
      * })
      */
     public function index(Request $request)
@@ -28,13 +36,14 @@ class InvitationController extends Controller
         $user = Auth::user();
         $invitations = new Invitation;
         if ($user->isTutor()) {
-            $invitations = Invitation::findTutor($user->id);
+            $invitations = Invitation::findTutor($user->id)->with('tution.student');
         } else {
             $invitations = Invitation::whereHas('tution', function($query) use ($user) {
                     $query->where('tutions.student_id', '=', $user->id);
-                });
+                })
+                ->with('tutor');
         }
-        $status = $request->get('status', false);
+        $status = $request->get('status', Invitation::STATUS_PENDING);
         if ($status) {
             $invitations->status($status);
         }
@@ -57,12 +66,16 @@ class InvitationController extends Controller
      * @Post("/")
      * 
      * @Parameters({
+     *      @Parameter("attachments", type="array", description="array of objects"),
+     *      @Parameter("description"),
+     *      @Parameter("grade"),
+     *      @Parameter("end_date"),
      *      @Parameter("tution_id", type="integer", required=true),
      *      @Parameter("tutor_id", type="integer", required=true)
      * })
      * @Transaction({
-     *      @Request({"tutor_id": 7, "tution_id": 3}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"tutor_id":7,"tution_id":3,"updated_at":"2017-04-18 18:15:06","created_at":"2017-04-18 18:15:06","id":1}}),
+     *      @Request({"tutor_id": 7, "tution_id": 3,"attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"}}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"invitation":{"tutor_id":7,"tution_id":3,"attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"},"updated_at":"2017-04-18 18:15:06","created_at":"2017-04-18 18:15:06","id":1}}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tution_id":{"You have already sent invitation of this tutor."}},"status_code":422}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tution_id":{"The tution id field is required."}},"status_code":422}),
      *      @Response(422, body={"message":"Could not submit Invitation.","errors":{"tutor_id":{"The tutor id field is required."}},"status_code":422})
@@ -79,7 +92,7 @@ class InvitationController extends Controller
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', $invitation->getErrors());
         }
         if (!$invitation->tution || $invitation->tution->student_id != $user->id) {
-            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You have already sent invitation of this tutor.']);
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You are not autherized to this tution.']);
         }
         $already_invitation = Invitation::findTutor($invitation->tutor_id)
             ->findTution($invitation->tution_id)
@@ -87,7 +100,10 @@ class InvitationController extends Controller
         if ($already_invitation) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not submit Invitation.', ['tution_id' => 'You have already sent invitation of this tutor.']);
         }
+        $invitation->status = Invitation::STATUS_PENDING;
         $invitation->save();
+        $tutor = User::find($invitation->tutor_id);
+        $tutor->notify(new InvitationRecieved($invitation));
         return $invitation;
     }
 
@@ -98,7 +114,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:32:47","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
+     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":"1","description":"This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:32:47","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
      * })
      */
     public function show($id)
@@ -161,7 +177,7 @@ class InvitationController extends Controller
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":3,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
+     *      @Response(200, body={"invitation":{"id":1,"tutor_id":"10","tution_id":"3","status":3,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}})
      * })
      */
     public function reject(Request $request, $id)
@@ -169,7 +185,7 @@ class InvitationController extends Controller
         $user = Auth::user();
         $invitation = Invitation::findTutor($user->id)
             ->where('id', $id)
-//            ->status(Invitation::STATUS_PENDING)
+            ->status(Invitation::STATUS_PENDING)
             ->firstOrFail();
         $invitation->status = Invitation::STATUS_REJECTED;
         $invitation->save();
@@ -177,13 +193,13 @@ class InvitationController extends Controller
     }
 
     /**
-     * Accept proposal by Student
+     * Accept Invitation by Tutor
      * 
      * @Post("/accept/{id}")
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"proposal":{"id":1,"tutor_id":"10","tution_id":"3","status":4,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}),
+     *      @Response(200, body={"proposal":{"id":1,"tutor_id":"10","tution_id":"3","status":4,"description":"Update: This is cover letter","deleted_at":null,"created_at":"2017-04-18 17:32:47","updated_at":"2017-04-18 17:57:20","tution":{"id":3,"student_id":"11","tutor_id":null,"status":"1","private": true,"title":"Tution 1","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:05"}}}),
      *      @Response(422, body={"message":"Could not accept Invitation.","errors":{"description":{"The description id field is required."}},"status_code":422})
      * })
      */
@@ -191,16 +207,27 @@ class InvitationController extends Controller
     {
         $user = Auth::user();
         $invitation = Invitation::findTutor($user->id)
-            ->where('id', $id)
-//            ->status(Invitation::STATUS_PENDING)
+            ->whereKey($id)
+            ->status(Invitation::STATUS_PENDING)
             ->firstOrFail();
-        $invitation->status = Proposal::STATUS_ACCEPTED;
+
+        $tution = Tution::whereKey($invitation->tution_id)
+            ->status(Tution::STATUS_NEW)
+//            ->findStudent($user->id)
+            ->firstOrFail();
+
+        $invitation->status = Invitation::STATUS_ACCEPTED;
         $invitation->fill($request->all());
-        $invitation->acceptValidation(true);
+//        $invitation->acceptValidation(true);
         if ($invitation->isInvalid()) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not accept Invitation.', $invitation->getErrors());
         }
         $invitation->save();
+        $tution->tutor_id = $invitation->tutor_id;
+        $tution->status = Tution::STATUS_INPROGRESS;
+        $tution->save();
+        $tutor = User::find($invitation->tutor_id);
+        $tutor->notify(new InvitationAccepted($invitation));
         return $invitation;
     }
 

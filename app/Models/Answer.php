@@ -14,7 +14,8 @@ class Answer extends AppModel
      */
     protected $rules = [
         'question_id' => 'required',
-        'choice_id' => 'required',
+//        'choice_id' => 'required',
+        'text' => 'required',
     ];
 
     /**
@@ -36,7 +37,7 @@ class Answer extends AppModel
      *
      * @var array
      */
-    protected $hidden = ['updated_at', 'deleted_at'];
+    protected $hidden = ['questionable_type', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be casted to native types.

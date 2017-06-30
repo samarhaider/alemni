@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Tution;
+use App\Models\Offer;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\Invitation;
+use willvincent\Rateable\Rating;
+use App\Notifications\TutionCompleted;
+use App\Notifications\TutionRated;
 
 /**
  * @Resource("Tutions", uri="/tutions" )
@@ -20,34 +25,53 @@ class TutionController extends Controller
      * @Get("/")
      * 
      * @Parameters({
-     *      @Parameter("search_type", description="1= pending 2=completed, 3=near by me")
+     *      @Parameter("search_type", description="1= new, 2= pending 3=completed, 100=near by me")
      * })
      * 
      * @Transaction({
      *      @Request({}, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"total":20,"per_page":1,"current_page":1,"last_page":1,"next_page_url":"http:\/\/localhost:8000\/api\/tutions?page=2","prev_page_url":null,"from":1,"to":1,"data":{{"id":5,"student_id":"11","tutor_id":"6","status":"1","title":"Tution 3","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:21","tutor_profile":{"id":6,"gender":"M","name":"Alva Runolfsson","avatar":null,"latitude":"-50.45929600","longitude":"125.86288200","phone_number":"+18872230060","bio":"Beatae hic sint voluptatum ea. Ipsa quia et quos nam qui ut officiis laboriosam. Autem totam voluptates voluptate ducimus qui necessitatibus et ullam. Temporibus et magni totam.","hourly_rate":"4.00","radius":"7306","qualifications":{}}}}})
+     *      @Response(200, body={"total":2,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":2,"data":{{"id":6,"student_id":"11","tutor_id":"6","status":"2","private":true,"title":"Tution 6","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":{},"day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 19:20:03","subjects":{},"last_class":"","answers":{},"student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}},{"id":4,"student_id":"11","tutor_id":"6","status":"2","private":true,"title":"Tution 4","budget":"100 dollar","latitude":"11.45609800","longitude":"-51.78216000","start_date":"2019-08-12","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":{},"day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"description":null,"created_at":"2017-04-12 17:32:16","subjects":{},"last_class":"","answers":{},"student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}}}})
      * })
      */
     public function index(Request $request)
     {
         $tutor_id = $student_id = false;
+        $search_type = $request->get('search_type', Tution::STATUS_NEW);
         $relations = null;
         if (Auth::user()->isStudent()) {
             $student_id = Auth::user()->id;
-            $relations = 'tutorProfile';
+            $relations = ['tutor', 'invitations.tutor'];
+            $relations[] = 'proposals.tutor';
         }
         if (Auth::user()->isTutor()) {
             $tutor_id = Auth::user()->id;
-            $relations = 'studentProfile';
+            $relations = 'student';
         }
 
         $tutions = Tution::with($relations);
 //            ->join('questions', 'questions.id', '=', 'tutions.question_id');
         if ($student_id) {
-            $tutions->where('student_id', '=', $student_id);
+            $tutions->findStudent($student_id);
         }
-        if ($tutor_id) {
-            $tutions->where('tutor_id', '=', $tutor_id);
+        if ($tutor_id && ($search_type != 1 && $search_type != 100)) {
+            $tutions->findTutor($tutor_id);
+        }
+        if ($search_type < 5) {
+            $tutions->status($search_type);
+            if (Auth::user()->isTutor() && $search_type == Tution::STATUS_NEW) {
+                $tutions->publicOnly();
+//                $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
+            }
+        }
+        if ($search_type == 100) {
+            $tutions->status(Tution::STATUS_NEW);
+            $profile = Auth::user()->profile;
+            $latitude = $request->get('latitude', $profile->latitude);
+            $longitude = $request->get('longitude', $profile->longitude);
+            $distance = $request->get('radius', 5000);
+            $tutions->nearBy($latitude, $longitude, $distance);
+            $tutions->publicOnly();
+//            $tutions->publicOnlyAndInvitedUser(Auth::user()->id);
         }
         $tutions->latest();
         return $tutions->paginate(20);
@@ -70,6 +94,7 @@ class TutionController extends Controller
      * 
      * @Parameters({
      *      @Parameter("title", description="Customer Name"),
+     *      @Parameter("private", type="boolean", required=true),
      *      @Parameter("start_date", type="date", description="date format Y-m-d like 2016-12-12", required=true),
      *      @Parameter("latitude", type="decimal", required=true),
      *      @Parameter("longitude", type="decimal", required=true),
@@ -82,13 +107,15 @@ class TutionController extends Controller
      *      @Parameter("day_of_week_4", type="boolean", required=true),
      *      @Parameter("day_of_week_5", type="boolean", required=true),
      *      @Parameter("day_of_week_6", type="boolean", required=true),
+     *      @Parameter("subjects", type="array", description="string array of subjects"),
      *      @Parameter("answers", type="array", description="array of objects", required=true),
+     *      @Parameter("attachments", type="array", description="array of objects"),
      *      @Parameter("description")
      * })
      * 
      * @Transaction({
-     *      @Request({"title":"Tution 3","budget":"100 dollar","start_date": "2018-20-12", "day_of_week_0": 1, "day_of_week_1": 1, "day_of_week_2": 1, "day_of_week_3": 1, "day_of_week_4": 1, "day_of_week_5": 1, "day_of_week_6": 1, "latitude": "11.45609800", "longitude": "-51.78216000", "daily_timing": "05:00:00", "answers":{{"question_id": 1,"choice_id": 2},{"question_id": 4,"choice_id": 2},{"question_id": 6,"choice_id": 2},{"question_id": 8,"choice_id": 2},{"question_id": 12,"choice_id": 2}} }, headers={"Authorization": "Bearer {token}"}),
-     *      @Response(200, body={"tution":{"title":"Tution 3","budget":"100 dollar","start_date":"2019-08-12 00:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"latitude":"11.45609800","longitude":"-51.78216000","daily_timing":"05:00:00","student_id":11,"created_at":"2017-04-12 17:32:21","id":5,"answers":{{"id":21,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"1","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":22,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"4","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":23,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"6","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":24,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"8","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":25,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"12","choice_id":"2","created_at":"2017-04-12 17:32:22"}}}}),
+     *      @Request({"title":"Tution 3","private": true,"budget":"100 dollar","start_date": "2018-20-12", "day_of_week_0": 1, "day_of_week_1": 1, "day_of_week_2": 1, "day_of_week_3": 1, "day_of_week_4": 1, "day_of_week_5": 1, "day_of_week_6": 1, "latitude": "11.45609800", "longitude": "-51.78216000", "daily_timing": "05:00:00", "subjects": {"English","Urdu"}, "answers":{{"question_id": 1,"choice_id": 2},{"question_id": 4,"choice_id": 2},{"question_id": 6,"choice_id": 2},{"question_id": 8,"choice_id": 2},{"question_id": 12,"choice_id": 2},"attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"}} }, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"tution":{"title":"Tution 3","private": true,"budget":"100 dollar","attachments":{"attachments/TaGt2P3apz8q8XWbCWMNbsvsBScXmMMEy6puh0Lv.txt","attachments/rmF19P8Pc2HfvrUYu3RQaEihAymFekNm51aTdFr2.html"},"start_date":"2019-08-12 00:00:00","day_of_week_0":true,"day_of_week_1":true,"day_of_week_2":true,"day_of_week_3":true,"day_of_week_4":true,"day_of_week_5":true,"day_of_week_6":true,"latitude":"11.45609800","longitude":"-51.78216000","daily_timing":"05:00:00", "subjects": {"English","Urdu"},"student_id":11,"created_at":"2017-04-12 17:32:21","id":5,"answers":{{"id":21,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"1","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":22,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"4","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":23,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"6","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":24,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"8","choice_id":"2","created_at":"2017-04-12 17:32:21"},{"id":25,"questionable_id":"5","questionable_type":"App\\Models\\Tution","question_id":"12","choice_id":"2","created_at":"2017-04-12 17:32:22"}}}}),
      *      @Response(422, body={"message":"Could not add Tution.","errors":{"title":{"The title field is required."},"budget":{"The budget field is required."},"latitude":{"The latitude field is required."},"longitude":{"The longitude field is required."},"start_date":{"The start date field is required."},"daily_timing":{"The daily timing field is required."},"day_of_week_0":{"The day of week 0 field is required."},"day_of_week_1":{"The day of week 1 field is required."},"day_of_week_2":{"The day of week 2 field is required."},"day_of_week_3":{"The day of week 3 field is required."},"day_of_week_4":{"The day of week 4 field is required."},"day_of_week_5":{"The day of week 5 field is required."},"day_of_week_6":{"The day of week 6 field is required."}},"status_code":422})
      * })
      */
@@ -138,6 +165,7 @@ class TutionController extends Controller
         if ($errors) {
             throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not add Tution.', $errors);
         }
+        $tution->status = Tution::STATUS_NEW;
         $tution->save();
         if ($request->get('subjects')) {
             $tution->retag($request->get('subjects'));
@@ -159,7 +187,27 @@ class TutionController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = Auth::user();
+        if ($user->isStudent()) {
+            $student_id = $user->id;
+            $relations = ['tutor', 'invitations.tutor'];
+            $relations[] = 'proposals.tutor';
+        }
+        if ($user->isTutor()) {
+            $tutor_id = $user->id;
+            $relations = 'student';
+        }
+        $query = Tution::with($relations)
+            ->whereKey($id);
+        if ($user->isTutor()) {
+//            $query->findTutor($user->id);
+            $query->publicOnlyAndInvitedUser($user->id);
+        } else {
+            $query->findStudent($user->id);
+        }
+
+        $tution = $query->firstOrFail();
+        return $tution;
     }
 
     /**
@@ -194,5 +242,144 @@ class TutionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Rate Tution by Student / Tutor
+     * 
+     * @Post("/{id}/rate")
+     * 
+     * @Parameters({
+     *      @Parameter("rating", type="integer", description="value between 1-5", required=true)
+     * })
+     * 
+     * @Transaction({
+     *      @Request({"rating":"1"}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"rating":{"rating":3,"reviews":null,"user_id":11,"rateable_type":"App\\Models\\Profile","rateable_id":6,"updated_at":"2017-04-29 10:45:56","created_at":"2017-04-29 10:45:56","id":1}}),
+     *      @Response(422, body={"message":"Could not rate Tution.","errors":{"rating":{"You have already rated this tution."}},"status_code":422})
+     * })
+     */
+    public function rate(Request $request, $id)
+    {
+        $user = Auth::user();
+        $query = Tution::whereKey($id)
+            ->status(Tution::STATUS_COMPLETED)
+        ;
+        if ($user->isTutor()) {
+            $query->findTutor($user->id);
+        } else {
+            $query->findStudent($user->id);
+        }
+        $tution = $query->firstOrFail();
+        if ($tution->userAverageRating) {
+            throw new \Dingo\Api\Exception\StoreResourceFailedException('Could not rate Tution.', ['rating' => 'You have already rated this tution.']);
+        }
+        $other_user = null;
+        if ($user->isTutor()) {
+            $other_user = $tution->student;
+        } else {
+            $other_user = $tution->tutor;
+        }
+
+        $rating = new Rating;
+        $rating->rating = $request->get('rating', 1);
+        $rating->reviews = $request->get('reviews', null);
+        $rating->user_id = $user->id;
+
+        if ($other_user) {
+            $tution->ratings()->save($rating);
+            $rating = new Rating;
+            $rating->rating = $request->get('rating', 1);
+            $rating->reviews = $request->get('reviews', null);
+            $rating->user_id = $user->id;
+            $other_user->ratings()->save($rating);
+        }
+
+        if ($user->isTutor()) {
+            $notify_user = $tution->studentUser;
+        } else {
+            $notify_user = $tution->tutorUser;
+        }
+        $notify_user->notify(new TutionRated($tution));
+        return $rating;
+    }
+
+    /**
+     * Complete/Finished tution by Student / Tutor
+     * 
+     * @Post("/{id}/finished")
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"rating":{"rating":3,"reviews":null,"user_id":11,"rateable_type":"App\\Models\\Profile","rateable_id":6,"updated_at":"2017-04-29 10:45:56","created_at":"2017-04-29 10:45:56","id":1}}),
+     *      @Response(422, body={"message":"Could not rate Tution.","errors":{"rating":{"You have already rated this tution."}},"status_code":422})
+     * })
+     */
+    public function finished(Request $request, $id)
+    {
+        $user = Auth::user();
+        $query = Tution::whereKey($id)
+            ->status(Tution::STATUS_INPROGRESS);
+        if ($user->isTutor()) {
+            $query->findTutor($user->id);
+        } else {
+            $query->findStudent($user->id);
+        }
+        $tution = $query->firstOrFail();
+        $tution->status = Tution::STATUS_COMPLETED;
+        $tution->save();
+        if ($user->isTutor()) {
+            $notify_user = $tution->studentUser;
+        } else {
+            $notify_user = $tution->tutorUser;
+        }
+        $notify_user->notify(new TutionCompleted($tution));
+        return $tution;
+    }
+
+    /**
+     * List of Offers
+     *
+     * @Get("/offers")
+     * 
+     * @Transaction({
+     *      @Request({}, headers={"Authorization": "Bearer {token}"}),
+     *      @Response(200, body={"total":1,"per_page":20,"current_page":1,"last_page":1,"next_page_url":null,"prev_page_url":null,"from":1,"to":1,"data":{{"type":"proposal","offer_tutor_id":"6","id":3,"student_id":"11","tutor_id":"6","status":"3","private":"1","title":"Tution 3","budget":"100 dollar","latitude":"-50.45929600","longitude":"125.86288200","start_date":"2019-08-12 00:00:00","daily_timing":"05:00:00","city":null,"state":null,"date":null,"time":null,"attachments":null,"day_of_week_0":"1","day_of_week_1":"1","day_of_week_2":"1","day_of_week_3":"1","day_of_week_4":"1","day_of_week_5":"1","day_of_week_6":"1","description":null,"deleted_at":null,"created_at":"2017-04-12 17:32:05","updated_at":"2017-05-01 11:02:51","student":{"id":13,"gender":"M","name":"Sam","avatar":"uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","latitude":"-69.92557000","longitude":"-144.58138800","address":"My locatio","phone_number":"+1-548-519-6469","is_phone_number_verified":"0","bio":"Saepe dicta velit vitae. Iste et voluptatem excepturi quia et tenetur doloremque. Recusandae totam id alias est tempore id qui. Cupiditate perferendis rerum natus dolore ipsum odio itaque. Vel fugiat eos vero.","hourly_rate":"12.00","radius":"5000","experience":"1","stage_complete":null,"teaches":null,"city":null,"state":null,"paypal_address":null,"specialist":null,"qualifications":{"Mba","Bs"},"average_rating":"3.0000","completed_tutions":2,"avatar_url":"http:\/\/localhost:8000\/uploads\/avatars\/T97YUzBN9pSizFPBAuZGmps3DdEybgn6wf03c1mk.jpeg","total_hours":5,"user":{"id":11,"email":"cleta71@example.net","user_type":"2","created_at":"2017-04-06 05:28:03"}}}}})
+     * })
+     * 
+     */
+//    public function offers(Request $request)
+//    {
+//        $first = Tution::select(
+//            \DB::raw("'proposal' as 'type', proposals.tutor_id as offer_tutor_id, tutions.* "))
+//            ->where('tutions.status',Tution::STATUS_NEW)
+//            ->join('proposals', 'tutions.id', '=', 'proposals.tution_id');
+//
+//        $offers = Tution::select(
+//                \DB::raw("'invitation' as 'type', invitations.tutor_id as offer_tutor_id, tutions.* "))
+//            ->join('invitations', 'tutions.id', '=', 'invitations.tution_id')
+//            ->where('tutions.status',Tution::STATUS_NEW)
+//            ->union($first)
+//            ->latest()
+//            ->paginate(20);
+//        return $offers;
+//    }
+
+    public function offers(Request $request)
+    {
+        $relations = [
+//            'tutor',
+            'invitation',
+            'proposal',
+            'student'
+        ];
+        $offers = Offer::with($relations)
+            ->findTutor(Auth::user()->id);
+        $status = $request->get('status', Tution::STATUS_NEW);
+        if ($status) {
+            $offers->status($status);
+        }
+        $offers->latest();
+        return $offers->paginate(20);
     }
 }

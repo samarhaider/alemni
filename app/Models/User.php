@@ -49,8 +49,9 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'google', 'user_type', 'active', 'block', 'updated_at', 'deleted_at'
+        'password', 'remember_token', 'google', 'active', 'block', 'updated_at', 'deleted_at'
     ];
+    
     public function emailPasswordValidation($add = true)
     {
         if ($add) {
@@ -70,7 +71,20 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
         if ($this->user_type == self::TYPE_STUDENT) 
             return $this->hasMany('App\Models\Tution','student_id');
     }
-
+    
+    public function changePasswordValidation($add = true)
+    {
+        if ($add) {
+            $this->rules = [
+                'current_password' => 'required',
+                'new_password' => 'required',
+            ];
+        } else {
+            unset($this->rules['current_password']);
+            unset($this->rules['new_password']);
+        }
+    }
+    
     public function profile()
     {
         return $this->hasOne('App\Models\Profile');
@@ -194,5 +208,10 @@ class User extends AppModel implements AuthenticatableContract, MessageableInter
     public function Questions()
     {
         return $this->belongsToMany('App\Models\Question', 'answer');
+    }
+    
+    public function CreditCard()
+    {
+        return $this->hasOne('App\Models\CreditCard');
     }
 }

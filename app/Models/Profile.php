@@ -4,12 +4,17 @@ namespace App\Models;
 
 use App\Models\AppModel;
 use App\Models\User;
+use App\Models\Verification;
+use SMS;
+use Nexmo;
 use \Conner\Tagging\Taggable;
+use willvincent\Rateable\Rateable;
 
 class Profile extends AppModel
 {
 
-    use Taggable;
+    use Taggable,
+        Rateable;
 
     public $qualifications;
 
@@ -27,6 +32,13 @@ class Profile extends AppModel
         'phone_number' => 'nullable', # user phone validation library
         'bio' => 'nullable',
         'address' => 'nullable',
+        'experience' => 'nullable',
+        'stage_complete' => 'nullable',
+        'specialist' => 'nullable',
+        'teaches' => 'nullable',
+        'paypal_address' => 'nullable',
+        'state' => 'nullable',
+        'city' => 'nullable',
     ];
 
     /**
@@ -35,7 +47,7 @@ class Profile extends AppModel
      * @var array
      */
     protected $fillable = [
-        'name', 'hourly_rate', 'gender', 'radius', 'phone_number', 'bio', 'latitude', 'longitude', 'address'
+        'name', 'hourly_rate', 'gender', 'radius', 'experience', 'stage_complete', 'specialist', 'teaches', 'phone_number', 'bio', 'latitude', 'longitude', 'address', 'city', 'state', 'paypal_address'
     ];
 
     /**
@@ -56,7 +68,10 @@ class Profile extends AppModel
      */
     protected $appends = [
         'qualifications',
+        'average_rating',
+        'completed_tutions',
         'avatar_url',
+        'total_hours',
     ];
 
     /**
@@ -73,9 +88,9 @@ class Profile extends AppModel
     }
 
     /**
-     * Block 
+     * Near By 
      * 
-     * @return user_type array of User Object
+     * @return $query
      */
     public function scopeNearBy($query, $lat, $long, $distance)
     {
@@ -156,9 +171,55 @@ class Profile extends AppModel
 //        }
 //        return [];
     }
-    
+
     public function getAvatarUrlAttribute()
     {
-        return env('APP_URL').'/'.$this->avatar;
+        return env('APP_URL') . '/' . $this->avatar;
+    }
+
+    public function tutions()
+    {
+        $foreign_key = 'student_id';
+        if ($this->user->user_type == User::TYPE_TUTOR) {
+            $foreign_key = 'tutor_id';
+        }
+        return $this->hasMany('App\Models\Tution', $foreign_key, 'user_id');
+    }
+
+    public function getCompletedTutionsAttribute()
+    {
+        return $this->tutions()->completed()->count();
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        return 5;
+    }
+
+    public function sendPhoneVerificationCode()
+    {
+        $rand_number = mt_rand(1000, 9999);
+        $profile = $this;
+        if (!$profile->phone_number) {
+            return false;
+        }
+//        SMS::send('Your phone verification code: ' . $rand_number, ['profile' => $profile], function($sms) use ($profile) {
+//            $sms->to($profile->phone_number);
+//        });
+        Nexmo::message()->send([
+            'to' => $profile->phone_number,
+            'from' => 'Alemni',
+            'text' => 'Your phone verification code: ' . $rand_number
+        ]);
+
+        $verification = new Verification;
+        $verification->type = Verification::TYPE_PHONE;
+        $verification->value = $profile->phone_number;
+        $verification->code = $rand_number;
+        $verification->user_id = $profile->user_id;
+        $verification->save();
+        $this->is_phone_number_verified = false;
+        $this->save();
+        return $verification;
     }
 }

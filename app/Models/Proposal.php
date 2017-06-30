@@ -27,9 +27,11 @@ class Proposal extends AppModel
     protected $rules = [
         'tutor_id' => 'required',
         'tution_id' => 'required',
+        'title' => 'required',
         'description' => 'required',
         'cost' => 'required',
         'estimated_time' => 'required',
+        'attachments' => 'nullable|array',
     ];
 
     /**
@@ -37,7 +39,7 @@ class Proposal extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['tutor_id', 'tution_id', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at'];
+    protected $fillable = ['tutor_id', 'tution_id', 'title', 'availability_from', 'availability_to', 'schedule', 'attachments', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -67,6 +69,19 @@ class Proposal extends AppModel
      */
     protected $with = ['tution'];
 
+    public function setAttachmentsAttribute($value)
+    {
+        $this->attributes['attachments'] = serialize($value);
+    }
+
+    public function getAttachmentsAttribute($value)
+    {
+        if ($value == null) {
+            return [];
+        }
+        return unserialize($value);
+    }
+
     public function scopeFindTutor($query, $tutor_id)
     {
         return $query->where('tutor_id', '=', $tutor_id);
@@ -81,19 +96,22 @@ class Proposal extends AppModel
     {
         return $query->where('status', '=', $status);
     }
-    
+
     public function scopePending($query)
     {
         return $query->where('status', '=', self::STATUS_PENDING);
     }
+
     public function scopeAccepted($query)
     {
         return $query->where('status', '=', self::STATUS_ACCEPTED);
     }
+
     public function scopeRejected($query)
     {
         return $query->where('status', '=', self::STATUS_REJECTED);
     }
+
     public function scopeWithdrawl($query)
     {
         return $query->where('status', '=', self::STATUS_WITHDRAWL);
@@ -101,7 +119,12 @@ class Proposal extends AppModel
 
     public function tutors()
     {
-        return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
+        return $this->hasMany('App\Models\Profile', 'user_id', 'tutor_id');
+    }
+
+    public function tutor()
+    {
+        return $this->hasOne('App\Models\Profile', 'user_id', 'tutor_id');
     }
 
     public function tution()

@@ -28,6 +28,10 @@ class Invitation extends AppModel
         'tutor_id' => 'required',
         'tution_id' => 'required',
 //        'description' => 'required',
+        'attachments' => 'nullable|array',
+        'description' => 'nullable',
+        'grade' => 'nullable',
+        'end_date' => 'nullable',
     ];
 
     /**
@@ -35,7 +39,7 @@ class Invitation extends AppModel
      *
      * @var array
      */
-    protected $fillable = ['tutor_id', 'tution_id', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at'];
+    protected $fillable = ['tutor_id', 'tution_id', 'status', 'description', 'cost', 'estimated_time', 'deleted_at', 'created_at', 'updated_at', 'attachments', 'grade', 'end_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -56,7 +60,7 @@ class Invitation extends AppModel
      *
      * @var array
      */
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['end_date', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -76,6 +80,19 @@ class Invitation extends AppModel
             unset($this->rules['estimated_time']);
             unset($this->rules['description']);
         }
+    }
+
+    public function setAttachmentsAttribute($value)
+    {
+        $this->attributes['attachments'] = serialize($value);
+    }
+
+    public function getAttachmentsAttribute($value)
+    {
+        if ($value == null) {
+            return [];
+        }
+        return unserialize($value);
     }
 
     public function scopeFindTutor($query, $tutor_id)
@@ -116,6 +133,11 @@ class Invitation extends AppModel
     public function tutors()
     {
         return $this->hasMany('App\Models\Profile', 'tutor_id', 'user_id');
+    }
+
+    public function tutor()
+    {
+        return $this->belongsTo('App\Models\Profile', 'tutor_id', 'user_id');
     }
 
     public function tution()

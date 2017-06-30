@@ -18,12 +18,14 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "matriphe/imageupload": "dev-master",
+        "nexmo/laravel": "^0.4.0",
         "qylinfly/action-log": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.7.1",
         "rtconner/laravel-tagging": "~2.2",
         "simplesoftwareio/simple-sms": "^3.0",
         "tymon/jwt-auth": "^0.5.9",
-        "watson/validating": "^3.0"
+        "watson/validating": "^3.0",
+        "willvincent/laravel-rateable": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
