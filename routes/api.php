@@ -70,4 +70,6 @@ $api->version('v1', ['middleware' => 'jwt.auth'], function ($api) {
     $api->get('notifications', 'App\Http\Controllers\NotificationController@index');
     $api->get('notifications/unread', 'App\Http\Controllers\NotificationController@unread');
     $api->post('notifications/read', 'App\Http\Controllers\NotificationController@read');
+    $api->post('messages', 'App\Http\Controllers\MessageController@store');
+    $api->get('messages/{id}', 'App\Http\Controllers\MessageController@show');
 });

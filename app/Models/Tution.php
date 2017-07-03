@@ -198,6 +198,11 @@ class Tution extends AppModel
         return $this->hasMany('App\Models\Proposal', 'tution_id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message', 'tution_id');
+    }
+
     public function scopeStatus($query, $status)
     {
         return $query->where('status', '=', $status);
