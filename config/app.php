@@ -227,17 +227,4 @@ return [
         'Messenger' => Gerardojbaez\Messenger\Facades\Messenger::class, # Added on 15-Apr-2017
     ],
     
-//    'token_secret' => 'some random string',
-//	'facebook_secret' => 'fed5207016307f1a7aaaed79811503f3',
-//	'foursquare_secret' => '',
-//	'google_secret' => '2dxQ-fyO4xGVNdxHnvpYDTRZ',
-//	'google_client_id' => '426586124483-l4gnl9dmatfr8p88nikj6rv0p2l7ku4v.apps.googleusercontent.com',
-//	'github_secret' => '',
-//	'instagram_secret' => '',
-//	'linkedin_secret' => '',
-//	'live_secret' => '',
-//	'yahoo_secret' => '',
-//	'twitter_key' => 'dHWO2u5ZyiYP9KEqYvuSLg',
-//	'twitter_secret' => 'aP9SGd9rNko4zfjPo972KEnFSfQuwyOu8yCr9FYRCM',
-    
 ];
